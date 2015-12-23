@@ -29,13 +29,9 @@ type
     fdmtbl_SendedMessages: TFDMemTable;
     ds_ReceivedMessages: TDataSource;
     ds_SendedMessages: TDataSource;
-    fdmtbl_SendedMessagesTopic: TStringField;
-    fdmtbl_SendedMessagesPayload: TMemoField;
     fdmtbl_SendedMessagesTime: TDateTimeField;
     fdmtbl_ReceivedMessages: TFDMemTable;
     fdmtbl_ReceivedMessagesTime: TDateTimeField;
-    fdmtbl_ReceivedMessagesTopic: TStringField;
-    fdmtbl_ReceivedMessagesPayload: TMemoField;
     fdmtbl_ConnectionProfiles: TFDMemTable;
     ds_ConnectionProfiles: TDataSource;
     fdmtbl_ConnectionProfilesHostName: TStringField;
@@ -43,12 +39,17 @@ type
     fdmtbl_ConnectionProfilesKeepAlive: TIntegerField;
     fdmtbl_ConnectionProfilesUserID: TStringField;
     fdmtbl_ConnectionProfilesCleanSession: TBooleanField;
-    fdmtbl_ConnectionProfilesWillTopic: TStringField;
-    fdmtbl_ConnectionProfilesWillPayload: TStringField;
     fdmtbl_ConnectionProfilesUserName: TStringField;
     fdmtbl_ConnectionProfilesPassword: TStringField;
     fdmtbl_ConnectionProfilesWillRetain: TBooleanField;
     fdmtbl_ConnectionProfilesWillQoS: TStringField;
+    fdmtbl_SendedMessagesTopic: TWideStringField;
+    fdmtbl_SendedMessagesPayload: TWideMemoField;
+    fdmtbl_ReceivedMessagesTopic: TWideStringField;
+    fdmtbl_ReceivedMessagesPayload: TWideMemoField;
+    tbl_SettingsPubPayload: TWideMemoField;
+    fdmtbl_ConnectionProfilesWillTopic: TWideStringField;
+    fdmtbl_ConnectionProfilesWillPayload: TWideStringField;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private

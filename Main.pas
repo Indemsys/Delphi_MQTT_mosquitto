@@ -3,7 +3,7 @@ unit Main;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, System.AnsiStrings,
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, System.AnsiStrings, System.WideStrUtils,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
   MOSQUITTO,
   cxPropertiesStore, cxStorage, cxClasses, cxGraphics, cxControls,
@@ -62,7 +62,7 @@ type
     dxlc_Item2: TdxLayoutItem;
     ActionList1: TActionList;
     act_Connect: TAction;
-    cxImageList1: TcxImageList;
+    cxImgl_big: TcxImageList;
     act_Disconnect: TAction;
     cxb_Disconnect: TcxButton;
     dxlc_Item3: TdxLayoutItem;
@@ -130,7 +130,7 @@ type
     cxg_ReceivedDBTableView1Payload: TcxGridDBColumn;
     cxnav_ConnProfiles: TcxDBNavigator;
     dxlc_Item5: TdxLayoutItem;
-    cxImageList_16: TcxImageList;
+    cxImgl_small: TcxImageList;
     cxte_HostName: TcxDBTextEdit;
     dxlc_HostName: TdxLayoutItem;
     cxsped_HostPort: TcxDBSpinEdit;
@@ -153,6 +153,19 @@ type
     dxlc_Item1: TdxLayoutItem;
     cxrg_WillQoS: TcxDBRadioGroup;
     dxlc_WillQoS: TdxLayoutItem;
+    cxb_1: TcxButton;
+    dxlc_Item7: TdxLayoutItem;
+    cxb_2: TcxButton;
+    dxlc_Item8: TdxLayoutItem;
+    cxb_3: TcxButton;
+    dxlc_Item9: TdxLayoutItem;
+    ActionList_small: TActionList;
+    act_ClearLog: TAction;
+    act_ClearSended: TAction;
+    act_ClearReceived: TAction;
+    dxlc_GroupLog: TdxLayoutGroup;
+    dxlc_GroupSended: TdxLayoutGroup;
+    dxlc_GroupReveived: TdxLayoutGroup;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure act_ConnectExecute(Sender: TObject);
@@ -161,6 +174,9 @@ type
     procedure act_SubscribeExecute(Sender: TObject);
     procedure act_UnsubscribeExecute(Sender: TObject);
     procedure cxnav_ConnProfilesButtonsButtonClick(Sender: TObject; AButtonIndex: Integer; var ADone: Boolean);
+    procedure act_ClearLogExecute(Sender: TObject);
+    procedure act_ClearSendedExecute(Sender: TObject);
+    procedure act_ClearReceivedExecute(Sender: TObject);
   private
     f_mosq: Pmosquitto;
 
@@ -169,14 +185,14 @@ type
     f_retain: Byte;
 
     f_user_obj: T_user_obj;
-    f_user_id: PAnsiChar;
-    f_will_payload: PAnsiChar;
+    f_user_id: AnsiString;
+    f_will_payload: AnsiString;
     f_will_payload_len: Integer;
-    f_will_topic: PAnsiChar;
-    f_user_name: PAnsiChar;
-    f_user_password: PAnsiChar;
+    f_will_topic: AnsiString;
+    f_user_name: AnsiString;
+    f_user_password: AnsiString;
 
-    f_hostname: PAnsiChar;
+    f_hostname: AnsiString;
     f_port: Integer;
     f_keepalive: Integer;
 
@@ -185,22 +201,30 @@ type
     f_disconnect_result: Integer;
 
     f_pub_id: Integer;
-    f_pub_topic: PAnsiChar;
+    f_pub_topic: AnsiString;
     f_pub_payload_len: Integer;
-    f_pub_payload: PAnsiChar;
+    f_pub_payload: AnsiString;
     f_pub_qos: Integer;
     f_pub_retain: Byte;
 
     f_sub_id: Integer;
-    f_sub_topic: PAnsiChar;
+    f_sub_topic: AnsiString;
     f_sub_qos: Integer;
 
+    srce: TEncoding;
+    dste: TEncoding;
+    crsb: TBytes;
     procedure Start_session;
     procedure Stop_session;
     procedure Dispose_parameters;
     procedure UpdateStatusBar;
     procedure Gather_session_parameters;
     procedure Gather_parameters;
+
+    function ConvertStringToUTF8(const str: string; var utf8str: AnsiString): Integer;
+    procedure Convert_Topic_To_String(const utf8str: PAnsiChar; var str: string);
+    procedure Convert_Payload_To_String(const utf8str: PAnsiChar; sz: integer; var str: string);
+
     procedure MessagesgHandler(var Message: TMessage); message WM_MQTT_MESSAGES;
 
   public
@@ -245,6 +269,8 @@ begin
     cxPropertiesStore.Active := True;
     cxPropertiesStore.StorageStream := strm;
     cxPropertiesStore.RestoreFrom;
+
+    cxm_PubPayload.Text := dm.tbl_SettingsPubPayload.Value;
   finally
     strm.Free;
   end;
@@ -262,12 +288,6 @@ begin
 
   f_mosq := Nil;
   f_connected := False;
-  f_user_id := Nil;
-  f_will_payload := Nil;
-  f_will_topic := Nil;
-  f_user_name := Nil;
-  f_user_password := Nil;
-  f_hostname := Nil;
   f_session_started := False;
   act_Disconnect.Enabled := False;
 
@@ -276,6 +296,66 @@ begin
   act_Unsubscribe.Enabled := False;
 
 end;
+
+// ------------------------------------------------------------------------------
+//
+// ------------------------------------------------------------------------------
+function TfrmMain.ConvertStringToUTF8(const str: string; var utf8str: AnsiString): Integer;
+var L, SL: integer;
+begin
+  SL:=  Length(str);
+  L := SL * SizeOf(Char);
+  L := L + 1;
+
+  SetLength(utf8str, L);
+  UnicodeToUtf8(PAnsiChar(utf8str), L, PWideChar(str), SL);
+  ConvertStringToUTF8 := System.SysUtils.StrLen(PAnsiChar(utf8str));
+
+end;
+
+
+// ------------------------------------------------------------------------------
+//
+// ------------------------------------------------------------------------------
+procedure TfrmMain.Convert_Topic_To_String(const utf8str: PAnsiChar; var str: string);
+var
+  L:integer;
+  Temp : UnicodeString;
+begin
+  L:= System.SysUtils.StrLen(utf8str);
+
+  str := '';
+  if L = 0 then Exit;
+  SetLength(Temp, L);
+
+  L := System.Utf8ToUnicode(PWideChar(Temp), L + 1, utf8str, L);
+  if L > 0 then
+    SetLength(Temp, L - 1)
+  else
+    Temp := '';
+  str := Temp;
+end;
+
+// ------------------------------------------------------------------------------
+//
+// ------------------------------------------------------------------------------
+procedure TfrmMain.Convert_Payload_To_String(const utf8str: PAnsiChar; sz: integer; var str: string);
+var
+  L:integer;
+  Temp : UnicodeString;
+begin
+  str := '';
+  if sz = 0 then Exit;
+  SetLength(Temp, sz);
+
+  L := System.Utf8ToUnicode(PWideChar(Temp), sz + 1, utf8str, sz);
+  if L > 0 then
+    SetLength(Temp, L - 1)
+  else
+    Temp := '';
+  str := Temp;
+end;
+
 
 // ------------------------------------------------------------------------------
 //
@@ -295,11 +375,8 @@ begin
     f_clean_session := 0;
 
   // ------------------------------------
-  if f_user_id <> Nil then
-    System.AnsiStrings.StrDispose(f_user_id);
 
-  f_user_id := AnsiStrAlloc(Length(cxte_UserID.Text) + 1);
-  System.AnsiStrings.StrPCopy(f_user_id, cxte_UserID.Text);
+  f_user_id := cxte_UserID.Text;
 
 end;
 
@@ -328,62 +405,49 @@ begin
     f_retain := 0;
 
   // ------------------------------------
-  System.AnsiStrings.StrDispose(f_will_topic);
 
   if cxte_WillTopic.Text = '' then
-    f_will_topic := Nil
+    f_will_topic := ''
   else
   begin
-    f_will_topic := AnsiStrAlloc(Length(cxte_WillTopic.Text) + 1);
-    System.AnsiStrings.StrPCopy(f_will_topic, cxte_WillTopic.Text);
+    ConvertStringToUTF8(cxte_WillTopic.Text, f_will_topic);
   end;
 
   // ------------------------------------
-  System.AnsiStrings.StrDispose(f_will_payload);
 
   if cxte_WillPayload.Text = '' then
   begin
-    f_will_payload := Nil;
+    f_will_payload := '';
     f_will_payload_len := 0;
   end
   else
   begin
-    f_will_payload := AnsiStrAlloc(Length(cxte_WillPayload.Text) + 1);
-    f_will_payload_len := Length(cxte_WillPayload.Text) + 1;
-    System.AnsiStrings.StrPCopy(f_will_payload, cxte_WillPayload.Text);
+    f_will_payload_len := ConvertStringToUTF8(cxte_WillPayload.Text, f_will_payload);
   end;
 
   // ------------------------------------
-  System.AnsiStrings.StrDispose(f_user_name);
 
   if cxte_UserName.Text = '' then
-    f_user_name := Nil
+    f_user_name := ''
   else
   begin
-    f_user_name := AnsiStrAlloc(Length(cxte_UserName.Text) + 1);
-    System.AnsiStrings.StrPCopy(f_user_name, cxte_UserName.Text);
+    ConvertStringToUTF8(cxte_UserName.Text, f_user_name );
   end;
 
   // ------------------------------------
-  System.AnsiStrings.StrDispose(f_user_password);
-
   if cxte_Password.Text = '' then
-    f_user_password := Nil
+    f_user_password := ''
   else
   begin
-    f_user_password := AnsiStrAlloc(Length(cxte_Password.Text) + 1);
-    System.AnsiStrings.StrPCopy(f_user_password, cxte_Password.Text);
+    ConvertStringToUTF8(cxte_Password.Text, f_user_password );
   end;
 
   // ------------------------------------
-  System.AnsiStrings.StrDispose(f_hostname);
-
   if cxte_HostName.Text = '' then
-    f_hostname := Nil
+    f_hostname := ''
   else
   begin
-    f_hostname := AnsiStrAlloc(Length(cxte_HostName.Text) + 1);
-    System.AnsiStrings.StrPCopy(f_hostname, cxte_HostName.Text);
+    ConvertStringToUTF8(cxte_HostName.Text, f_hostname);
   end;
 
   f_port := cxsped_HostPort.Value;
@@ -402,11 +466,10 @@ begin
     f_mosq := Nil;
   end;
 
-  f_mosq := mosquitto_new(f_user_id, f_clean_session, @f_user_obj);
+  f_mosq := mosquitto_new(PAnsiChar(f_user_id), f_clean_session, @f_user_obj);
   if f_mosq = Nil then
   begin
     MessageBox(0, 'Ошибка инициализации сессии MQTT клиента', 'Error', MB_ICONWARNING or MB_OK);
-
     Abort;
   end;
 
@@ -438,6 +501,29 @@ begin
   end;
 end;
 
+// ------------------------------------------------------------------------------
+//
+// ------------------------------------------------------------------------------
+procedure TfrmMain.act_ClearLogExecute(Sender: TObject);
+begin
+  cxm_Log.Clear;
+end;
+
+// ------------------------------------------------------------------------------
+//
+// ------------------------------------------------------------------------------
+procedure TfrmMain.act_ClearReceivedExecute(Sender: TObject);
+begin
+  dm.fdmtbl_ReceivedMessages.EmptyDataSet;
+end;
+
+// ------------------------------------------------------------------------------
+//
+// ------------------------------------------------------------------------------
+procedure TfrmMain.act_ClearSendedExecute(Sender: TObject);
+begin
+  dm.fdmtbl_SendedMessages.EmptyDataSet;
+end;
 
 // ------------------------------------------------------------------------------
 //
@@ -473,7 +559,7 @@ begin
     act_DisconnectExecute(Self);
 
     mosquitto_will_clear(f_mosq);
-    res := mosquitto_will_set(f_mosq, f_will_topic, f_will_payload_len, f_will_payload, cxrg_WillQoS.ItemIndex, f_retain);
+    res := mosquitto_will_set(f_mosq, PAnsiChar(f_will_topic), f_will_payload_len, PAnsiChar(f_will_payload), cxrg_WillQoS.ItemIndex, f_retain);
 
     if res <> MOSQ_ERR_SUCCESS then
     begin
@@ -491,7 +577,7 @@ begin
       Abort;
     end;
 
-    res := mosquitto_username_pw_set(f_mosq, f_user_name, f_user_password);
+    res := mosquitto_username_pw_set(f_mosq, PAnsiChar(f_user_name), PAnsiChar(f_user_password));
 
     if res <> MOSQ_ERR_SUCCESS then
     begin
@@ -509,7 +595,7 @@ begin
 
     Screen.Cursor := crHourGlass;
 
-    res := mosquitto_connect(f_mosq, f_hostname, f_port, f_keepalive);
+    res := mosquitto_connect(f_mosq, PAnsiChar(f_hostname), f_port, f_keepalive);
     // res := mosquitto_connect_async(f_mosq, f_hostname, f_port, f_keepalive);
 
     if res <> MOSQ_ERR_SUCCESS then
@@ -587,6 +673,7 @@ procedure TfrmMain.act_PublishExecute(Sender: TObject);
 var
   res: Integer;
   errdesc: string;
+  sz: Integer;
 begin
   if f_connected = False then
     Abort;
@@ -609,28 +696,23 @@ begin
     f_pub_qos := cxrg_PubQoS.ItemIndex;
 
     // ------------------------------------
-    System.AnsiStrings.StrDispose(f_pub_topic);
 
     if cxmru_PubTopic.Text = '' then
-      f_pub_topic := Nil
+      f_pub_topic := ''
     else
     begin
-      f_pub_topic := AnsiStrAlloc(Length(cxmru_PubTopic.Text) + 1);
-      System.AnsiStrings.StrPCopy(f_pub_topic, cxmru_PubTopic.Text);
+      ConvertStringToUTF8(cxmru_PubTopic.Text, f_pub_topic);
     end;
     // ------------------------------------
-    System.AnsiStrings.StrDispose(f_pub_payload);
 
     if cxm_PubPayload.Text = '' then
-      f_pub_payload := Nil
+      f_pub_payload := ''
     else
     begin
-      f_pub_payload_len := Length(cxm_PubPayload.Text);
-      f_pub_payload := AnsiStrAlloc(f_pub_payload_len + 1);
-      System.AnsiStrings.StrPCopy(f_pub_payload, cxm_PubPayload.Text);
+      f_pub_payload_len := ConvertStringToUTF8(cxm_PubPayload.Text, f_pub_payload);
     end;
 
-    res := mosquitto_publish(f_mosq, @f_pub_id, f_pub_topic, f_pub_payload_len, Pointer(f_pub_payload), f_pub_qos, f_pub_retain);
+    res := mosquitto_publish(f_mosq, @f_pub_id, PAnsiChar(f_pub_topic), f_pub_payload_len, Pointer(f_pub_payload), f_pub_qos, f_pub_retain);
     if res <> MOSQ_ERR_SUCCESS then
     begin
       case res of
@@ -691,17 +773,14 @@ begin
     f_sub_qos := cxrg_SubQoS.ItemIndex;
 
     // ------------------------------------
-    System.AnsiStrings.StrDispose(f_sub_topic);
-
     if cxmru_SubTopic.Text = '' then
-      f_sub_topic := Nil
+      f_sub_topic := ''
     else
     begin
-      f_sub_topic := AnsiStrAlloc(Length(cxmru_SubTopic.Text) + 1);
-      System.AnsiStrings.StrPCopy(f_sub_topic, cxmru_SubTopic.Text);
+      ConvertStringToUTF8(cxmru_SubTopic.Text, f_sub_topic);
     end;
 
-    res := mosquitto_subscribe(f_mosq, @f_sub_id, f_sub_topic, f_sub_qos);
+    res := mosquitto_subscribe(f_mosq, @f_sub_id, PAnsiChar(f_sub_topic), f_sub_qos);
     if res <> MOSQ_ERR_SUCCESS then
     begin
       case res of
@@ -751,17 +830,14 @@ begin
     end;
 
     // ------------------------------------
-    System.AnsiStrings.StrDispose(f_sub_topic);
-
     if cxmru_SubTopic.Text = '' then
-      f_sub_topic := Nil
+      f_sub_topic := ''
     else
     begin
-      f_sub_topic := AnsiStrAlloc(Length(cxmru_SubTopic.Text) + 1);
-      System.AnsiStrings.StrPCopy(f_sub_topic, cxmru_SubTopic.Text);
+      ConvertStringToUTF8(cxmru_SubTopic.Text, f_sub_topic);
     end;
 
-    res := mosquitto_unsubscribe(f_mosq, @f_sub_id, f_sub_topic);
+    res := mosquitto_unsubscribe(f_mosq, @f_sub_id, PAnsiChar(f_sub_topic));
     if res <> MOSQ_ERR_SUCCESS then
     begin
       case res of
@@ -837,15 +913,15 @@ end;
 procedure TfrmMain.MessagesgHandler(var Message: TMessage);
 var
   mqttmsg: P_MQTTMessage;
-  str: String;
+  logstring: String;
   mosquitto_message: P_mosquitto_message;
   pbyte: ^Byte;
-  paylstr: string;
+  tmpstr: string;
   i: Integer;
 begin
   mqttmsg := P_MQTTMessage(Message.LParam);
 
-  str := mqttmsg^.description;
+  logstring := mqttmsg^.description;
 
   try
     if mqttmsg^.id <> ON_LOG_ID then
@@ -870,12 +946,12 @@ begin
 
     if mqttmsg^.id = ON_PUBLISH_ID then
     begin
-      str := str + ' mid=' + IntToStr(mqttmsg^.rc);
+      logstring := logstring + ' mid=' + IntToStr(mqttmsg^.rc);
     end;
 
     if mqttmsg^.id = ON_SUBSCRIBE_ID then
     begin
-      str := str + ' mid=' + IntToStr(mqttmsg^.rc);
+      logstring := logstring + ' mid=' + IntToStr(mqttmsg^.rc);
     end;
 
     if mqttmsg^.id = ON_MESSAGE_ID then
@@ -885,15 +961,13 @@ begin
       // Записываем в таблицу
       dm.fdmtbl_ReceivedMessages.Insert;
       dm.fdmtbl_ReceivedMessagesTime.Value := Now();
-      dm.fdmtbl_ReceivedMessagesTopic.Value := mosquitto_message^.topic;
-      pbyte := mosquitto_message^.payload;
-      paylstr := '';
-      for i := 0 to mosquitto_message^.payloadlen - 1 do
-      begin
-        paylstr := paylstr + Chr(pbyte^);
-        inc(pbyte);
-      end;
-      dm.fdmtbl_ReceivedMessagesPayload.Value := paylstr;
+
+      Convert_Topic_To_String(mosquitto_message^.topic, tmpstr);
+      dm.fdmtbl_ReceivedMessagesTopic.Value := tmpstr;
+
+      Convert_Payload_To_String(mosquitto_message^.payload, mosquitto_message^.payloadlen, tmpstr);
+      dm.fdmtbl_ReceivedMessagesPayload.Value := tmpstr;
+
       dm.fdmtbl_ReceivedMessages.Post;
 
       mosquitto_message_clear(mosquitto_message);
@@ -923,7 +997,7 @@ begin
 
     end;
 
-    cxm_Log.Lines.Add(str);
+    cxm_Log.Lines.Add(logstring);
     UpdateStatusBar;
 
   finally
@@ -936,15 +1010,15 @@ end;
 // ------------------------------------------------------------------------------
 procedure TfrmMain.Dispose_parameters;
 begin
-  System.AnsiStrings.StrDispose(f_user_id);
-  System.AnsiStrings.StrDispose(f_will_payload);
-  System.AnsiStrings.StrDispose(f_will_topic);
-  System.AnsiStrings.StrDispose(f_user_name);
-  System.AnsiStrings.StrDispose(f_user_password);
-  System.AnsiStrings.StrDispose(f_hostname);
-  System.AnsiStrings.StrDispose(f_pub_topic);
-  System.AnsiStrings.StrDispose(f_pub_payload);
-  System.AnsiStrings.StrDispose(f_sub_topic);
+  //System.AnsiStrings.StrDispose(f_user_id);
+  //System.AnsiStrings.StrDispose(f_will_payload);
+  //System.AnsiStrings.StrDispose(f_will_topic);
+  //System.AnsiStrings.StrDispose(f_user_name);
+  //System.AnsiStrings.StrDispose(f_user_password);
+  //System.AnsiStrings.StrDispose(f_hostname);
+  //System.AnsiStrings.StrDispose(f_pub_topic);
+  //System.AnsiStrings.StrDispose(f_pub_payload);
+  //System.AnsiStrings.StrDispose(f_sub_topic);
 end;
 
 // ------------------------------------------------------------------------------
@@ -965,6 +1039,7 @@ begin
     cxPropertiesStore.StoreTo;
     dm.tbl_Settings.Edit;
     dm.tbl_Settings_main_form_props.LoadFromStream(strm);
+    dm.tbl_SettingsPubPayload.Value := cxm_PubPayload.Text;
     dm.tbl_Settings.Post;
   finally
     strm.Free;
@@ -1053,7 +1128,7 @@ procedure Callback_on_message(mosq: Pmosquitto; obj: Pointer; mosquitto_message:
 var
   dst: P_mosquitto_message;
 begin
-  dst := AllocMem(Sizeof(T_mosquitto_message));
+  dst := AllocMem(SizeOf(T_mosquitto_message));
   // Сообщение по указателю mosquitto_message надо скопировать, поскольку сразу по выходу из этой процедуры оно будет уничтожено
   mosquitto_message_copy(dst, mosquitto_message);
   SendMessagetoForm('Callback_on_message', ON_MESSAGE_ID, 0, dst);

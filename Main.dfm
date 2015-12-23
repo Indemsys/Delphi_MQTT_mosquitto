@@ -2,7 +2,7 @@ object frmMain: TfrmMain
   Left = 0
   Top = 0
   Caption = 'Test MQTT client'
-  ClientHeight = 760
+  ClientHeight = 665
   ClientWidth = 1210
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -19,12 +19,13 @@ object frmMain: TfrmMain
     Left = 0
     Top = 0
     Width = 1210
-    Height = 760
+    Height = 665
     Align = alClient
     TabOrder = 0
+    ExplicitHeight = 760
     object dxStatusBar: TdxStatusBar
       Left = 7
-      Top = 730
+      Top = 635
       Width = 1196
       Height = 23
       Panels = <
@@ -351,82 +352,6 @@ object frmMain: TfrmMain
         end
       end
     end
-    object cxm_Log: TcxMemo
-      Left = 7
-      Top = 457
-      Properties.ScrollBars = ssBoth
-      Properties.WordWrap = False
-      Style.BorderColor = clWindowFrame
-      Style.BorderStyle = ebs3D
-      Style.HotTrack = False
-      TabOrder = 16
-      Height = 272
-      Width = 426
-    end
-    object cxg_Sended: TcxGrid
-      Left = 445
-      Top = 457
-      Width = 348
-      Height = 272
-      TabOrder = 17
-      object cxg_SendedDBTableView1: TcxGridDBTableView
-        Navigator.Buttons.CustomButtons = <>
-        Navigator.InfoPanel.Visible = True
-        Navigator.Visible = True
-        DataController.DataSource = dm.ds_SendedMessages
-        DataController.Summary.DefaultGroupSummaryItems = <>
-        DataController.Summary.FooterSummaryItems = <>
-        DataController.Summary.SummaryGroups = <>
-        OptionsView.Indicator = True
-        object cxg_SendedDBTableView1Time: TcxGridDBColumn
-          DataBinding.FieldName = 'Time'
-          Width = 100
-        end
-        object cxg_SendedDBTableView1Topic: TcxGridDBColumn
-          DataBinding.FieldName = 'Topic'
-          Width = 100
-        end
-        object cxg_SendedDBTableView1Payload: TcxGridDBColumn
-          DataBinding.FieldName = 'Payload'
-          Width = 100
-        end
-      end
-      object cxg_SendedLevel1: TcxGridLevel
-        GridView = cxg_SendedDBTableView1
-      end
-    end
-    object cxg_Received: TcxGrid
-      Left = 805
-      Top = 457
-      Width = 398
-      Height = 272
-      TabOrder = 18
-      object cxg_ReceivedDBTableView1: TcxGridDBTableView
-        Navigator.Buttons.CustomButtons = <>
-        Navigator.InfoPanel.Visible = True
-        Navigator.Visible = True
-        DataController.DataSource = dm.ds_ReceivedMessages
-        DataController.Summary.DefaultGroupSummaryItems = <>
-        DataController.Summary.FooterSummaryItems = <>
-        DataController.Summary.SummaryGroups = <>
-        OptionsView.Indicator = True
-        object cxg_ReceivedDBTableView1Time: TcxGridDBColumn
-          DataBinding.FieldName = 'Time'
-          Width = 100
-        end
-        object cxg_ReceivedDBTableView1Topic: TcxGridDBColumn
-          DataBinding.FieldName = 'Topic'
-          Width = 100
-        end
-        object cxg_ReceivedDBTableView1Payload: TcxGridDBColumn
-          DataBinding.FieldName = 'Payload'
-          Width = 100
-        end
-      end
-      object cxg_ReceivedLevel1: TcxGridLevel
-        GridView = cxg_ReceivedDBTableView1
-      end
-    end
     object cxnav_ConnProfiles: TcxDBNavigator
       Left = 653
       Top = 152
@@ -438,7 +363,7 @@ object frmMain: TfrmMain
           Hint = #1054#1090#1082#1088#1099#1090#1100' '#1090#1072#1073#1083#1080#1094#1091' '#1087#1088#1086#1092#1080#1083#1077#1081
           ImageIndex = 0
         end>
-      Buttons.Images = cxImageList_16
+      Buttons.Images = cxImgl_small
       Buttons.SaveBookmark.Visible = False
       Buttons.GotoBookmark.Visible = False
       Buttons.Filter.Visible = False
@@ -587,6 +512,119 @@ object frmMain: TfrmMain
       Height = 55
       Width = 183
     end
+    object cxm_Log: TcxMemo
+      Left = 7
+      Top = 457
+      Properties.ScrollBars = ssBoth
+      Properties.WordWrap = False
+      Style.BorderColor = clWindowFrame
+      Style.BorderStyle = ebs3D
+      Style.HotTrack = False
+      TabOrder = 16
+      Height = 279
+      Width = 426
+    end
+    object cxb_1: TcxButton
+      Left = 7
+      Top = 609
+      Width = 30
+      Height = 25
+      Action = act_ClearLog
+      PaintStyle = bpsGlyph
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 17
+    end
+    object cxg_Sended: TcxGrid
+      Left = 445
+      Top = 457
+      Width = 348
+      Height = 272
+      TabOrder = 18
+      object cxg_SendedDBTableView1: TcxGridDBTableView
+        Navigator.Buttons.CustomButtons = <>
+        Navigator.InfoPanel.Visible = True
+        Navigator.Visible = True
+        DataController.DataSource = dm.ds_SendedMessages
+        DataController.Summary.DefaultGroupSummaryItems = <>
+        DataController.Summary.FooterSummaryItems = <>
+        DataController.Summary.SummaryGroups = <>
+        OptionsCustomize.DataRowSizing = True
+        OptionsSelection.MultiSelect = True
+        OptionsView.Indicator = True
+        object cxg_SendedDBTableView1Time: TcxGridDBColumn
+          DataBinding.FieldName = 'Time'
+          Width = 100
+        end
+        object cxg_SendedDBTableView1Topic: TcxGridDBColumn
+          DataBinding.FieldName = 'Topic'
+          Width = 100
+        end
+        object cxg_SendedDBTableView1Payload: TcxGridDBColumn
+          DataBinding.FieldName = 'Payload'
+          Width = 100
+        end
+      end
+      object cxg_SendedLevel1: TcxGridLevel
+        GridView = cxg_SendedDBTableView1
+      end
+    end
+    object cxb_2: TcxButton
+      Left = 445
+      Top = 611
+      Width = 30
+      Height = 23
+      Action = act_ClearSended
+      PaintStyle = bpsGlyph
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 19
+    end
+    object cxg_Received: TcxGrid
+      Left = 805
+      Top = 457
+      Width = 398
+      Height = 272
+      TabOrder = 20
+      object cxg_ReceivedDBTableView1: TcxGridDBTableView
+        Navigator.Buttons.CustomButtons = <>
+        Navigator.InfoPanel.Visible = True
+        Navigator.Visible = True
+        DataController.DataSource = dm.ds_ReceivedMessages
+        DataController.Summary.DefaultGroupSummaryItems = <>
+        DataController.Summary.FooterSummaryItems = <>
+        DataController.Summary.SummaryGroups = <>
+        OptionsCustomize.DataRowSizing = True
+        OptionsSelection.MultiSelect = True
+        OptionsView.Indicator = True
+        object cxg_ReceivedDBTableView1Time: TcxGridDBColumn
+          DataBinding.FieldName = 'Time'
+          Width = 100
+        end
+        object cxg_ReceivedDBTableView1Topic: TcxGridDBColumn
+          DataBinding.FieldName = 'Topic'
+          Width = 100
+        end
+        object cxg_ReceivedDBTableView1Payload: TcxGridDBColumn
+          DataBinding.FieldName = 'Payload'
+          Width = 100
+        end
+      end
+      object cxg_ReceivedLevel1: TcxGridLevel
+        GridView = cxg_ReceivedDBTableView1
+      end
+    end
+    object cxb_3: TcxButton
+      Left = 805
+      Top = 611
+      Width = 30
+      Height = 23
+      Action = act_ClearReceived
+      PaintStyle = bpsGlyph
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 21
+    end
     object dxlc_Group_Root: TdxLayoutGroup
       AlignHorz = ahClient
       AlignVert = avClient
@@ -700,32 +738,6 @@ object frmMain: TfrmMain
       ControlOptions.ShowBorder = False
       Index = 2
     end
-    object dxlc_Log: TdxLayoutItem
-      Parent = dxlc_Group1
-      AlignHorz = ahLeft
-      AlignVert = avClient
-      CaptionOptions.AlignVert = tavTop
-      CaptionOptions.Text = 'Log:'
-      CaptionOptions.Layout = clTop
-      LayoutLookAndFeel = dxLayoutStandardLookAndFeel1
-      SizeOptions.AssignedValues = [sovSizableHorz]
-      SizeOptions.SizableHorz = True
-      Control = cxm_Log
-      ControlOptions.ShowBorder = False
-      Index = 0
-    end
-    object dxlc_SendedTable: TdxLayoutItem
-      Parent = dxlc_Group1
-      AlignHorz = ahLeft
-      AlignVert = avClient
-      CaptionOptions.Text = #1054#1090#1087#1088#1072#1074#1083#1077#1085#1085#1099#1077' '#1089#1086#1086#1073#1097#1077#1085#1080#1103':'
-      CaptionOptions.Layout = clTop
-      SizeOptions.AssignedValues = [sovSizableHorz]
-      SizeOptions.SizableHorz = True
-      Control = cxg_Sended
-      ControlOptions.ShowBorder = False
-      Index = 2
-    end
     object dxlc_Group1: TdxLayoutAutoCreatedGroup
       Parent = dxlc_Group_Root
       AlignHorz = ahClient
@@ -741,21 +753,9 @@ object frmMain: TfrmMain
       CaptionOptions.Text = 'Splitter'
       SizeOptions.AssignedValues = [sovSizableHorz, sovSizableVert]
       SizeOptions.SizableHorz = True
-      SizeOptions.SizableVert = False
+      SizeOptions.SizableVert = True
       SizeOptions.Width = 10
       Index = 1
-    end
-    object dxlc_Item6: TdxLayoutItem
-      Parent = dxlc_Group1
-      AlignHorz = ahClient
-      AlignVert = avClient
-      CaptionOptions.Text = #1055#1088#1080#1085#1103#1090#1099#1077' '#1089#1086#1086#1073#1097#1077#1085#1080#1103':'
-      CaptionOptions.Layout = clTop
-      SizeOptions.AssignedValues = [sovSizableHorz]
-      SizeOptions.SizableHorz = True
-      Control = cxg_Received
-      ControlOptions.ShowBorder = False
-      Index = 4
     end
     object dxlc_SplitterItem2: TdxLayoutSplitterItem
       Parent = dxlc_Group1
@@ -764,7 +764,7 @@ object frmMain: TfrmMain
       CaptionOptions.Text = 'Splitter'
       SizeOptions.AssignedValues = [sovSizableHorz, sovSizableVert]
       SizeOptions.SizableHorz = True
-      SizeOptions.SizableVert = False
+      SizeOptions.SizableVert = True
       SizeOptions.Width = 10
       Index = 3
     end
@@ -893,6 +893,121 @@ object frmMain: TfrmMain
       ControlOptions.ShowBorder = False
       Index = 1
     end
+    object dxlc_GroupLog: TdxLayoutGroup
+      Parent = dxlc_Group1
+      AlignHorz = ahLeft
+      AlignVert = avClient
+      CaptionOptions.Text = 'Log'
+      CaptionOptions.Visible = False
+      LayoutLookAndFeel = dxLayoutStandardLookAndFeel1
+      SizeOptions.AssignedValues = [sovSizableHorz, sovSizableVert]
+      SizeOptions.SizableHorz = True
+      SizeOptions.SizableVert = True
+      SizeOptions.Height = 286
+      ButtonOptions.Buttons = <>
+      ShowBorder = False
+      Index = 0
+    end
+    object dxlc_Log: TdxLayoutItem
+      Parent = dxlc_GroupLog
+      AlignVert = avClient
+      CaptionOptions.AlignVert = tavTop
+      CaptionOptions.Text = 'Log:'
+      CaptionOptions.Layout = clTop
+      LayoutLookAndFeel = dxLayoutStandardLookAndFeel1
+      SizeOptions.AssignedValues = [sovSizableHorz, sovSizableVert]
+      SizeOptions.SizableHorz = True
+      SizeOptions.SizableVert = True
+      Control = cxm_Log
+      ControlOptions.ShowBorder = False
+      Index = 0
+    end
+    object dxlc_Item7: TdxLayoutItem
+      Parent = dxlc_GroupLog
+      AlignHorz = ahLeft
+      AlignVert = avTop
+      CaptionOptions.AlignVert = tavTop
+      CaptionOptions.Text = 'cxButton1'
+      CaptionOptions.Visible = False
+      CaptionOptions.Layout = clTop
+      Control = cxb_1
+      ControlOptions.ShowBorder = False
+      Index = 1
+    end
+    object dxlc_GroupSended: TdxLayoutGroup
+      Parent = dxlc_Group1
+      AlignHorz = ahLeft
+      AlignVert = avClient
+      CaptionOptions.Text = 'New Group'
+      CaptionOptions.Visible = False
+      LayoutLookAndFeel = dxLayoutStandardLookAndFeel1
+      SizeOptions.AssignedValues = [sovSizableHorz, sovSizableVert]
+      SizeOptions.SizableHorz = True
+      SizeOptions.SizableVert = True
+      ButtonOptions.Buttons = <>
+      ShowBorder = False
+      Index = 2
+    end
+    object dxlc_SendedTable: TdxLayoutItem
+      Parent = dxlc_GroupSended
+      AlignVert = avClient
+      CaptionOptions.Text = #1054#1090#1087#1088#1072#1074#1083#1077#1085#1085#1099#1077' '#1089#1086#1086#1073#1097#1077#1085#1080#1103':'
+      CaptionOptions.Layout = clTop
+      SizeOptions.AssignedValues = [sovSizableHorz, sovSizableVert]
+      SizeOptions.SizableHorz = True
+      SizeOptions.SizableVert = True
+      Control = cxg_Sended
+      ControlOptions.ShowBorder = False
+      Index = 0
+    end
+    object dxlc_Item8: TdxLayoutItem
+      Parent = dxlc_GroupSended
+      AlignHorz = ahLeft
+      AlignVert = avTop
+      CaptionOptions.Text = 'cxButton1'
+      CaptionOptions.Visible = False
+      CaptionOptions.Layout = clTop
+      Control = cxb_2
+      ControlOptions.ShowBorder = False
+      Index = 1
+    end
+    object dxlc_GroupReveived: TdxLayoutGroup
+      Parent = dxlc_Group1
+      AlignHorz = ahClient
+      AlignVert = avClient
+      CaptionOptions.Text = 'New Group'
+      CaptionOptions.Visible = False
+      LayoutLookAndFeel = dxLayoutStandardLookAndFeel1
+      SizeOptions.AssignedValues = [sovSizableHorz, sovSizableVert]
+      SizeOptions.SizableHorz = True
+      SizeOptions.SizableVert = True
+      ButtonOptions.Buttons = <>
+      ShowBorder = False
+      Index = 4
+    end
+    object dxlc_Item6: TdxLayoutItem
+      Parent = dxlc_GroupReveived
+      AlignVert = avClient
+      CaptionOptions.Text = #1055#1088#1080#1085#1103#1090#1099#1077' '#1089#1086#1086#1073#1097#1077#1085#1080#1103':'
+      CaptionOptions.Layout = clTop
+      SizeOptions.AssignedValues = [sovSizableHorz, sovSizableVert]
+      SizeOptions.SizableHorz = True
+      SizeOptions.SizableVert = True
+      Control = cxg_Received
+      ControlOptions.ShowBorder = False
+      Index = 0
+    end
+    object dxlc_Item9: TdxLayoutItem
+      Parent = dxlc_GroupReveived
+      AlignHorz = ahLeft
+      AlignVert = avTop
+      CaptionOptions.Text = 'cxButton1'
+      CaptionOptions.Visible = False
+      CaptionOptions.Layout = clTop
+      Control = cxb_3
+      ControlOptions.ShowBorder = False
+      Index = 1
+    end
   end
   object cxPropertiesStore: TcxPropertiesStore
     Active = False
@@ -930,6 +1045,16 @@ object frmMain: TfrmMain
           'ItemIndex')
       end
       item
+        Component = dxlc_GroupLog
+        Properties.Strings = (
+          'SizeOptions.Width')
+      end
+      item
+        Component = dxlc_GroupSended
+        Properties.Strings = (
+          'SizeOptions.Width')
+      end
+      item
         Component = dxlc_Log
         Properties.Strings = (
           'SizeOptions.Width')
@@ -955,13 +1080,13 @@ object frmMain: TfrmMain
       end>
     StorageName = 'cxPropertiesStore'
     StorageType = stStream
-    Left = 352
-    Top = 65520
+    Left = 424
+    Top = 65528
   end
   object ActionList1: TActionList
-    Images = cxImageList1
-    Left = 272
-    Top = 65520
+    Images = cxImgl_big
+    Left = 352
+    Top = 65528
     object act_Connect: TAction
       Caption = 'Connect'
       ImageIndex = 0
@@ -988,7 +1113,7 @@ object frmMain: TfrmMain
       OnExecute = act_UnsubscribeExecute
     end
   end
-  object cxImageList1: TcxImageList
+  object cxImgl_big: TcxImageList
     Height = 32
     Width = 32
     FormatVersion = 1
@@ -1794,7 +1919,7 @@ object frmMain: TfrmMain
       end>
   end
   object dxLayoutLookAndFeelList1: TdxLayoutLookAndFeelList
-    Left = 504
+    Left = 520
     Top = 65528
     object dxLayoutStandardLookAndFeel1: TdxLayoutStandardLookAndFeel
       ItemOptions.CaptionOptions.Font.Charset = DEFAULT_CHARSET
@@ -1815,9 +1940,9 @@ object frmMain: TfrmMain
     Top = 65528
     PixelsPerInch = 96
   end
-  object cxImageList_16: TcxImageList
+  object cxImgl_small: TcxImageList
     FormatVersion = 1
-    DesignInfo = -523664
+    DesignInfo = -1048304
     ImageInfo = <
       item
         Image.Data = {
@@ -2115,5 +2240,28 @@ object frmMain: TfrmMain
           0000000000000000000000000000000000000000000000000000000000000000
           0000000000000000000000000000000000000000000000000000}
       end>
+  end
+  object ActionList_small: TActionList
+    Images = cxImgl_small
+    Left = 656
+    Top = 65528
+    object act_ClearLog: TAction
+      Caption = 'ClearLog'
+      Hint = #1054#1095#1080#1089#1090#1080#1090#1100' '#1083#1086#1075
+      ImageIndex = 1
+      OnExecute = act_ClearLogExecute
+    end
+    object act_ClearSended: TAction
+      Caption = 'ClearSended'
+      Hint = #1054#1095#1080#1089#1090#1080#1090#1100' '#1080#1089#1093#1086#1076#1103#1097#1080#1077' '#1089#1086#1086#1073#1097#1077#1085#1080#1103
+      ImageIndex = 1
+      OnExecute = act_ClearSendedExecute
+    end
+    object act_ClearReceived: TAction
+      Caption = 'ClearReceived'
+      Hint = #1054#1095#1080#1089#1090#1080#1090#1100' '#1074#1093#1086#1076#1103#1097#1080#1077' '#1089#1086#1086#1073#1097#1077#1085#1080#1103
+      ImageIndex = 1
+      OnExecute = act_ClearReceivedExecute
+    end
   end
 end

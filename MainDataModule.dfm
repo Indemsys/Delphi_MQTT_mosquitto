@@ -31,6 +31,11 @@ object dm: Tdm
       DefaultExpression = 'False'
       FieldName = 'AutoConnect'
     end
+    object tbl_SettingsPubPayload: TWideMemoField
+      FieldName = 'PubPayload'
+      BlobType = ftWideMemo
+      Size = 4096
+    end
   end
   object cxPropertiesStore: TcxPropertiesStore
     Active = False
@@ -87,13 +92,14 @@ object dm: Tdm
       FieldName = 'Time'
       DisplayFormat = 'hh.mm.ss:zzz'
     end
-    object fdmtbl_SendedMessagesTopic: TStringField
+    object fdmtbl_SendedMessagesTopic: TWideStringField
       FieldName = 'Topic'
       Size = 256
     end
-    object fdmtbl_SendedMessagesPayload: TMemoField
+    object fdmtbl_SendedMessagesPayload: TWideMemoField
       FieldName = 'Payload'
-      BlobType = ftMemo
+      BlobType = ftWideMemo
+      Size = 4096
     end
   end
   object ds_ReceivedMessages: TDataSource
@@ -122,13 +128,14 @@ object dm: Tdm
       FieldName = 'Time'
       DisplayFormat = 'hh.mm.ss:zzz'
     end
-    object fdmtbl_ReceivedMessagesTopic: TStringField
+    object fdmtbl_ReceivedMessagesTopic: TWideStringField
       FieldName = 'Topic'
       Size = 256
     end
-    object fdmtbl_ReceivedMessagesPayload: TMemoField
+    object fdmtbl_ReceivedMessagesPayload: TWideMemoField
       FieldName = 'Payload'
-      BlobType = ftMemo
+      BlobType = ftWideMemo
+      Size = 4096
     end
   end
   object fdmtbl_ConnectionProfiles: TFDMemTable
@@ -164,19 +171,20 @@ object dm: Tdm
       DefaultExpression = 'False'
       FieldName = 'CleanSession'
     end
-    object fdmtbl_ConnectionProfilesWillTopic: TStringField
+    object fdmtbl_ConnectionProfilesWillTopic: TWideStringField
       FieldName = 'WillTopic'
-      Size = 255
+      Size = 256
     end
-    object fdmtbl_ConnectionProfilesWillPayload: TStringField
+    object fdmtbl_ConnectionProfilesWillPayload: TWideStringField
       FieldName = 'WillPayload'
-      Size = 255
+      Size = 256
     end
     object fdmtbl_ConnectionProfilesWillRetain: TBooleanField
       DefaultExpression = 'False'
       FieldName = 'WillRetain'
     end
     object fdmtbl_ConnectionProfilesWillQoS: TStringField
+      DefaultExpression = 'QoS 0'
       FieldName = 'WillQoS'
       Size = 10
     end
