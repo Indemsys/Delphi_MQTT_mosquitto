@@ -22,7 +22,6 @@ object frmMain: TfrmMain
     Height = 665
     Align = alClient
     TabOrder = 0
-    ExplicitHeight = 760
     object dxStatusBar: TdxStatusBar
       Left = 7
       Top = 635
@@ -101,7 +100,12 @@ object frmMain: TfrmMain
           object cxmru_PubTopic: TcxMRUEdit
             Left = 63
             Top = 25
+            Hint = #1044#1083#1103' '#1086#1095#1080#1089#1090#1082#1080' '#1085#1072#1078#1072#1090#1100' Ctrl+C'
+            ParentShowHint = False
+            Properties.ClearKey = 16451
             Properties.DropDownSizeable = True
+            Properties.ShowEllipsis = False
+            ShowHint = True
             Style.BorderColor = clWindowFrame
             Style.BorderStyle = ebs3D
             Style.HotTrack = False
@@ -113,6 +117,11 @@ object frmMain: TfrmMain
           object cxmru_SubTopic: TcxMRUEdit
             Left = 632
             Top = 25
+            Hint = #1044#1083#1103' '#1086#1095#1080#1089#1090#1082#1080' '#1085#1072#1078#1072#1090#1100' Ctrl+C'
+            ParentShowHint = False
+            Properties.ClearKey = 16451
+            Properties.ShowEllipsis = False
+            ShowHint = True
             Style.BorderColor = clWindowFrame
             Style.BorderStyle = ebs3D
             Style.HotTrack = False
@@ -521,7 +530,7 @@ object frmMain: TfrmMain
       Style.BorderStyle = ebs3D
       Style.HotTrack = False
       TabOrder = 16
-      Height = 279
+      Height = 151
       Width = 426
     end
     object cxb_1: TcxButton
@@ -539,7 +548,7 @@ object frmMain: TfrmMain
       Left = 445
       Top = 457
       Width = 348
-      Height = 272
+      Height = 153
       TabOrder = 18
       object cxg_SendedDBTableView1: TcxGridDBTableView
         Navigator.Buttons.CustomButtons = <>
@@ -549,9 +558,11 @@ object frmMain: TfrmMain
         DataController.Summary.DefaultGroupSummaryItems = <>
         DataController.Summary.FooterSummaryItems = <>
         DataController.Summary.SummaryGroups = <>
+        OptionsCustomize.ColumnsQuickCustomization = True
         OptionsCustomize.DataRowSizing = True
         OptionsSelection.MultiSelect = True
         OptionsView.Indicator = True
+        OptionsView.IndicatorWidth = 20
         object cxg_SendedDBTableView1Time: TcxGridDBColumn
           DataBinding.FieldName = 'Time'
           Width = 100
@@ -584,7 +595,7 @@ object frmMain: TfrmMain
       Left = 805
       Top = 457
       Width = 398
-      Height = 272
+      Height = 153
       TabOrder = 20
       object cxg_ReceivedDBTableView1: TcxGridDBTableView
         Navigator.Buttons.CustomButtons = <>
@@ -594,9 +605,11 @@ object frmMain: TfrmMain
         DataController.Summary.DefaultGroupSummaryItems = <>
         DataController.Summary.FooterSummaryItems = <>
         DataController.Summary.SummaryGroups = <>
+        OptionsCustomize.ColumnsQuickCustomization = True
         OptionsCustomize.DataRowSizing = True
         OptionsSelection.MultiSelect = True
         OptionsView.Indicator = True
+        OptionsView.IndicatorWidth = 20
         object cxg_ReceivedDBTableView1Time: TcxGridDBColumn
           DataBinding.FieldName = 'Time'
           Width = 100

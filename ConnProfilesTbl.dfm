@@ -12,6 +12,8 @@ object frmConnProfilesTbl: TfrmConnProfilesTbl
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 13
   object cxg_ConnProfiles: TcxGrid
@@ -21,10 +23,6 @@ object frmConnProfilesTbl: TfrmConnProfilesTbl
     Height = 337
     Align = alClient
     TabOrder = 0
-    ExplicitLeft = 344
-    ExplicitTop = 88
-    ExplicitWidth = 97
-    ExplicitHeight = 81
     object cxg_ConnProfilesDBTableView1: TcxGridDBTableView
       Navigator.Buttons.CustomButtons = <>
       Navigator.InfoPanel.Visible = True
@@ -33,6 +31,9 @@ object frmConnProfilesTbl: TfrmConnProfilesTbl
       DataController.Summary.DefaultGroupSummaryItems = <>
       DataController.Summary.FooterSummaryItems = <>
       DataController.Summary.SummaryGroups = <>
+      OptionsCustomize.ColumnsQuickCustomization = True
+      OptionsCustomize.DataRowSizing = True
+      OptionsView.IndicatorWidth = 20
       object cxg_ConnProfilesDBTableView1HostName: TcxGridDBColumn
         DataBinding.FieldName = 'HostName'
         Width = 121

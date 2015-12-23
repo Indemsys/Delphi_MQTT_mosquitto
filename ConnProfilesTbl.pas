@@ -27,6 +27,8 @@ type
     cxg_ConnProfilesDBTableView1WillQoS: TcxGridDBColumn;
     cxg_ConnProfilesDBTableView1UserName: TcxGridDBColumn;
     cxg_ConnProfilesDBTableView1Password: TcxGridDBColumn;
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     { Private declarations }
   public
@@ -41,5 +43,15 @@ implementation
 {$R *.dfm}
 
 uses MainDataModule;
+
+procedure TfrmConnProfilesTbl.FormCreate(Sender: TObject);
+begin
+  dm.RestoreFormProperties(Self);
+end;
+
+procedure TfrmConnProfilesTbl.FormDestroy(Sender: TObject);
+begin
+  dm.SaveFormProperties(Self);
+end;
 
 end.

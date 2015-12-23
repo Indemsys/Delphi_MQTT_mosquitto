@@ -211,9 +211,9 @@ type
     f_sub_topic: AnsiString;
     f_sub_qos: Integer;
 
-    srce: TEncoding;
-    dste: TEncoding;
-    crsb: TBytes;
+//    srce: TEncoding;
+//    dste: TEncoding;
+//    crsb: TBytes;
     procedure Start_session;
     procedure Stop_session;
     procedure Dispose_parameters;
@@ -223,7 +223,7 @@ type
 
     function ConvertStringToUTF8(const str: string; var utf8str: AnsiString): Integer;
     procedure Convert_Topic_To_String(const utf8str: PAnsiChar; var str: string);
-    procedure Convert_Payload_To_String(const utf8str: PAnsiChar; sz: integer; var str: string);
+    procedure Convert_Payload_To_String(const utf8str: PAnsiChar; sz: Integer; var str: string);
 
     procedure MessagesgHandler(var Message: TMessage); message WM_MQTT_MESSAGES;
 
@@ -255,25 +255,32 @@ uses MainDataModule, ConnProfilesTbl;
 // ------------------------------------------------------------------------------
 procedure TfrmMain.FormCreate(Sender: TObject);
 var
-  strm: TMemoryStream;
+//  strm: TMemoryStream;
   res: Integer;
   major: Integer;
   minor: Integer;
   revision: Integer;
 begin
 
-  strm := TMemoryStream.Create;
-  try
-    dm.tbl_Settings_main_form_props.SaveToStream(strm);
-    strm.Position := 0;
-    cxPropertiesStore.Active := True;
-    cxPropertiesStore.StorageStream := strm;
-    cxPropertiesStore.RestoreFrom;
+  // strm := TMemoryStream.Create;
+  // try
+  // dm.tbl_Settings_main_form_props.SaveToStream(strm);
+  // strm.Position := 0;
+  // cxPropertiesStore.Active := True;
+  // cxPropertiesStore.StorageStream := strm;
+  // cxPropertiesStore.RestoreFrom;
+  //
+  // cxm_PubPayload.Text := dm.tbl_SettingsPubPayload.Value;
+  // finally
+  // strm.Free;
+  // end;
 
-    cxm_PubPayload.Text := dm.tbl_SettingsPubPayload.Value;
-  finally
-    strm.Free;
-  end;
+  dm.RestoreFormProperties(Self);
+  cxmru_PubTopic.Properties.LookupItems.Text := cxmru_PubTopic.Text;
+  cxmru_PubTopic.Text := '';
+  cxmru_SubTopic.Properties.LookupItems.Text := cxmru_SubTopic.Text;
+  cxmru_SubTopic.Text := '';
+
 
   dxStatusBar.Panels[0].Text := 'Disconnected';
 
@@ -301,9 +308,10 @@ end;
 //
 // ------------------------------------------------------------------------------
 function TfrmMain.ConvertStringToUTF8(const str: string; var utf8str: AnsiString): Integer;
-var L, SL: integer;
+var
+  L, SL: Integer;
 begin
-  SL:=  Length(str);
+  SL := Length(str);
   L := SL * SizeOf(Char);
   L := L + 1;
 
@@ -313,19 +321,19 @@ begin
 
 end;
 
-
 // ------------------------------------------------------------------------------
 //
 // ------------------------------------------------------------------------------
 procedure TfrmMain.Convert_Topic_To_String(const utf8str: PAnsiChar; var str: string);
 var
-  L:integer;
-  Temp : UnicodeString;
+  L: Integer;
+  Temp: UnicodeString;
 begin
-  L:= System.SysUtils.StrLen(utf8str);
+  L := System.SysUtils.StrLen(utf8str);
 
   str := '';
-  if L = 0 then Exit;
+  if L = 0 then
+    Exit;
   SetLength(Temp, L);
 
   L := System.Utf8ToUnicode(PWideChar(Temp), L + 1, utf8str, L);
@@ -339,13 +347,14 @@ end;
 // ------------------------------------------------------------------------------
 //
 // ------------------------------------------------------------------------------
-procedure TfrmMain.Convert_Payload_To_String(const utf8str: PAnsiChar; sz: integer; var str: string);
+procedure TfrmMain.Convert_Payload_To_String(const utf8str: PAnsiChar; sz: Integer; var str: string);
 var
-  L:integer;
-  Temp : UnicodeString;
+  L: Integer;
+  Temp: UnicodeString;
 begin
   str := '';
-  if sz = 0 then Exit;
+  if sz = 0 then
+    Exit;
   SetLength(Temp, sz);
 
   L := System.Utf8ToUnicode(PWideChar(Temp), sz + 1, utf8str, sz);
@@ -355,7 +364,6 @@ begin
     Temp := '';
   str := Temp;
 end;
-
 
 // ------------------------------------------------------------------------------
 //
@@ -431,7 +439,7 @@ begin
     f_user_name := ''
   else
   begin
-    ConvertStringToUTF8(cxte_UserName.Text, f_user_name );
+    ConvertStringToUTF8(cxte_UserName.Text, f_user_name);
   end;
 
   // ------------------------------------
@@ -439,7 +447,7 @@ begin
     f_user_password := ''
   else
   begin
-    ConvertStringToUTF8(cxte_Password.Text, f_user_password );
+    ConvertStringToUTF8(cxte_Password.Text, f_user_password);
   end;
 
   // ------------------------------------
@@ -1010,41 +1018,43 @@ end;
 // ------------------------------------------------------------------------------
 procedure TfrmMain.Dispose_parameters;
 begin
-  //System.AnsiStrings.StrDispose(f_user_id);
-  //System.AnsiStrings.StrDispose(f_will_payload);
-  //System.AnsiStrings.StrDispose(f_will_topic);
-  //System.AnsiStrings.StrDispose(f_user_name);
-  //System.AnsiStrings.StrDispose(f_user_password);
-  //System.AnsiStrings.StrDispose(f_hostname);
-  //System.AnsiStrings.StrDispose(f_pub_topic);
-  //System.AnsiStrings.StrDispose(f_pub_payload);
-  //System.AnsiStrings.StrDispose(f_sub_topic);
+  // System.AnsiStrings.StrDispose(f_user_id);
+  // System.AnsiStrings.StrDispose(f_will_payload);
+  // System.AnsiStrings.StrDispose(f_will_topic);
+  // System.AnsiStrings.StrDispose(f_user_name);
+  // System.AnsiStrings.StrDispose(f_user_password);
+  // System.AnsiStrings.StrDispose(f_hostname);
+  // System.AnsiStrings.StrDispose(f_pub_topic);
+  // System.AnsiStrings.StrDispose(f_pub_payload);
+  // System.AnsiStrings.StrDispose(f_sub_topic);
 end;
 
 // ------------------------------------------------------------------------------
 //
 // ------------------------------------------------------------------------------
 procedure TfrmMain.FormDestroy(Sender: TObject);
-var
-  strm: TMemoryStream;
+//var
+//  strm: TMemoryStream;
 begin
 
   Stop_session;
   mosquitto_lib_cleanup;
   Dispose_parameters;
 
-  strm := TMemoryStream.Create;
-  try
-    cxPropertiesStore.StorageStream := strm;
-    cxPropertiesStore.StoreTo;
-    dm.tbl_Settings.Edit;
-    dm.tbl_Settings_main_form_props.LoadFromStream(strm);
-    dm.tbl_SettingsPubPayload.Value := cxm_PubPayload.Text;
-    dm.tbl_Settings.Post;
-  finally
-    strm.Free;
-  end;
-
+  // strm := TMemoryStream.Create;
+  // try
+  // cxPropertiesStore.StorageStream := strm;
+  // cxPropertiesStore.StoreTo;
+  // dm.tbl_Settings.Edit;
+  // dm.tbl_Settings_main_form_props.LoadFromStream(strm);
+  // dm.tbl_SettingsPubPayload.Value := cxm_PubPayload.Text;
+  // dm.tbl_Settings.Post;
+  // finally
+  // strm.Free;
+  // end;
+  cxmru_PubTopic.Text :=  cxmru_PubTopic.Properties.LookupItems.Text;
+  cxmru_SubTopic.Text :=  cxmru_SubTopic.Properties.LookupItems.Text;
+  dm.SaveFormProperties(Self);
 end;
 
 // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------

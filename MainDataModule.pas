@@ -9,13 +9,16 @@ uses
   FireDAC.Stan.Intf, FireDAC.Stan.Option,
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
-  cxClasses, cxPropertiesStore, cxStorage, FireDAC.Stan.StorageJSON, FireDAC.Stan.StorageBin;
+  cxClasses, cxPropertiesStore, cxStorage,
+  cxGridLevel, cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGridCustomView, cxGrid, dxBar,
+  FireDAC.Stan.StorageJSON, FireDAC.Stan.StorageBin, dxmdaset;
 
 const
   INI = 'Ini.json';
   CLIENTS = 'Clients.json';
   RECEIVED = 'Received.json';
   SENDED = 'Sended.json';
+  PROPS = 'Props.json';
 
 type
   Tdm = class(TDataModule)
@@ -50,12 +53,16 @@ type
     tbl_SettingsPubPayload: TWideMemoField;
     fdmtbl_ConnectionProfilesWillTopic: TWideStringField;
     fdmtbl_ConnectionProfilesWillPayload: TWideStringField;
+    tblAppProps: TFDMemTable;
+    tblAppPropsName: TStringField;
+    tblAppPropsProps: TBlobField;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
     app_path: string;
   public
-    { Public declarations }
+    procedure SaveFormProperties(frm: TForm);
+    procedure RestoreFormProperties(frm: TForm);
   end;
 
 var
@@ -112,6 +119,14 @@ begin
   else
     fdmtbl_ReceivedMessages.Open;
 
+   if FileExists(app_path + PROPS, False) = True then
+    try
+      tblAppProps.LoadFromFile(app_path + PROPS);
+    finally
+      tblAppProps.Open
+    end
+  else
+    tblAppProps.Open;
 
 
   strm := TMemoryStream.Create;
@@ -125,6 +140,145 @@ begin
     strm.Free;
   end;
 
+end;
+
+
+// ------------------------------------------------------------------------------
+//
+// ------------------------------------------------------------------------------
+procedure Tdm.RestoreFormProperties(frm: TForm);
+var
+  i: Integer;
+  comp: TComponent;
+  stor: TcxPropertiesStore;
+  tview: TcxGridDBTableView;
+  fldn: string;
+  ss: TStringStream;
+  tag : Integer;
+
+begin
+  ss := TStringStream.Create;
+  try
+    tag := frm.Tag;
+    // Ищем на форме компонент типа TcxPropertiesStore и выполяем ему операцию восстановления
+    for i := 0 to frm.ComponentCount - 1 do
+    begin
+      comp := frm.Components[i];
+      fldn := frm.Name + comp.Name;
+
+      if comp is TcxPropertiesStore then
+      begin
+        stor := TcxPropertiesStore(comp);
+
+        // Таблица tblAppProps здесь содержит строки с именем компонента на форме и его  потоком параметров
+        if tblAppProps.Locate('Name', fldn, []) = True then
+        begin
+          ss.Clear;
+          tblAppPropsProps.SaveToStream(ss);
+          ss.Position := 0;
+          stor.StorageStream := ss;
+          stor.RestoreFrom; // Восстанавливаем все свойства компонентов формы собранные в  TcxPropertiesStore
+        end;
+      end;
+    end;
+
+    // Если не совпадает тэг формы и сохраненный тэг, то свойства таблиц  TcxGridDBTableView в форме не восстанавливаются
+    // Это нужно для того чтобы корректно отображались новые версии таблиц с измененной структурой столбцов
+    if frm.Tag <> tag then
+    begin
+      frm.Tag := tag;
+      Exit;
+    end;
+
+
+    // Ищем на форме компоненты типа TcxGridDBTableView и выполяем ему операцию восстановления
+    for i := 0 to frm.ComponentCount - 1 do
+    begin
+      comp := frm.Components[i];
+      fldn := frm.Name + comp.Name;
+
+      if comp is TcxGridDBTableView then
+      begin
+        tview := TcxGridDBTableView(comp);
+        if tblAppProps.Locate('Name', fldn, []) = True then
+        begin
+          ss.Clear;
+          tblAppPropsProps.SaveToStream(ss);
+          ss.Position := 0;
+          tview.RestoreFromStream(ss);
+        end;
+      end;
+    end;
+
+  finally
+    ss.Free;
+  end;
+end;
+
+// ------------------------------------------------------------------------------
+//
+// ------------------------------------------------------------------------------
+procedure Tdm.SaveFormProperties(frm: TForm);
+var
+  i: Integer;
+  comp: TComponent;
+  stor: TcxPropertiesStore;
+  tview: TcxGridDBTableView;
+  fldn: string;
+  ss: TStringStream;
+
+begin
+  // Ищем на форме компонент типа TcxPropertiesStore и выполяем ему операцию сохранения
+
+  ss := TStringStream.Create;
+  try
+
+    for i := 0 to frm.ComponentCount - 1 do
+    begin
+      comp := frm.Components[i];
+
+      if (comp is TcxPropertiesStore) or (comp is TcxGridDBTableView) then
+      begin
+        fldn := frm.Name + comp.Name;
+
+        if tblAppProps.Active = False then
+          tblAppProps.Active := True;
+
+        if tblAppProps.Locate('Name', fldn, []) = False then
+        begin
+          tblAppProps.Append;
+          tblAppProps.FieldByName('Name').Value := fldn;
+          tblAppProps.Post;
+        end;
+      end;
+
+      if comp is TcxPropertiesStore then
+      begin
+        stor := TcxPropertiesStore(comp);
+        // Ищем поле в таблице dxMemData
+        ss.Clear;
+        stor.StorageStream := ss;
+        stor.StoreTo;
+        tblAppProps.Edit;
+        tblAppPropsProps.LoadFromStream(ss);
+        tblAppProps.Post;
+
+      end;
+
+      if comp is TcxGridDBTableView then
+      begin
+        tview := TcxGridDBTableView(comp);
+        ss.Clear;
+        tview.StoreToStream(ss);
+        tblAppProps.Edit;
+        tblAppPropsProps.LoadFromStream(ss);
+        tblAppProps.Post;
+      end;
+
+    end;
+  finally
+    ss.Free;
+  end;
 end;
 
 // ------------------------------------------------------------------------------
@@ -149,6 +303,8 @@ begin
   fdmtbl_ConnectionProfiles.SaveToFile(app_path + CLIENTS);
   fdmtbl_ReceivedMessages.SaveToFile(app_path + RECEIVED);
   fdmtbl_SendedMessages.SaveToFile(app_path + SENDED);
+  tblAppProps.SaveToFile(app_path + PROPS);
 end;
+
 
 end.

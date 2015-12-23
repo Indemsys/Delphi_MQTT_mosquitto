@@ -202,4 +202,21 @@ object dm: Tdm
     Left = 448
     Top = 72
   end
+  object tblAppProps: TFDMemTable
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired]
+    UpdateOptions.CheckRequired = False
+    Left = 624
+    Top = 64
+    object tblAppPropsName: TStringField
+      FieldName = 'Name'
+      Size = 256
+    end
+    object tblAppPropsProps: TBlobField
+      FieldName = 'Props'
+    end
+  end
 end
