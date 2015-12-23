@@ -3,7 +3,7 @@ object frmMain: TfrmMain
   Top = 0
   Caption = 'Test MQTT client'
   ClientHeight = 665
-  ClientWidth = 1210
+  ClientWidth = 1317
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,10 +18,11 @@ object frmMain: TfrmMain
   object dxlc_: TdxLayoutControl
     Left = 0
     Top = 0
-    Width = 1210
+    Width = 1317
     Height = 665
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 1210
     object dxStatusBar: TdxStatusBar
       Left = 7
       Top = 635
@@ -43,7 +44,7 @@ object frmMain: TfrmMain
       Font.Style = []
     end
     object cxb_Connect: TcxButton
-      Left = 1073
+      Left = 1180
       Top = 59
       Width = 130
       Height = 43
@@ -51,7 +52,7 @@ object frmMain: TfrmMain
       TabOrder = 12
     end
     object cxb_Disconnect: TcxButton
-      Left = 1073
+      Left = 1180
       Top = 103
       Width = 130
       Height = 45
@@ -100,9 +101,9 @@ object frmMain: TfrmMain
           object cxmru_PubTopic: TcxMRUEdit
             Left = 63
             Top = 25
-            Hint = #1044#1083#1103' '#1086#1095#1080#1089#1090#1082#1080' '#1085#1072#1078#1072#1090#1100' Ctrl+C'
+            Hint = #1044#1083#1103' '#1086#1095#1080#1089#1090#1082#1080' '#1085#1072#1078#1072#1090#1100' Ctrl+E'
             ParentShowHint = False
-            Properties.ClearKey = 16451
+            Properties.ClearKey = 16453
             Properties.DropDownSizeable = True
             Properties.ShowEllipsis = False
             ShowHint = True
@@ -117,9 +118,9 @@ object frmMain: TfrmMain
           object cxmru_SubTopic: TcxMRUEdit
             Left = 632
             Top = 25
-            Hint = #1044#1083#1103' '#1086#1095#1080#1089#1090#1082#1080' '#1085#1072#1078#1072#1090#1100' Ctrl+C'
+            Hint = #1044#1083#1103' '#1086#1095#1080#1089#1090#1082#1080' '#1085#1072#1078#1072#1090#1100' Ctrl+E'
             ParentShowHint = False
-            Properties.ClearKey = 16451
+            Properties.ClearKey = 16453
             Properties.ShowEllipsis = False
             ShowHint = True
             Style.BorderColor = clWindowFrame
@@ -194,7 +195,7 @@ object frmMain: TfrmMain
             TabOrder = 4
           end
           object cxb_Subscribe: TcxButton
-            Left = 948
+            Left = 1055
             Top = 54
             Width = 110
             Height = 40
@@ -202,7 +203,7 @@ object frmMain: TfrmMain
             TabOrder = 7
           end
           object cxb_Unsubscribe: TcxButton
-            Left = 1059
+            Left = 1166
             Top = 54
             Width = 110
             Height = 40
@@ -362,7 +363,7 @@ object frmMain: TfrmMain
       end
     end
     object cxnav_ConnProfiles: TcxDBNavigator
-      Left = 653
+      Left = 760
       Top = 152
       Width = 407
       Height = 24
@@ -391,7 +392,7 @@ object frmMain: TfrmMain
       Width = 826
     end
     object cxsped_HostPort: TcxDBSpinEdit
-      Left = 934
+      Left = 1041
       Top = 25
       DataBinding.DataField = 'HostPort'
       DataBinding.DataSource = dm.ds_ConnectionProfiles
@@ -405,7 +406,7 @@ object frmMain: TfrmMain
       Width = 85
     end
     object cxsped_KeepAlive: TcxDBSpinEdit
-      Left = 1132
+      Left = 1239
       Top = 25
       DataBinding.DataField = 'KeepAlive'
       DataBinding.DataSource = dm.ds_ConnectionProfiles
@@ -614,6 +615,10 @@ object frmMain: TfrmMain
           DataBinding.FieldName = 'Time'
           Width = 100
         end
+        object cxg_ReceivedDBTableView1mid: TcxGridDBColumn
+          Caption = 'MsgID'
+          DataBinding.FieldName = 'mid'
+        end
         object cxg_ReceivedDBTableView1Topic: TcxGridDBColumn
           DataBinding.FieldName = 'Topic'
           Width = 100
@@ -621,6 +626,12 @@ object frmMain: TfrmMain
         object cxg_ReceivedDBTableView1Payload: TcxGridDBColumn
           DataBinding.FieldName = 'Payload'
           Width = 100
+        end
+        object cxg_ReceivedDBTableView1QoS: TcxGridDBColumn
+          DataBinding.FieldName = 'QoS'
+        end
+        object cxg_ReceivedDBTableView1Retain: TcxGridDBColumn
+          DataBinding.FieldName = 'Retain'
         end
       end
       object cxg_ReceivedLevel1: TcxGridLevel

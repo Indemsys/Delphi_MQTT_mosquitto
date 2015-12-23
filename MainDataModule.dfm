@@ -36,6 +36,16 @@ object dm: Tdm
       BlobType = ftWideMemo
       Size = 4096
     end
+    object tbl_SettingsPubTopicMRU: TWideMemoField
+      FieldName = 'PubTopicMRU'
+      BlobType = ftWideMemo
+      Size = 1024
+    end
+    object tbl_SettingsSubTopicMRU: TWideMemoField
+      FieldName = 'SubTopicMRU'
+      BlobType = ftWideMemo
+      Size = 1024
+    end
   end
   object cxPropertiesStore: TcxPropertiesStore
     Active = False
@@ -128,6 +138,9 @@ object dm: Tdm
       FieldName = 'Time'
       DisplayFormat = 'hh.mm.ss:zzz'
     end
+    object fdmtbl_ReceivedMessagesmid: TIntegerField
+      FieldName = 'mid'
+    end
     object fdmtbl_ReceivedMessagesTopic: TWideStringField
       FieldName = 'Topic'
       Size = 256
@@ -136,6 +149,12 @@ object dm: Tdm
       FieldName = 'Payload'
       BlobType = ftWideMemo
       Size = 4096
+    end
+    object fdmtbl_ReceivedMessagesQoS: TIntegerField
+      FieldName = 'QoS'
+    end
+    object fdmtbl_ReceivedMessagesRetain: TBooleanField
+      FieldName = 'Retain'
     end
   end
   object fdmtbl_ConnectionProfiles: TFDMemTable

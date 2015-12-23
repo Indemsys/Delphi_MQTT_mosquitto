@@ -56,6 +56,11 @@ type
     tblAppProps: TFDMemTable;
     tblAppPropsName: TStringField;
     tblAppPropsProps: TBlobField;
+    fdmtbl_ReceivedMessagesmid: TIntegerField;
+    fdmtbl_ReceivedMessagesQoS: TIntegerField;
+    fdmtbl_ReceivedMessagesRetain: TBooleanField;
+    tbl_SettingsPubTopicMRU: TWideMemoField;
+    tbl_SettingsSubTopicMRU: TWideMemoField;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private

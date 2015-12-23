@@ -166,6 +166,9 @@ type
     dxlc_GroupLog: TdxLayoutGroup;
     dxlc_GroupSended: TdxLayoutGroup;
     dxlc_GroupReveived: TdxLayoutGroup;
+    cxg_ReceivedDBTableView1mid: TcxGridDBColumn;
+    cxg_ReceivedDBTableView1QoS: TcxGridDBColumn;
+    cxg_ReceivedDBTableView1Retain: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure act_ConnectExecute(Sender: TObject);
@@ -211,9 +214,6 @@ type
     f_sub_topic: AnsiString;
     f_sub_qos: Integer;
 
-//    srce: TEncoding;
-//    dste: TEncoding;
-//    crsb: TBytes;
     procedure Start_session;
     procedure Stop_session;
     procedure Dispose_parameters;
@@ -255,32 +255,15 @@ uses MainDataModule, ConnProfilesTbl;
 // ------------------------------------------------------------------------------
 procedure TfrmMain.FormCreate(Sender: TObject);
 var
-//  strm: TMemoryStream;
   res: Integer;
   major: Integer;
   minor: Integer;
   revision: Integer;
 begin
 
-  // strm := TMemoryStream.Create;
-  // try
-  // dm.tbl_Settings_main_form_props.SaveToStream(strm);
-  // strm.Position := 0;
-  // cxPropertiesStore.Active := True;
-  // cxPropertiesStore.StorageStream := strm;
-  // cxPropertiesStore.RestoreFrom;
-  //
-  // cxm_PubPayload.Text := dm.tbl_SettingsPubPayload.Value;
-  // finally
-  // strm.Free;
-  // end;
-
   dm.RestoreFormProperties(Self);
-  cxmru_PubTopic.Properties.LookupItems.Text := cxmru_PubTopic.Text;
-  cxmru_PubTopic.Text := '';
-  cxmru_SubTopic.Properties.LookupItems.Text := cxmru_SubTopic.Text;
-  cxmru_SubTopic.Text := '';
-
+  cxmru_PubTopic.Properties.LookupItems.Text := dm.tbl_SettingsPubTopicMRU.Value;
+  cxmru_SubTopic.Properties.LookupItems.Text := dm.tbl_SettingsSubTopicMRU.Value;
 
   dxStatusBar.Panels[0].Text := 'Disconnected';
 
@@ -384,7 +367,7 @@ begin
 
   // ------------------------------------
 
-  f_user_id := cxte_UserID.Text;
+  ConvertStringToUTF8(cxte_UserID.Text, f_user_id);
 
 end;
 
@@ -681,7 +664,7 @@ procedure TfrmMain.act_PublishExecute(Sender: TObject);
 var
   res: Integer;
   errdesc: string;
-  sz: Integer;
+
 begin
   if f_connected = False then
     Abort;
@@ -923,9 +906,9 @@ var
   mqttmsg: P_MQTTMessage;
   logstring: String;
   mosquitto_message: P_mosquitto_message;
-  pbyte: ^Byte;
+
   tmpstr: string;
-  i: Integer;
+
 begin
   mqttmsg := P_MQTTMessage(Message.LParam);
 
@@ -976,6 +959,10 @@ begin
       Convert_Payload_To_String(mosquitto_message^.payload, mosquitto_message^.payloadlen, tmpstr);
       dm.fdmtbl_ReceivedMessagesPayload.Value := tmpstr;
 
+      dm.fdmtbl_ReceivedMessagesmid.Value := mosquitto_message^.mid;
+      dm.fdmtbl_ReceivedMessagesQoS.Value := mosquitto_message^.qos;
+      dm.fdmtbl_ReceivedMessagesRetain.Value := Boolean(mosquitto_message^.retain);
+
       dm.fdmtbl_ReceivedMessages.Post;
 
       mosquitto_message_clear(mosquitto_message);
@@ -1018,42 +1005,27 @@ end;
 // ------------------------------------------------------------------------------
 procedure TfrmMain.Dispose_parameters;
 begin
-  // System.AnsiStrings.StrDispose(f_user_id);
-  // System.AnsiStrings.StrDispose(f_will_payload);
-  // System.AnsiStrings.StrDispose(f_will_topic);
-  // System.AnsiStrings.StrDispose(f_user_name);
-  // System.AnsiStrings.StrDispose(f_user_password);
-  // System.AnsiStrings.StrDispose(f_hostname);
-  // System.AnsiStrings.StrDispose(f_pub_topic);
-  // System.AnsiStrings.StrDispose(f_pub_payload);
-  // System.AnsiStrings.StrDispose(f_sub_topic);
+
 end;
 
 // ------------------------------------------------------------------------------
 //
 // ------------------------------------------------------------------------------
 procedure TfrmMain.FormDestroy(Sender: TObject);
-//var
-//  strm: TMemoryStream;
 begin
 
   Stop_session;
   mosquitto_lib_cleanup;
   Dispose_parameters;
 
-  // strm := TMemoryStream.Create;
-  // try
-  // cxPropertiesStore.StorageStream := strm;
-  // cxPropertiesStore.StoreTo;
-  // dm.tbl_Settings.Edit;
-  // dm.tbl_Settings_main_form_props.LoadFromStream(strm);
-  // dm.tbl_SettingsPubPayload.Value := cxm_PubPayload.Text;
-  // dm.tbl_Settings.Post;
-  // finally
-  // strm.Free;
-  // end;
-  cxmru_PubTopic.Text :=  cxmru_PubTopic.Properties.LookupItems.Text;
-  cxmru_SubTopic.Text :=  cxmru_SubTopic.Properties.LookupItems.Text;
+  try
+    dm.tbl_Settings.Edit;
+    dm.tbl_SettingsPubTopicMRU.Value := cxmru_PubTopic.Properties.LookupItems.Text;
+    dm.tbl_SettingsSubTopicMRU.Value := cxmru_SubTopic.Properties.LookupItems.Text;
+    dm.tbl_Settings.Post;
+  except
+
+  end;
   dm.SaveFormProperties(Self);
 end;
 
@@ -1170,7 +1142,7 @@ procedure Callback_on_log(mosq: Pmosquitto; obj: Pointer; level: Integer; str: P
 var
   msgstr: string;
 begin
-  msgstr := str;
+  msgstr := String(str);
   SendMessagetoForm(msgstr, ON_LOG_ID, Integer(level), Nil);
 end;
 
