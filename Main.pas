@@ -3,7 +3,7 @@ unit Main;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, System.AnsiStrings, System.WideStrUtils,
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, System.AnsiStrings, System.WideStrUtils, System.Contnrs,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
   MOSQUITTO,
   cxPropertiesStore, cxStorage, cxClasses, cxGraphics, cxControls,
@@ -25,7 +25,7 @@ uses
   System.Actions, Vcl.ActnList, Vcl.StdCtrls, cxButtons, cxTextEdit,
   dxSkinsdxStatusBarPainter, dxStatusBar, cxGroupBox, cxRadioGroup, cxMaskEdit, cxSpinEdit,
   CodeSiteLogging, dxBarBuiltInMenu, cxMemo, cxPC, cxDropDownEdit, cxMRUEdit, cxSplitter, cxStyles, dxLayoutLookAndFeels, dxBevel, cxCustomData, cxFilter, cxData, cxDataStorage, cxNavigator, Data.DB,
-  cxDBData, cxGridLevel, cxGridCustomView, cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid, cxDBNavigator, cxDBEdit;
+  cxDBData, cxGridLevel, cxGridCustomView, cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid, cxDBNavigator, cxDBEdit, RxTimerLst;
 
 type
   T_user_obj = record
@@ -115,7 +115,6 @@ type
     cxg_SendedLevel1: TcxGridLevel;
     cxg_Sended: TcxGrid;
     dxlc_SendedTable: TdxLayoutItem;
-    dxlc_Group1: TdxLayoutAutoCreatedGroup;
     dxlc_SplitterItem1: TdxLayoutSplitterItem;
     cxg_ReceivedDBTableView1: TcxGridDBTableView;
     cxg_ReceivedLevel1: TcxGridLevel;
@@ -169,6 +168,36 @@ type
     cxg_ReceivedDBTableView1mid: TcxGridDBColumn;
     cxg_ReceivedDBTableView1QoS: TcxGridDBColumn;
     cxg_ReceivedDBTableView1Retain: TcxGridDBColumn;
+    cxts_2: TcxTabSheet;
+    dxlc_1Group_Root: TdxLayoutGroup;
+    dxlc_1: TdxLayoutControl;
+    cxg_PeriodicalSendingDBTableView1: TcxGridDBTableView;
+    cxg_PeriodicalSendingLevel1: TcxGridLevel;
+    cxg_PeriodicalSending: TcxGrid;
+    dxlc_1Item1: TdxLayoutItem;
+    cxb_4: TcxButton;
+    dxlc_1Item2: TdxLayoutItem;
+    act_StartPeriodicSending: TAction;
+    act_StopPeriodicSending: TAction;
+    cxb_5: TcxButton;
+    dxlc_1Item3: TdxLayoutItem;
+    dxlc_1Group1: TdxLayoutAutoCreatedGroup;
+    cxg_PeriodicalSendingDBTableView1Topic: TcxGridDBColumn;
+    cxg_PeriodicalSendingDBTableView1Payload: TcxGridDBColumn;
+    cxg_PeriodicalSendingDBTableView1QoS: TcxGridDBColumn;
+    cxg_PeriodicalSendingDBTableView1Periodicity: TcxGridDBColumn;
+    cxg_PeriodicalSendingDBTableView1FuncType: TcxGridDBColumn;
+    cxg_PeriodicalSendingDBTableView1Min: TcxGridDBColumn;
+    cxg_PeriodicalSendingDBTableView1Max: TcxGridDBColumn;
+    cxg_PeriodicalSendingDBTableView1Enabled: TcxGridDBColumn;
+    RxTimerList1: TRxTimerList;
+    cxg_SendedDBTableView1QoS: TcxGridDBColumn;
+    cxg_SendedDBTableView1Retain: TcxGridDBColumn;
+    cxg_PeriodicalSendingDBTableView1Retain: TcxGridDBColumn;
+    cxg_PeriodicalSendingDBTableView1FuncPeriod: TcxGridDBColumn;
+    dxlc_Group2: TdxLayoutGroup;
+    dxlc_SplitterItem3: TdxLayoutSplitterItem;
+    cxg_PeriodicalSendingDBTableView1FuncOffs: TcxGridDBColumn;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure act_ConnectExecute(Sender: TObject);
@@ -180,6 +209,8 @@ type
     procedure act_ClearLogExecute(Sender: TObject);
     procedure act_ClearSendedExecute(Sender: TObject);
     procedure act_ClearReceivedExecute(Sender: TObject);
+    procedure act_StartPeriodicSendingExecute(Sender: TObject);
+    procedure act_StopPeriodicSendingExecute(Sender: TObject);
   private
     f_mosq: Pmosquitto;
 
@@ -214,6 +245,10 @@ type
     f_sub_topic: AnsiString;
     f_sub_qos: Integer;
 
+    f_autosending: Boolean;
+
+    AutoPubObjs: TObjectList;
+
     procedure Start_session;
     procedure Stop_session;
     procedure Dispose_parameters;
@@ -226,6 +261,8 @@ type
     procedure Convert_Payload_To_String(const utf8str: PAnsiChar; sz: Integer; var str: string);
 
     procedure MessagesgHandler(var Message: TMessage); message WM_MQTT_MESSAGES;
+    procedure Log_sended_packet(topic: string; payload: string; QoS: Integer; Retain: Boolean);
+    procedure Publish(topic: string; payload: string; QoS: Integer; Retain: Boolean);
 
   public
     { Public declarations }
@@ -248,7 +285,7 @@ implementation
 
 {$R *.dfm}
 
-uses MainDataModule, ConnProfilesTbl;
+uses MainDataModule, ConnProfilesTbl, PeriodicPublishObj;
 
 // ------------------------------------------------------------------------------
 //
@@ -262,8 +299,8 @@ var
 begin
 
   dm.RestoreFormProperties(Self);
-  cxmru_PubTopic.Properties.LookupItems.Text := dm.tbl_SettingsPubTopicMRU.Value;
-  cxmru_SubTopic.Properties.LookupItems.Text := dm.tbl_SettingsSubTopicMRU.Value;
+  cxmru_PubTopic.Properties.LookupItems.Text := dm.tblSettingsPubTopicMRU.Value;
+  cxmru_SubTopic.Properties.LookupItems.Text := dm.tblSettingsSubTopicMRU.Value;
 
   dxStatusBar.Panels[0].Text := 'Disconnected';
 
@@ -284,6 +321,8 @@ begin
   act_Publish.Enabled := False;
   act_Subscribe.Enabled := False;
   act_Unsubscribe.Enabled := False;
+  act_StartPeriodicSending.Enabled := False;
+  act_StopPeriodicSending.Enabled := False;
 
 end;
 
@@ -505,7 +544,7 @@ end;
 // ------------------------------------------------------------------------------
 procedure TfrmMain.act_ClearReceivedExecute(Sender: TObject);
 begin
-  dm.fdmtbl_ReceivedMessages.EmptyDataSet;
+  dm.tblReceivedMessages.EmptyDataSet;
 end;
 
 // ------------------------------------------------------------------------------
@@ -513,7 +552,7 @@ end;
 // ------------------------------------------------------------------------------
 procedure TfrmMain.act_ClearSendedExecute(Sender: TObject);
 begin
-  dm.fdmtbl_SendedMessages.EmptyDataSet;
+  dm.tblSendedMessages.EmptyDataSet;
 end;
 
 // ------------------------------------------------------------------------------
@@ -525,7 +564,7 @@ var
   errdesc: string;
 
 begin
-  if dm.fdmtbl_ConnectionProfiles.RecordCount = 0 then
+  if dm.tblConnectionProfiles.RecordCount = 0 then
   begin
     MessageBox(0, PChar('Не создан профиль соединения. '#13#10'Используйте кнопу навигатора ''+'' для создания нового профиля.'), 'Error', MB_ICONWARNING or MB_OK);
     Abort;
@@ -679,15 +718,14 @@ begin
       Abort;
     end;
 
+    // ------------------------------------
     if cxchb_PubRetain.Checked then
       f_pub_retain := 1
     else
       f_pub_retain := 0;
-
-    f_pub_qos := cxrg_PubQoS.ItemIndex;
-
     // ------------------------------------
-
+    f_pub_qos := cxrg_PubQoS.ItemIndex;
+    // ------------------------------------
     if cxmru_PubTopic.Text = '' then
       f_pub_topic := ''
     else
@@ -695,14 +733,13 @@ begin
       ConvertStringToUTF8(cxmru_PubTopic.Text, f_pub_topic);
     end;
     // ------------------------------------
-
     if cxm_PubPayload.Text = '' then
       f_pub_payload := ''
     else
     begin
       f_pub_payload_len := ConvertStringToUTF8(cxm_PubPayload.Text, f_pub_payload);
     end;
-
+    // ------------------------------------
     res := mosquitto_publish(f_mosq, @f_pub_id, PAnsiChar(f_pub_topic), f_pub_payload_len, Pointer(f_pub_payload), f_pub_qos, f_pub_retain);
     if res <> MOSQ_ERR_SUCCESS then
     begin
@@ -727,17 +764,184 @@ begin
     // Обязательно делаем вызов  mosquitto_loop_write, иначе  пересылка задержится до следующего прихода пакета Ping от сервера
     res := mosquitto_loop_write(f_mosq, 1);
     if res <> MOSQ_ERR_SUCCESS then
+    begin
       cxm_Log.Lines.Add('mosquitto_loop_write = ' + IntToStr(res));
-
-    // Записываем в таблицу
-    dm.fdmtbl_SendedMessages.Insert;
-    dm.fdmtbl_SendedMessagesTime.Value := Now();
-    dm.fdmtbl_SendedMessagesTopic.Value := cxmru_PubTopic.Text;
-    dm.fdmtbl_SendedMessagesPayload.Value := cxm_PubPayload.Text;
-    dm.fdmtbl_SendedMessages.Post;
+    end;
+    Log_sended_packet(cxmru_PubTopic.Text, cxm_PubPayload.Text, f_pub_qos, cxchb_PubRetain.Checked);
   finally
 
   end;
+end;
+
+// ------------------------------------------------------------------------------
+//
+// ------------------------------------------------------------------------------
+procedure TfrmMain.Publish(topic, payload: string; QoS: Integer; Retain: Boolean);
+var
+  res: Integer;
+  errdesc: string;
+begin
+  if f_connected = False then
+    Abort;
+
+  inc(f_pub_id);
+
+  // ------------------------------------
+  f_pub_qos := QoS;
+  // ------------------------------------
+  if Retain then
+    f_pub_retain := 1
+  else
+    f_pub_retain := 0;
+  // ------------------------------------
+  if topic = '' then
+    f_pub_topic := ''
+  else
+  begin
+    ConvertStringToUTF8(topic, f_pub_topic);
+  end;
+  // ------------------------------------
+  if payload = '' then
+    f_pub_payload := ''
+  else
+  begin
+    f_pub_payload_len := ConvertStringToUTF8(payload, f_pub_payload);
+  end;
+  // ------------------------------------
+
+  res := mosquitto_publish(f_mosq, @f_pub_id, PAnsiChar(f_pub_topic), f_pub_payload_len, Pointer(f_pub_payload), f_pub_qos, f_pub_retain);
+  if res <> MOSQ_ERR_SUCCESS then
+  begin
+    case res of
+      MOSQ_ERR_INVAL:
+        errdesc := 'The input parameters is invalid';
+      MOSQ_ERR_NOMEM:
+        errdesc := 'An out of memory condition occurred';
+      MOSQ_ERR_NO_CONN:
+        errdesc := 'The client isn''t connected to a broker';
+      MOSQ_ERR_PROTOCOL:
+        errdesc := 'There is a protocol error communicating with the broker';
+      MOSQ_ERR_PAYLOAD_SIZE:
+        errdesc := 'The payloadlen is too large';
+    else
+      errdesc := 'Unknown error';
+    end;
+    cxm_Log.Lines.Add('Ошибка выполнения Publish: ' + errdesc);
+    Abort;
+  end;
+
+  // Обязательно делаем вызов  mosquitto_loop_write, иначе  пересылка задержится до следующего прихода пакета Ping от сервера
+  res := mosquitto_loop_write(f_mosq, 1);
+  if res <> MOSQ_ERR_SUCCESS then
+  begin
+    cxm_Log.Lines.Add('mosquitto_loop_write = ' + IntToStr(res));
+  end;
+
+  Log_sended_packet(topic, payload, QoS, Retain);
+end;
+
+// ------------------------------------------------------------------------------
+//
+// ------------------------------------------------------------------------------
+procedure TfrmMain.Log_sended_packet(topic: string; payload: string; QoS: Integer; Retain: Boolean);
+begin
+  // Записываем в таблицу
+  dm.tblSendedMessages.Insert;
+  dm.tblSendedMessagesTime.Value := Now;
+  dm.tblSendedMessagesTopic.Value := topic;
+  dm.tblSendedMessagesPayload.Value := payload;
+  dm.tblSendedMessagesQoS.Value := QoS;
+  dm.tblSendedMessagesRetain.Value := Retain;
+  dm.tblSendedMessages.Post;
+end;
+
+// ------------------------------------------------------------------------------
+//
+// ------------------------------------------------------------------------------
+procedure TfrmMain.act_StartPeriodicSendingExecute(Sender: TObject);
+var
+  ppo: TPeriodicPublishObj;
+  timeout: Integer;
+  topic: string;
+  paylod: string;
+  QoS: Integer;
+  Retain: Boolean;
+  func_type_str: string;
+  func_type: Integer;
+  minv: single;
+  maxv: single;
+  periodicityv: Integer;
+  ofsv : Integer;
+
+begin
+  // Проходим по всей таблице заданий на периодическую публикацию и запукаем их
+
+  with dm.tblPeriodicalSending do
+  begin
+    First;
+    while not eof do
+    begin
+      if FieldByName('Enabled').Value = True then
+      begin
+        if AutoPubObjs = Nil then
+          AutoPubObjs := TObjectList.Create;
+
+        try
+          timeout := FieldByName('Periodicity').Value;
+          topic := FieldByName('Topic').AsString;
+          paylod := FieldByName('Payload').AsString;
+          QoS := FieldByName('QoS').AsInteger;
+          Retain := FieldByName('Retain').AsBoolean;
+
+          func_type_str := FieldByName('FuncType').AsString;
+
+          if func_type_str = 'Random' then
+            func_type := 0
+          else if func_type_str = 'Sinus' then
+            func_type := 1
+          else
+            func_type := 0;
+
+          minv := FieldByName('Min').AsSingle;
+          maxv := FieldByName('Max').AsSingle;
+          periodicityv := FieldByName('FuncPeriod').AsInteger;
+          ofsv := FieldByName('FuncOffs').AsInteger;
+
+          ppo := TPeriodicPublishObj.Create(Nil, timeout, Publish);
+          ppo.SetPackData(topic, paylod, QoS, Retain);
+          ppo.SetFunction(func_type, minv, maxv, periodicityv, ofsv);
+          try
+            AutoPubObjs.Add(ppo);
+            ppo.Enabled := True;
+          except
+            ppo.Free;
+          end;
+        except
+          cxm_Log.Lines.Add('Ошибка в топике "' + FieldByName('Topic').AsString + '" таблицы периодической публикации');
+        end;
+      end;
+
+      Next;
+    end;
+  end;
+  f_autosending := True;
+  act_StartPeriodicSending.Enabled := False;
+  act_StopPeriodicSending.Enabled := True;
+end;
+
+// ------------------------------------------------------------------------------
+//
+// ------------------------------------------------------------------------------
+procedure TfrmMain.act_StopPeriodicSendingExecute(Sender: TObject);
+begin
+  if AutoPubObjs <> Nil then
+  begin
+    AutoPubObjs.Free;
+    AutoPubObjs := Nil;
+  end;
+  f_autosending := False;
+  act_StartPeriodicSending.Enabled := True;
+  act_StopPeriodicSending.Enabled := False;
 end;
 
 // ------------------------------------------------------------------------------
@@ -950,20 +1154,20 @@ begin
       mosquitto_message := mqttmsg^.mosquitto_message;
 
       // Записываем в таблицу
-      dm.fdmtbl_ReceivedMessages.Insert;
-      dm.fdmtbl_ReceivedMessagesTime.Value := Now();
+      dm.tblReceivedMessages.Insert;
+      dm.tblReceivedMessagesTime.Value := Now();
 
       Convert_Topic_To_String(mosquitto_message^.topic, tmpstr);
-      dm.fdmtbl_ReceivedMessagesTopic.Value := tmpstr;
+      dm.tblReceivedMessagesTopic.Value := tmpstr;
 
       Convert_Payload_To_String(mosquitto_message^.payload, mosquitto_message^.payloadlen, tmpstr);
-      dm.fdmtbl_ReceivedMessagesPayload.Value := tmpstr;
+      dm.tblReceivedMessagesPayload.Value := tmpstr;
 
-      dm.fdmtbl_ReceivedMessagesmid.Value := mosquitto_message^.mid;
-      dm.fdmtbl_ReceivedMessagesQoS.Value := mosquitto_message^.qos;
-      dm.fdmtbl_ReceivedMessagesRetain.Value := Boolean(mosquitto_message^.retain);
+      dm.tblReceivedMessagesmid.Value := mosquitto_message^.mid;
+      dm.tblReceivedMessagesQoS.Value := mosquitto_message^.QoS;
+      dm.tblReceivedMessagesRetain.Value := Boolean(mosquitto_message^.Retain);
 
-      dm.fdmtbl_ReceivedMessages.Post;
+      dm.tblReceivedMessages.Post;
 
       mosquitto_message_clear(mosquitto_message);
       FreeMem(mosquitto_message);
@@ -976,18 +1180,33 @@ begin
       act_Publish.Enabled := True;
       act_Subscribe.Enabled := True;
       act_Unsubscribe.Enabled := True;
-      dm.fdmtbl_ConnectionProfiles.UpdateOptions.ReadOnly := True;
-      cxnav_ConnProfiles.Enabled := False;
 
+      if f_autosending = False then
+        act_StartPeriodicSending.Enabled := True;
+
+      dm.tblConnectionProfiles.UpdateOptions.ReadOnly := True;
+      cxnav_ConnProfiles.Enabled := False;
     end
     else
     begin
+      try
+        if f_autosending = True then
+        begin
+          act_StopPeriodicSending.OnExecute(Self);
+          f_autosending := False;
+        end;
+      except
+      end;
+
       act_Connect.Enabled := True;
       act_Disconnect.Enabled := False;
       act_Publish.Enabled := False;
       act_Subscribe.Enabled := False;
       act_Unsubscribe.Enabled := False;
-      dm.fdmtbl_ConnectionProfiles.UpdateOptions.ReadOnly := False;
+      act_StartPeriodicSending.Enabled := False;
+      act_StopPeriodicSending.Enabled := False;
+
+      dm.tblConnectionProfiles.UpdateOptions.ReadOnly := False;
       cxnav_ConnProfiles.Enabled := True;
 
     end;
@@ -1013,16 +1232,18 @@ end;
 // ------------------------------------------------------------------------------
 procedure TfrmMain.FormDestroy(Sender: TObject);
 begin
+  if AutoPubObjs <> Nil then
+    AutoPubObjs.Free;
 
   Stop_session;
   mosquitto_lib_cleanup;
   Dispose_parameters;
 
   try
-    dm.tbl_Settings.Edit;
-    dm.tbl_SettingsPubTopicMRU.Value := cxmru_PubTopic.Properties.LookupItems.Text;
-    dm.tbl_SettingsSubTopicMRU.Value := cxmru_SubTopic.Properties.LookupItems.Text;
-    dm.tbl_Settings.Post;
+    dm.tblSettings.Edit;
+    dm.tblSettingsPubTopicMRU.Value := cxmru_PubTopic.Properties.LookupItems.Text;
+    dm.tblSettingsSubTopicMRU.Value := cxmru_SubTopic.Properties.LookupItems.Text;
+    dm.tblSettings.Post;
   except
 
   end;

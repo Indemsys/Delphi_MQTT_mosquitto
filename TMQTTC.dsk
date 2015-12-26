@@ -1,45 +1,44 @@
 ﻿[Closed Files]
-File_0=TSourceModule,'D:\__Embedded\Projects\Mingeda\Polivektris\Poli_Git\Proj_Vadyba\DataModule.pas',0,1,736,7,761,0,0,,
-File_1=TSourceModule,'c:\program files (x86)\embarcadero\studio\16.0\SOURCE\RTL\SYS\System.pas',0,1,333,24,357,0,0,,
-File_2=TSourceModule,'c:\program files (x86)\embarcadero\studio\16.0\SOURCE\RTL\SYS\System.SysUtils.pas',0,1,30885,45,30907,0,0,,
-File_3=TSourceModule,'C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\ConnProfilesTbl.pas',0,1,34,9,34,0,0,,
-File_4=TSourceModule,'c:\program files (x86)\embarcadero\studio\16.0\source\rtl\win\Winapi.Windows.pas',0,1,37663,21,37691,0,0,,
-File_5=TSourceModule,'c:\program files (x86)\embarcadero\studio\16.0\SOURCE\RTL\SYS\GETMEM.INC',0,1,4809,1,4853,0,0,,
-File_6=TSourceModule,'c:\program files (x86)\embarcadero\studio\16.0\source\data\Data.DB.pas',0,1,39,40,68,0,0,,
-File_7=TSourceModule,'c:\program files (x86)\embarcadero\studio\16.0\source\data\firedac\FireDAC.Stan.Error.pas',0,1,167,1,189,0,0,,
-File_8=TSourceModule,'c:\program files (x86)\embarcadero\studio\16.0\SOURCE\VCL\Vcl.Controls.pas',0,1,9764,1,9786,0,0,,
-File_9=TSourceModule,'c:\program files (x86)\embarcadero\studio\16.0\source\rtl\common\System.Classes.pas',0,1,16268,1,16290,0,0,,
-File_10=TSourceModule,'c:\program files (x86)\embarcadero\studio\16.0\SOURCE\VCL\Vcl.ActnList.pas',0,1,243,1,265,0,0,,
-File_11=TSourceModule,'C:\Program Files (x86)\Embarcadero\DevExpress_VCL 14.2.2\ExpressLibrary\Sources\cxControls.pas',0,1,9058,1,9080,0,0,,
-File_12=TSourceModule,'C:\Program Files (x86)\Embarcadero\DevExpress_VCL 14.2.2\ExpressLibrary\Sources\cxStorage.pas',0,1,1,3,87,0,0,,
-File_13=TSourceModule,'C:\Embedded\Projects\Barduva\SB200M\PC_monitor\DataUnit.pas',0,1,1,60,12,0,0,,
-File_14=TSourceModule,'C:\Embedded\Projects\Barduva\SB200M\PC_monitor\Main.pas',0,1,508,1,509,0,0,,
+File_0=TSourceModule,'c:\program files (x86)\embarcadero\studio\16.0\source\data\firedac\FireDAC.Stan.Error.pas',0,1,152,27,179,0,0,,
+File_1=TSourceModule,'c:\program files (x86)\embarcadero\studio\16.0\source\data\Data.DB.pas',0,1,3244,1,3266,0,0,,
+File_2=TSourceModule,'c:\program files (x86)\embarcadero\studio\16.0\source\rtl\common\System.Classes.pas',0,1,125,1,153,0,0,,
+File_3=TSourceModule,'c:\program files (x86)\embarcadero\studio\16.0\SOURCE\VCL\Vcl.ExtCtrls.pas',0,1,1,67,27,0,0,,
+File_4=TSourceModule,'c:\program files (x86)\embarcadero\studio\16.0\source\rtl\common\System.Contnrs.pas',0,1,247,23,263,0,0,,
+File_5=TSourceModule,'c:\program files (x86)\embarcadero\studio\16.0\source\rtl\win\Winapi.Windows.pas',0,1,24808,10,24837,0,0,,
+File_6=TSourceModule,'c:\program files (x86)\embarcadero\studio\16.0\source\rtl\win\Winapi.Messages.pas',0,1,227,1,256,0,0,,
+File_7=TSourceModule,'C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\MOSQUITTO.PAS',0,1,36,6,55,0,0,,
+File_8=TSourceModule,'c:\program files (x86)\embarcadero\studio\16.0\source\data\firedac\FireDAC.Stan.Option.pas',0,1,5738,3,5755,0,0,,
+File_9=TSourceModule,'c:\program files (x86)\embarcadero\studio\16.0\source\data\firedac\FireDAC.Stan.Storage.pas',0,1,123,39,132,0,0,,
+File_10=TSourceModule,'c:\program files (x86)\embarcadero\studio\16.0\source\data\firedac\FireDAC.Stan.StorageJSON.pas',0,1,119,18,133,0,0,,
+File_11=TSourceModule,'c:\program files (x86)\embarcadero\studio\16.0\source\data\firedac\FireDAC.Stan.Intf.pas',0,1,571,1,593,0,0,,
+File_12=TSourceModule,'c:\program files (x86)\embarcadero\studio\16.0\source\data\firedac\FireDAC.Comp.DataSet.pas',0,1,708,49,720,0,0,,
+File_13=TSourceModule,'D:\__Embedded\Projects\Mingeda\Polivektris\Poli_Git\Proj_Vadyba\DataModule.pas',0,1,736,7,761,0,0,,
 
 [Modules]
-Module0=C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\Main.pas
-Module1=C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\MainDataModule.pas
-Module2=C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\MOSQUITTO.PAS
+Module0=C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\PeriodicPublishObj.pas
+Module1=C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\Main.pas
+Module2=C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\MainDataModule.pas
 Count=3
 EditWindowCount=1
 
-[C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\Main.pas]
-ModuleType=TSourceModule
-FormState=1
-FormOnTop=1
-
-[C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\MainDataModule.pas]
-ModuleType=TSourceModule
-FormState=1
-FormOnTop=0
-
-[C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\MOSQUITTO.PAS]
+[C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\PeriodicPublishObj.pas]
 ModuleType=TSourceModule
 FormState=0
 FormOnTop=0
 
+[C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\Main.pas]
+ModuleType=TSourceModule
+FormState=1
+FormOnTop=0
+
+[C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\MainDataModule.pas]
+ModuleType=TSourceModule
+FormState=1
+FormOnTop=1
+
 [EditWindow0]
 ViewCount=3
-CurrentEditView=C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\Main.pas
+CurrentEditView=C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\PeriodicPublishObj.pas
 View0=0
 View1=1
 View2=2
@@ -73,35 +72,35 @@ BottomMiddelPanelData=0000080001020200000009000000446F636B5369746530100000004772
 [View0]
 CustomEditViewType=TEditView
 Module=C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\Main.pas
-CursorX=61
-CursorY=319
-TopLine=244
+CursorX=20
+CursorY=912
+TopLine=868
 LeftCol=1
 Elisions=
 Bookmarks=
-EditViewName=Borland.FormDesignerView
+EditViewName=C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\Main.pas
 
 [View1]
 CustomEditViewType=TEditView
+Module=C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\PeriodicPublishObj.pas
+CursorX=80
+CursorY=83
+TopLine=56
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\PeriodicPublishObj.pas
+
+[View2]
+CustomEditViewType=TEditView
 Module=C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\MainDataModule.pas
-CursorX=7
-CursorY=305
-TopLine=226
+CursorX=1
+CursorY=157
+TopLine=138
 LeftCol=1
 Elisions=
 Bookmarks=
 EditViewName=Borland.FormDesignerView
-
-[View2]
-CustomEditViewType=TEditView
-Module=C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\MOSQUITTO.PAS
-CursorX=6
-CursorY=55
-TopLine=36
-LeftCol=1
-Elisions=
-Bookmarks=
-EditViewName=C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\MOSQUITTO.PAS
 
 [Watches]
 Count=0
@@ -248,24 +247,24 @@ Create=1
 Visible=1
 Docked=0
 State=0
-Left=-4281
-Top=69
-Width=1896
+Left=-5734
+Top=112
+Width=3578
 Height=9069
 MaxLeft=-5
 MaxTop=-9
-ClientWidth=1812
+ClientWidth=3495
 ClientHeight=8776
 TBDockHeight=8155
 LRDockWidth=1896
 Dockable=1
 StayOnTop=0
-SplitPos=146
+SplitPos=281
 
 [PropInspDesignerSelection]
 ArrangeBy=Name
-SelectedItem=Action,CustomHint
-ExpandedItems=Action=1,"Drag Drop/Docking=1","Help and Hints=1",Input=1,Layout=1,Legacy=1,Linkage=1,Locale=1,Localizable=1,Miscellaneous=1,Visual=1,Layout.Anchors=0,Layout.Constraints=0,"LiveBindings Designer=0",Anchors=0,Constraints=0,DataBinding=1,LiveBindings=0,Margins=0,Properties=0,RepositoryItem=0,Style=0,StyleDisabled=0,StyleFocused=0,StyleHot=0,Touch=0,BorderIcons=0,Font=0,GlassFrame=0,HorzScrollBar=0,DataBinding.DataSource=0
+SelectedItem=Name,
+ExpandedItems=DataBinding=1,"LiveBindings Designer=0",Options=0,Styles=0,Summary=0,Properties=1,Properties.AssignedValues=0,Properties.ValidationOptions=0,AutoAligns=0,ButtonOptions=0,CaptionOptions=0,Offsets=0,Padding=0,SizeOptions=1,TabbedOptions=0,SizeOptions.AssignedValues=0,Control=0,ControlOptions=0,LayoutLookAndFeel=0,ActiveStoredUsage=0,FetchOptions=1,FieldOptions=0,FilterChanges=0,FilterOptions=0,FormatOptions=0,ResourceOptions=1,UpdateOptions=1,FetchOptions.AssignedValues=0,FetchOptions.Cache=0,FetchOptions.Items=0,ResourceOptions.AssignedValues=0,ResourceOptions.StoreItems=0,UpdateOptions.AssignedValues=0,BackgroundBitmaps=0,DataController=1,DateTimeHandling=0,EditForm=0,FilterBox=0,Filtering=0,FilterRow=0,FindPanel=0,Navigator=0,NewItemRow=0,OptionsBehavior=0,OptionsCustomize=0,OptionsData=0,OptionsSelection=0,OptionsView=0,Preview=0,DataController.DataModeController=0,DataController.DataSource=0,DataController.Filter=0,DataController.MultiThreadedOptions=0,DataController.Options=1,DataController.Summary=0,Properties.Alignment=0,ProviderFlags=0
 
 [ModelViewTool]
 PercentageSizes=1
@@ -276,11 +275,11 @@ State=0
 Left=0
 Top=0
 Width=2000
-Height=8862
+Height=6853
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
-ClientHeight=8862
+ClientHeight=6853
 TBDockHeight=4371
 LRDockWidth=5307
 Dockable=1
@@ -352,11 +351,11 @@ State=0
 Left=0
 Top=0
 Width=2000
-Height=8862
+Height=6853
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
-ClientHeight=8862
+ClientHeight=6853
 TBDockHeight=5345
 LRDockWidth=2510
 Dockable=1
@@ -368,8 +367,8 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=-1536
-Top=-105
+Left=-1419
+Top=-3
 Width=2844
 Height=5569
 MaxLeft=-1
@@ -388,7 +387,7 @@ Visible=0
 Docked=1
 State=0
 Left=-1728
-Top=-105
+Top=311
 Width=276
 Height=328
 MaxLeft=-1
@@ -493,11 +492,11 @@ State=0
 Left=0
 Top=0
 Width=2339
-Height=1086
+Height=1009
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2339
-ClientHeight=1086
+ClientHeight=1009
 TBDockHeight=2078
 LRDockWidth=2823
 Dockable=1
@@ -558,11 +557,11 @@ State=0
 Left=0
 Top=0
 Width=2000
-Height=8862
+Height=6853
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
-ClientHeight=8862
+ClientHeight=6853
 TBDockHeight=4371
 LRDockWidth=7151
 Dockable=1
@@ -574,8 +573,8 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=0
-Top=0
+Left=370
+Top=923
 Width=2854
 Height=2879
 MaxLeft=-1
@@ -858,7 +857,7 @@ Visible=0
 Docked=1
 State=0
 Left=0
-Top=0
+Top=23
 Width=3823
 Height=1224
 MaxLeft=-1
@@ -889,7 +888,7 @@ MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
 ClientHeight=5233
-TBDockHeight=9095
+TBDockHeight=7086
 LRDockWidth=2000
 Dockable=1
 StayOnTop=0
@@ -936,7 +935,7 @@ MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
 ClientHeight=3664
-TBDockHeight=9095
+TBDockHeight=7086
 LRDockWidth=2000
 Dockable=1
 StayOnTop=0

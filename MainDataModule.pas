@@ -11,7 +11,8 @@ uses
   FireDAC.DApt.Intf, Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
   cxClasses, cxPropertiesStore, cxStorage,
   cxGridLevel, cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGridCustomView, cxGrid, dxBar,
-  FireDAC.Stan.StorageJSON, FireDAC.Stan.StorageBin, dxmdaset;
+  FireDAC.Stan.StorageJSON, FireDAC.Stan.StorageBin, dxmdaset, Vcl.ExtCtrls,
+  CodeSiteLogging;
 
 const
   INI = 'Ini.json';
@@ -19,48 +20,65 @@ const
   RECEIVED = 'Received.json';
   SENDED = 'Sended.json';
   PROPS = 'Props.json';
+  AUTOPUB = 'Autopub.json';
 
 type
   Tdm = class(TDataModule)
     ds_tbl_Settings: TDataSource;
-    tbl_Settings: TFDMemTable;
-    tbl_Settings_main_form_props: TBlobField;
-    tbl_Settings_du_props: TBlobField;
-    tbl_SettingsAutoConnect: TBooleanField;
+    tblSettings: TFDMemTable;
+    tblSettings_main_form_props: TBlobField;
+    tblSettings_du_props: TBlobField;
+    tblSettingsAutoConnect: TBooleanField;
     cxPropertiesStore: TcxPropertiesStore;
     FDStanStorageJSONLink1: TFDStanStorageJSONLink;
-    fdmtbl_SendedMessages: TFDMemTable;
+    tblSendedMessages: TFDMemTable;
     ds_ReceivedMessages: TDataSource;
     ds_SendedMessages: TDataSource;
-    fdmtbl_SendedMessagesTime: TDateTimeField;
-    fdmtbl_ReceivedMessages: TFDMemTable;
-    fdmtbl_ReceivedMessagesTime: TDateTimeField;
-    fdmtbl_ConnectionProfiles: TFDMemTable;
+    tblSendedMessagesTime: TDateTimeField;
+    tblReceivedMessages: TFDMemTable;
+    tblReceivedMessagesTime: TDateTimeField;
+    tblConnectionProfiles: TFDMemTable;
     ds_ConnectionProfiles: TDataSource;
-    fdmtbl_ConnectionProfilesHostName: TStringField;
-    fdmtbl_ConnectionProfilesHostPort: TIntegerField;
-    fdmtbl_ConnectionProfilesKeepAlive: TIntegerField;
-    fdmtbl_ConnectionProfilesUserID: TStringField;
-    fdmtbl_ConnectionProfilesCleanSession: TBooleanField;
-    fdmtbl_ConnectionProfilesUserName: TStringField;
-    fdmtbl_ConnectionProfilesPassword: TStringField;
-    fdmtbl_ConnectionProfilesWillRetain: TBooleanField;
-    fdmtbl_ConnectionProfilesWillQoS: TStringField;
-    fdmtbl_SendedMessagesTopic: TWideStringField;
-    fdmtbl_SendedMessagesPayload: TWideMemoField;
-    fdmtbl_ReceivedMessagesTopic: TWideStringField;
-    fdmtbl_ReceivedMessagesPayload: TWideMemoField;
-    tbl_SettingsPubPayload: TWideMemoField;
-    fdmtbl_ConnectionProfilesWillTopic: TWideStringField;
-    fdmtbl_ConnectionProfilesWillPayload: TWideStringField;
+    tblConnectionProfilesHostName: TStringField;
+    tblConnectionProfilesHostPort: TIntegerField;
+    tblConnectionProfilesKeepAlive: TIntegerField;
+    tblConnectionProfilesUserID: TStringField;
+    tblConnectionProfilesCleanSession: TBooleanField;
+    tblConnectionProfilesUserName: TStringField;
+    tblConnectionProfilesPassword: TStringField;
+    tblConnectionProfilesWillRetain: TBooleanField;
+    tblConnectionProfilesWillQoS: TStringField;
+    tblSendedMessagesTopic: TWideStringField;
+    tblSendedMessagesPayload: TWideMemoField;
+    tblReceivedMessagesTopic: TWideStringField;
+    tblReceivedMessagesPayload: TWideMemoField;
+    tblSettingsPubPayload: TWideMemoField;
+    tblConnectionProfilesWillTopic: TWideStringField;
+    tblConnectionProfilesWillPayload: TWideStringField;
     tblAppProps: TFDMemTable;
     tblAppPropsName: TStringField;
     tblAppPropsProps: TBlobField;
-    fdmtbl_ReceivedMessagesmid: TIntegerField;
-    fdmtbl_ReceivedMessagesQoS: TIntegerField;
-    fdmtbl_ReceivedMessagesRetain: TBooleanField;
-    tbl_SettingsPubTopicMRU: TWideMemoField;
-    tbl_SettingsSubTopicMRU: TWideMemoField;
+    tblReceivedMessagesmid: TIntegerField;
+    tblReceivedMessagesQoS: TIntegerField;
+    tblReceivedMessagesRetain: TBooleanField;
+    tblSettingsPubTopicMRU: TWideMemoField;
+    tblSettingsSubTopicMRU: TWideMemoField;
+    tblPeriodicalSending: TFDMemTable;
+    tblPeriodicalSendingTopic: TWideStringField;
+    tblPeriodicalSendingPayload: TWideMemoField;
+    tblPeriodicalSendingQoS: TIntegerField;
+    tblPeriodicalSendingPeriodicity: TIntegerField;
+    tblPeriodicalSendingFuncType: TStringField;
+    tblPeriodicalSendingEnabled: TBooleanField;
+    tblPeriodicalSendingMin: TStringField;
+    tblPeriodicalSendingMax: TStringField;
+    ds_PeriodicalSending: TDataSource;
+    Timer1: TTimer;
+    tblSendedMessagesQoS: TIntegerField;
+    tblSendedMessagesRetain: TBooleanField;
+    tblPeriodicalSendingRetain: TBooleanField;
+    tblPeriodicalSendingFuncPeriod: TIntegerField;
+    tblPeriodicalSendingFuncOffs: TIntegerField;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
@@ -86,43 +104,45 @@ procedure Tdm.DataModuleCreate(Sender: TObject);
 var
   strm: TMemoryStream;
 begin
+  ReportMemoryLeaksOnShutdown := True;
+
   app_path := ExtractFilePath(Application.ExeName);
 
   if FileExists(app_path + INI, False) = True then
     try
-      tbl_Settings.LoadFromFile(app_path + INI)
+      tblSettings.LoadFromFile(app_path + INI)
     except
-      tbl_Settings.Open
+      tblSettings.Open
     end
   else
-    tbl_Settings.Open;
+    tblSettings.Open;
 
   if FileExists(app_path + CLIENTS, False) = True then
     try
-      fdmtbl_ConnectionProfiles.LoadFromFile(app_path + CLIENTS);
+      tblConnectionProfiles.LoadFromFile(app_path + CLIENTS);
     finally
-      fdmtbl_ConnectionProfiles.Open
+      tblConnectionProfiles.Open
     end
   else
-    fdmtbl_ConnectionProfiles.Open;
+    tblConnectionProfiles.Open;
 
   if FileExists(app_path + SENDED, False) = True then
     try
-      fdmtbl_SendedMessages.LoadFromFile(app_path + SENDED);
+      tblSendedMessages.LoadFromFile(app_path + SENDED);
     finally
-      fdmtbl_SendedMessages.Open
+      tblSendedMessages.Open
     end
   else
-    fdmtbl_SendedMessages.Open;
+    tblSendedMessages.Open;
 
    if FileExists(app_path + RECEIVED, False) = True then
     try
-      fdmtbl_ReceivedMessages.LoadFromFile(app_path + RECEIVED);
+      tblReceivedMessages.LoadFromFile(app_path + RECEIVED);
     finally
-      fdmtbl_ReceivedMessages.Open
+      tblReceivedMessages.Open
     end
   else
-    fdmtbl_ReceivedMessages.Open;
+    tblReceivedMessages.Open;
 
    if FileExists(app_path + PROPS, False) = True then
     try
@@ -134,9 +154,20 @@ begin
     tblAppProps.Open;
 
 
+   if FileExists(app_path + AUTOPUB, False) = True then
+    try
+      tblPeriodicalSending.LoadFromFile(app_path + AUTOPUB);
+    finally
+      tblPeriodicalSending.Open
+    end
+  else
+    tblPeriodicalSending.Open;
+
+
+
   strm := TMemoryStream.Create;
   try
-    tbl_Settings_du_props.SaveToStream(strm);
+    tblSettings_du_props.SaveToStream(strm);
     strm.Position := 0;
     cxPropertiesStore.StorageType := stStream;
     cxPropertiesStore.StorageStream := strm;
@@ -286,6 +317,7 @@ begin
   end;
 end;
 
+
 // ------------------------------------------------------------------------------
 //
 // ------------------------------------------------------------------------------
@@ -297,18 +329,22 @@ begin
   try
     cxPropertiesStore.StorageStream := strm;
     cxPropertiesStore.StoreTo;
-    tbl_Settings.Edit;
-    tbl_Settings_du_props.LoadFromStream(strm);
-    tbl_Settings.Post;
+    tblSettings.Edit;
+    tblSettings_du_props.LoadFromStream(strm);
+    tblSettings.Post;
   finally
     strm.Free;
   end;
 
-  tbl_Settings.SaveToFile(app_path + INI);
-  fdmtbl_ConnectionProfiles.SaveToFile(app_path + CLIENTS);
-  fdmtbl_ReceivedMessages.SaveToFile(app_path + RECEIVED);
-  fdmtbl_SendedMessages.SaveToFile(app_path + SENDED);
+  tblSettings.SaveToFile(app_path + INI);
+  tblConnectionProfiles.SaveToFile(app_path + CLIENTS);
+  tblReceivedMessages.SaveToFile(app_path + RECEIVED);
+  tblSendedMessages.SaveToFile(app_path + SENDED);
+  tblPeriodicalSending.SaveToFile(app_path + AUTOPUB);
   tblAppProps.SaveToFile(app_path + PROPS);
+
+
+
 end;
 
 

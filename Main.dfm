@@ -22,54 +22,33 @@ object frmMain: TfrmMain
     Height = 665
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 1210
-    object dxStatusBar: TdxStatusBar
-      Left = 7
-      Top = 635
-      Width = 1196
-      Height = 23
-      Panels = <
-        item
-          PanelStyleClassName = 'TdxStatusBarTextPanelStyle'
-          MinWidth = 200
-          Width = 400
-        end
-        item
-          PanelStyleClassName = 'TdxStatusBarTextPanelStyle'
-        end>
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'Tahoma'
-      Font.Style = []
-    end
     object cxb_Connect: TcxButton
-      Left = 1180
-      Top = 59
+      Left = 1184
+      Top = 55
       Width = 130
       Height = 43
       Action = act_Connect
       TabOrder = 12
     end
     object cxb_Disconnect: TcxButton
-      Left = 1180
-      Top = 103
+      Left = 1184
+      Top = 99
       Width = 130
       Height = 45
       Action = act_Disconnect
       TabOrder = 13
     end
     object cxPageControl1: TcxPageControl
-      Left = 7
-      Top = 189
-      Width = 1196
+      Left = 3
+      Top = 185
+      Width = 1311
       Height = 252
       TabOrder = 14
-      Properties.ActivePage = cxts_1
+      Properties.ActivePage = cxts_2
       Properties.CustomButtons.Buttons = <>
       ClientRectBottom = 248
       ClientRectLeft = 4
-      ClientRectRight = 1192
+      ClientRectRight = 1307
       ClientRectTop = 24
       object cxts_1: TcxTabSheet
         Caption = 'Publis/Subscribe'
@@ -83,14 +62,14 @@ object frmMain: TfrmMain
         object dxlc_PS: TdxLayoutControl
           Left = 0
           Top = 0
-          Width = 1188
+          Width = 1303
           Height = 224
           Align = alClient
           TabOrder = 0
           LayoutLookAndFeel = dxLayoutStandardLookAndFeel1
           object cxm_PubPayload: TcxMemo
-            Left = 63
-            Top = 47
+            Left = 59
+            Top = 43
             Style.BorderColor = clWindowFrame
             Style.BorderStyle = ebs3D
             Style.HotTrack = False
@@ -99,8 +78,8 @@ object frmMain: TfrmMain
             Width = 502
           end
           object cxmru_PubTopic: TcxMRUEdit
-            Left = 63
-            Top = 25
+            Left = 59
+            Top = 21
             Hint = #1044#1083#1103' '#1086#1095#1080#1089#1090#1082#1080' '#1085#1072#1078#1072#1090#1100' Ctrl+E'
             ParentShowHint = False
             Properties.ClearKey = 16453
@@ -116,8 +95,8 @@ object frmMain: TfrmMain
             Width = 502
           end
           object cxmru_SubTopic: TcxMRUEdit
-            Left = 632
-            Top = 25
+            Left = 628
+            Top = 21
             Hint = #1044#1083#1103' '#1086#1095#1080#1089#1090#1082#1080' '#1085#1072#1078#1072#1090#1100' Ctrl+E'
             ParentShowHint = False
             Properties.ClearKey = 16453
@@ -129,11 +108,11 @@ object frmMain: TfrmMain
             Style.ButtonStyle = bts3D
             Style.PopupBorderStyle = epbsFrame3D
             TabOrder = 5
-            Width = 537
+            Width = 644
           end
           object cxrg_PubQoS: TcxRadioGroup
-            Left = 100
-            Top = 148
+            Left = 96
+            Top = 144
             Caption = 'Quality of Service'
             Properties.Columns = 3
             Properties.Items = <
@@ -154,8 +133,8 @@ object frmMain: TfrmMain
             Width = 200
           end
           object cxrg_SubQoS: TcxRadioGroup
-            Left = 601
-            Top = 47
+            Left = 597
+            Top = 43
             Caption = 'Quality of Service'
             Properties.Columns = 3
             Properties.Items = <
@@ -176,8 +155,8 @@ object frmMain: TfrmMain
             Width = 200
           end
           object cxchb_PubRetain: TcxCheckBox
-            Left = 19
-            Top = 165
+            Left = 15
+            Top = 161
             Caption = 'Retain:'
             Properties.Alignment = taRightJustify
             Style.BorderColor = clWindowFrame
@@ -187,24 +166,24 @@ object frmMain: TfrmMain
             Width = 80
           end
           object cxb_Publish: TcxButton
-            Left = 455
-            Top = 155
+            Left = 451
+            Top = 151
             Width = 110
             Height = 40
             Action = act_Publish
             TabOrder = 4
           end
           object cxb_Subscribe: TcxButton
-            Left = 1055
-            Top = 54
+            Left = 1067
+            Top = 50
             Width = 110
             Height = 40
             Action = act_Subscribe
             TabOrder = 7
           end
           object cxb_Unsubscribe: TcxButton
-            Left = 1166
-            Top = 54
+            Left = 1178
+            Top = 50
             Width = 110
             Height = 40
             Action = act_Unsubscribe
@@ -361,10 +340,172 @@ object frmMain: TfrmMain
           end
         end
       end
+      object cxts_2: TcxTabSheet
+        Caption = #1055#1077#1088#1080#1086#1076#1080#1095#1077#1089#1082#1072#1103' '#1087#1091#1073#1083#1080#1082#1072#1094#1080#1103
+        ImageIndex = 1
+        object dxlc_1: TdxLayoutControl
+          Left = 0
+          Top = 0
+          Width = 1303
+          Height = 224
+          Align = alClient
+          TabOrder = 0
+          object cxg_PeriodicalSending: TcxGrid
+            Left = 10
+            Top = 10
+            Width = 1283
+            Height = 153
+            TabOrder = 0
+            LookAndFeel.Kind = lfStandard
+            LookAndFeel.NativeStyle = True
+            LookAndFeel.SkinName = ''
+            object cxg_PeriodicalSendingDBTableView1: TcxGridDBTableView
+              Navigator.Buttons.CustomButtons = <>
+              Navigator.InfoPanel.Visible = True
+              Navigator.Visible = True
+              DataController.DataSource = dm.ds_PeriodicalSending
+              DataController.Summary.DefaultGroupSummaryItems = <>
+              DataController.Summary.FooterSummaryItems = <>
+              DataController.Summary.SummaryGroups = <>
+              OptionsCustomize.ColumnsQuickCustomization = True
+              OptionsCustomize.DataRowSizing = True
+              OptionsSelection.MultiSelect = True
+              OptionsView.Indicator = True
+              OptionsView.IndicatorWidth = 20
+              object cxg_PeriodicalSendingDBTableView1Enabled: TcxGridDBColumn
+                DataBinding.FieldName = 'Enabled'
+                HeaderHint = #1056#1072#1079#1088#1077#1096#1077#1085#1080#1077' '#1076#1072#1085#1085#1086#1081' '#1087#1091#1073#1083#1080#1082#1072#1094#1080#1080
+                Width = 52
+              end
+              object cxg_PeriodicalSendingDBTableView1Topic: TcxGridDBColumn
+                DataBinding.FieldName = 'Topic'
+                HeaderHint = 'Topic '#1087#1072#1082#1077#1090#1072
+                Width = 177
+              end
+              object cxg_PeriodicalSendingDBTableView1Payload: TcxGridDBColumn
+                DataBinding.FieldName = 'Payload'
+                PropertiesClassName = 'TcxMemoProperties'
+                HeaderHint = #1057#1090#1088#1086#1082#1072' '#1092#1086#1088#1084#1072#1090#1072' '#1076#1072#1085#1085#1099#1093' '#1087#1072#1082#1077#1090#1072' '
+                Width = 210
+              end
+              object cxg_PeriodicalSendingDBTableView1QoS: TcxGridDBColumn
+                DataBinding.FieldName = 'QoS'
+                HeaderHint = #1040#1090#1090#1088#1080#1073#1091#1090' QoS '#1087#1072#1082#1077#1090#1072
+                Width = 35
+              end
+              object cxg_PeriodicalSendingDBTableView1Retain: TcxGridDBColumn
+                DataBinding.FieldName = 'Retain'
+                HeaderHint = #1060#1083#1072#1075' Retain'
+                Width = 45
+              end
+              object cxg_PeriodicalSendingDBTableView1Periodicity: TcxGridDBColumn
+                Caption = 'Timeout (ms)'
+                DataBinding.FieldName = 'Periodicity'
+                HeaderHint = #1055#1077#1088#1080#1086#1076#1080#1095#1085#1086#1089#1090#1100' '#1087#1086#1089#1099#1083#1082#1080' (ms)'
+                Width = 131
+              end
+              object cxg_PeriodicalSendingDBTableView1FuncType: TcxGridDBColumn
+                Caption = 'Function'
+                DataBinding.FieldName = 'FuncType'
+                PropertiesClassName = 'TcxComboBoxProperties'
+                Properties.Items.Strings = (
+                  'Random'
+                  'Sinus')
+                HeaderHint = #1058#1080#1087' '#1092#1091#1085#1082#1094#1080#1080
+                Width = 100
+              end
+              object cxg_PeriodicalSendingDBTableView1Min: TcxGridDBColumn
+                DataBinding.FieldName = 'Min'
+                HeaderHint = #1052#1080#1085#1080#1084#1091#1084' '#1092#1091#1085#1082#1094#1080#1080
+                Width = 47
+              end
+              object cxg_PeriodicalSendingDBTableView1Max: TcxGridDBColumn
+                DataBinding.FieldName = 'Max'
+                HeaderHint = #1052#1072#1082#1089#1080#1084#1091#1084' '#1092#1091#1085#1082#1094#1080#1080
+                Width = 58
+              end
+              object cxg_PeriodicalSendingDBTableView1FuncPeriod: TcxGridDBColumn
+                Caption = 'Period'
+                DataBinding.FieldName = 'FuncPeriod'
+                HeaderHint = #1055#1077#1088#1080#1086#1076' '#1092#1091#1085#1082#1094#1080#1080' ('#1074' '#1082#1086#1083#1080#1095#1077#1089#1090#1074#1077' '#1086#1090#1089#1095#1077#1090#1086#1074')'
+                Width = 58
+              end
+              object cxg_PeriodicalSendingDBTableView1FuncOffs: TcxGridDBColumn
+                Caption = 'Offs'
+                DataBinding.FieldName = 'FuncOffs'
+                HeaderHint = #1057#1084#1077#1097#1077#1085#1080#1077' '#1072#1088#1075#1091#1084#1077#1085#1090#1072' '#1092#1091#1085#1082#1094#1080#1080' ('#1074' '#1082#1086#1083#1080#1095#1077#1089#1090#1074#1077' '#1086#1090#1089#1095#1077#1090#1086#1074')'
+              end
+            end
+            object cxg_PeriodicalSendingLevel1: TcxGridLevel
+              GridView = cxg_PeriodicalSendingDBTableView1
+            end
+          end
+          object cxb_4: TcxButton
+            Left = 10
+            Top = 169
+            Width = 120
+            Height = 45
+            Action = act_StartPeriodicSending
+            TabOrder = 1
+          end
+          object cxb_5: TcxButton
+            Left = 136
+            Top = 169
+            Width = 120
+            Height = 45
+            Action = act_StopPeriodicSending
+            TabOrder = 2
+          end
+          object dxlc_1Group_Root: TdxLayoutGroup
+            AlignHorz = ahClient
+            AlignVert = avClient
+            ButtonOptions.Buttons = <>
+            Hidden = True
+            ShowBorder = False
+            Index = -1
+          end
+          object dxlc_1Item1: TdxLayoutItem
+            Parent = dxlc_1Group_Root
+            AlignHorz = ahClient
+            AlignVert = avClient
+            CaptionOptions.Visible = False
+            Control = cxg_PeriodicalSending
+            ControlOptions.ShowBorder = False
+            Index = 0
+          end
+          object dxlc_1Item2: TdxLayoutItem
+            Parent = dxlc_1Group1
+            AlignHorz = ahLeft
+            AlignVert = avBottom
+            CaptionOptions.Text = 'cxButton1'
+            CaptionOptions.Visible = False
+            Control = cxb_4
+            ControlOptions.ShowBorder = False
+            Index = 0
+          end
+          object dxlc_1Item3: TdxLayoutItem
+            Parent = dxlc_1Group1
+            AlignHorz = ahLeft
+            AlignVert = avBottom
+            CaptionOptions.Text = 'cxButton1'
+            CaptionOptions.Visible = False
+            Control = cxb_5
+            ControlOptions.ShowBorder = False
+            Index = 1
+          end
+          object dxlc_1Group1: TdxLayoutAutoCreatedGroup
+            Parent = dxlc_1Group_Root
+            AlignVert = avBottom
+            LayoutDirection = ldHorizontal
+            Index = 1
+            AutoCreated = True
+          end
+        end
+      end
     end
     object cxnav_ConnProfiles: TcxDBNavigator
-      Left = 760
-      Top = 152
+      Left = 764
+      Top = 148
       Width = 407
       Height = 24
       Buttons.OnButtonClick = cxnav_ConnProfilesButtonsButtonClick
@@ -381,19 +522,19 @@ object frmMain: TfrmMain
       TabOrder = 11
     end
     object cxte_HostName: TcxDBTextEdit
-      Left = 76
-      Top = 25
+      Left = 72
+      Top = 21
       DataBinding.DataField = 'HostName'
       DataBinding.DataSource = dm.ds_ConnectionProfiles
       Style.BorderColor = clWindowFrame
       Style.BorderStyle = ebs3D
       Style.HotTrack = False
       TabOrder = 0
-      Width = 826
+      Width = 941
     end
     object cxsped_HostPort: TcxDBSpinEdit
-      Left = 1041
-      Top = 25
+      Left = 1045
+      Top = 21
       DataBinding.DataField = 'HostPort'
       DataBinding.DataSource = dm.ds_ConnectionProfiles
       Properties.MaxValue = 65535.000000000000000000
@@ -406,8 +547,8 @@ object frmMain: TfrmMain
       Width = 85
     end
     object cxsped_KeepAlive: TcxDBSpinEdit
-      Left = 1239
-      Top = 25
+      Left = 1243
+      Top = 21
       DataBinding.DataField = 'KeepAlive'
       DataBinding.DataSource = dm.ds_ConnectionProfiles
       Properties.MaxValue = 10000.000000000000000000
@@ -421,8 +562,8 @@ object frmMain: TfrmMain
       Width = 59
     end
     object cxte_UserID: TcxDBTextEdit
-      Left = 76
-      Top = 77
+      Left = 72
+      Top = 73
       DataBinding.DataField = 'UserID'
       DataBinding.DataSource = dm.ds_ConnectionProfiles
       Style.BorderColor = clWindowFrame
@@ -432,8 +573,8 @@ object frmMain: TfrmMain
       Width = 261
     end
     object cxte_UserName: TcxDBTextEdit
-      Left = 64
-      Top = 133
+      Left = 60
+      Top = 129
       DataBinding.DataField = 'UserName'
       DataBinding.DataSource = dm.ds_ConnectionProfiles
       Style.BorderColor = clWindowFrame
@@ -443,8 +584,8 @@ object frmMain: TfrmMain
       Width = 285
     end
     object cxte_Password: TcxDBTextEdit
-      Left = 64
-      Top = 155
+      Left = 60
+      Top = 151
       DataBinding.DataField = 'Password'
       DataBinding.DataSource = dm.ds_ConnectionProfiles
       Style.BorderColor = clWindowFrame
@@ -454,30 +595,30 @@ object frmMain: TfrmMain
       Width = 285
     end
     object cxte_WillTopic: TcxDBTextEdit
-      Left = 406
-      Top = 77
+      Left = 402
+      Top = 73
       DataBinding.DataField = 'WillTopic'
       DataBinding.DataSource = dm.ds_ConnectionProfiles
       Style.BorderColor = clWindowFrame
       Style.BorderStyle = ebs3D
       Style.HotTrack = False
       TabOrder = 7
-      Width = 654
+      Width = 769
     end
     object cxte_WillPayload: TcxDBTextEdit
-      Left = 406
-      Top = 99
+      Left = 402
+      Top = 95
       DataBinding.DataField = 'WillPayload'
       DataBinding.DataSource = dm.ds_ConnectionProfiles
       Style.BorderColor = clWindowFrame
       Style.BorderStyle = ebs3D
       Style.HotTrack = False
       TabOrder = 8
-      Width = 654
+      Width = 769
     end
     object cxchb_CleanSession: TcxDBCheckBox
-      Left = 19
-      Top = 99
+      Left = 15
+      Top = 95
       Caption = 'Clean session'
       DataBinding.DataField = 'CleanSession'
       DataBinding.DataSource = dm.ds_ConnectionProfiles
@@ -488,8 +629,8 @@ object frmMain: TfrmMain
       Width = 318
     end
     object cxchb_WillRetain: TcxDBCheckBox
-      Left = 362
-      Top = 138
+      Left = 358
+      Top = 134
       Caption = 'Retain'
       DataBinding.DataField = 'WillRetain'
       DataBinding.DataSource = dm.ds_ConnectionProfiles
@@ -500,8 +641,8 @@ object frmMain: TfrmMain
       Width = 71
     end
     object cxrg_WillQoS: TcxDBRadioGroup
-      Left = 434
-      Top = 121
+      Left = 430
+      Top = 117
       Caption = 'Quality of Service'
       DataBinding.DataField = 'WillQoS'
       DataBinding.DataSource = dm.ds_ConnectionProfiles
@@ -522,35 +663,55 @@ object frmMain: TfrmMain
       Height = 55
       Width = 183
     end
+    object dxStatusBar: TdxStatusBar
+      Left = 3
+      Top = 642
+      Width = 1311
+      Height = 23
+      Panels = <
+        item
+          PanelStyleClassName = 'TdxStatusBarTextPanelStyle'
+          MinWidth = 200
+          Width = 400
+        end
+        item
+          PanelStyleClassName = 'TdxStatusBarTextPanelStyle'
+        end>
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+    end
     object cxm_Log: TcxMemo
-      Left = 7
-      Top = 457
+      Left = 3
+      Top = 464
       Properties.ScrollBars = ssBoth
       Properties.WordWrap = False
       Style.BorderColor = clWindowFrame
       Style.BorderStyle = ebs3D
       Style.HotTrack = False
-      TabOrder = 16
-      Height = 151
+      TabOrder = 15
+      Height = 159
       Width = 426
     end
     object cxb_1: TcxButton
-      Left = 7
-      Top = 609
+      Left = 3
+      Top = 616
       Width = 30
       Height = 25
       Action = act_ClearLog
       PaintStyle = bpsGlyph
       ParentShowHint = False
       ShowHint = True
-      TabOrder = 17
+      TabOrder = 16
     end
     object cxg_Sended: TcxGrid
-      Left = 445
-      Top = 457
-      Width = 348
-      Height = 153
-      TabOrder = 18
+      Left = 441
+      Top = 464
+      Width = 400
+      Height = 161
+      TabOrder = 17
       object cxg_SendedDBTableView1: TcxGridDBTableView
         Navigator.Buttons.CustomButtons = <>
         Navigator.InfoPanel.Visible = True
@@ -566,7 +727,7 @@ object frmMain: TfrmMain
         OptionsView.IndicatorWidth = 20
         object cxg_SendedDBTableView1Time: TcxGridDBColumn
           DataBinding.FieldName = 'Time'
-          Width = 100
+          Width = 65
         end
         object cxg_SendedDBTableView1Topic: TcxGridDBColumn
           DataBinding.FieldName = 'Topic'
@@ -576,28 +737,36 @@ object frmMain: TfrmMain
           DataBinding.FieldName = 'Payload'
           Width = 100
         end
+        object cxg_SendedDBTableView1QoS: TcxGridDBColumn
+          DataBinding.FieldName = 'QoS'
+          Width = 38
+        end
+        object cxg_SendedDBTableView1Retain: TcxGridDBColumn
+          DataBinding.FieldName = 'Retain'
+          Width = 45
+        end
       end
       object cxg_SendedLevel1: TcxGridLevel
         GridView = cxg_SendedDBTableView1
       end
     end
     object cxb_2: TcxButton
-      Left = 445
-      Top = 611
+      Left = 441
+      Top = 618
       Width = 30
       Height = 23
       Action = act_ClearSended
       PaintStyle = bpsGlyph
       ParentShowHint = False
       ShowHint = True
-      TabOrder = 19
+      TabOrder = 18
     end
     object cxg_Received: TcxGrid
-      Left = 805
-      Top = 457
-      Width = 398
-      Height = 153
-      TabOrder = 20
+      Left = 853
+      Top = 464
+      Width = 461
+      Height = 161
+      TabOrder = 19
       object cxg_ReceivedDBTableView1: TcxGridDBTableView
         Navigator.Buttons.CustomButtons = <>
         Navigator.InfoPanel.Visible = True
@@ -639,15 +808,15 @@ object frmMain: TfrmMain
       end
     end
     object cxb_3: TcxButton
-      Left = 805
-      Top = 611
+      Left = 853
+      Top = 618
       Width = 30
       Height = 23
       Action = act_ClearReceived
       PaintStyle = bpsGlyph
       ParentShowHint = False
       ShowHint = True
-      TabOrder = 21
+      TabOrder = 20
     end
     object dxlc_Group_Root: TdxLayoutGroup
       AlignHorz = ahClient
@@ -667,17 +836,10 @@ object frmMain: TfrmMain
       ButtonOptions.Buttons = <>
       Index = 0
     end
-    object dxlc_StatusBar: TdxLayoutItem
-      Parent = dxlc_Group_Root
-      AlignVert = avBottom
-      CaptionOptions.Visible = False
-      Control = dxStatusBar
-      ControlOptions.ShowBorder = False
-      Index = 3
-    end
     object dxlc_Group3: TdxLayoutAutoCreatedGroup
       Parent = dxlc_Group_Root
       AlignHorz = ahClient
+      AlignVert = avTop
       LayoutDirection = ldHorizontal
       Index = 1
       AutoCreated = True
@@ -745,6 +907,7 @@ object frmMain: TfrmMain
     end
     object dxlc_Group_ConnectionParams: TdxLayoutGroup
       Parent = dxlc_Group_Root
+      AlignVert = avTop
       CaptionOptions.Text = #1055#1072#1088#1072#1084#1077#1090#1088#1099' '#1089#1086#1077#1076#1080#1085#1077#1085#1080#1103
       SizeOptions.AssignedValues = [sovSizableHorz]
       SizeOptions.SizableHorz = True
@@ -757,40 +920,12 @@ object frmMain: TfrmMain
       AlignHorz = ahClient
       AlignVert = avTop
       CaptionOptions.Visible = False
+      SizeOptions.AssignedValues = [sovSizableVert]
+      SizeOptions.SizableVert = True
       Control = cxPageControl1
       ControlOptions.AutoColor = True
       ControlOptions.ShowBorder = False
       Index = 2
-    end
-    object dxlc_Group1: TdxLayoutAutoCreatedGroup
-      Parent = dxlc_Group_Root
-      AlignHorz = ahClient
-      AlignVert = avClient
-      LayoutDirection = ldHorizontal
-      Index = 4
-      AutoCreated = True
-    end
-    object dxlc_SplitterItem1: TdxLayoutSplitterItem
-      Parent = dxlc_Group1
-      AlignHorz = ahLeft
-      AlignVert = avClient
-      CaptionOptions.Text = 'Splitter'
-      SizeOptions.AssignedValues = [sovSizableHorz, sovSizableVert]
-      SizeOptions.SizableHorz = True
-      SizeOptions.SizableVert = True
-      SizeOptions.Width = 10
-      Index = 1
-    end
-    object dxlc_SplitterItem2: TdxLayoutSplitterItem
-      Parent = dxlc_Group1
-      AlignHorz = ahLeft
-      AlignVert = avClient
-      CaptionOptions.Text = 'Splitter'
-      SizeOptions.AssignedValues = [sovSizableHorz, sovSizableVert]
-      SizeOptions.SizableHorz = True
-      SizeOptions.SizableVert = True
-      SizeOptions.Width = 10
-      Index = 3
     end
     object dxlc_Item5: TdxLayoutItem
       Parent = dxlc_Group4
@@ -917,8 +1052,37 @@ object frmMain: TfrmMain
       ControlOptions.ShowBorder = False
       Index = 1
     end
+    object dxlc_Group2: TdxLayoutGroup
+      Parent = dxlc_Group_Root
+      AlignHorz = ahClient
+      AlignVert = avClient
+      CaptionOptions.Text = 'New Group'
+      ButtonOptions.Buttons = <>
+      LayoutDirection = ldHorizontal
+      ShowBorder = False
+      Index = 4
+    end
+    object dxlc_SplitterItem3: TdxLayoutSplitterItem
+      Parent = dxlc_Group_Root
+      AlignVert = avTop
+      CaptionOptions.Text = 'Splitter'
+      SizeOptions.AssignedValues = [sovSizableHorz, sovSizableVert]
+      SizeOptions.SizableHorz = False
+      SizeOptions.SizableVert = True
+      SizeOptions.Height = 10
+      Index = 3
+    end
+    object dxlc_StatusBar: TdxLayoutItem
+      Parent = dxlc_Group_Root
+      AlignHorz = ahClient
+      AlignVert = avClient
+      CaptionOptions.Visible = False
+      Control = dxStatusBar
+      ControlOptions.ShowBorder = False
+      Index = 5
+    end
     object dxlc_GroupLog: TdxLayoutGroup
-      Parent = dxlc_Group1
+      Parent = dxlc_Group2
       AlignHorz = ahLeft
       AlignVert = avClient
       CaptionOptions.Text = 'Log'
@@ -959,7 +1123,7 @@ object frmMain: TfrmMain
       Index = 1
     end
     object dxlc_GroupSended: TdxLayoutGroup
-      Parent = dxlc_Group1
+      Parent = dxlc_Group2
       AlignHorz = ahLeft
       AlignVert = avClient
       CaptionOptions.Text = 'New Group'
@@ -996,7 +1160,7 @@ object frmMain: TfrmMain
       Index = 1
     end
     object dxlc_GroupReveived: TdxLayoutGroup
-      Parent = dxlc_Group1
+      Parent = dxlc_Group2
       AlignHorz = ahClient
       AlignVert = avClient
       CaptionOptions.Text = 'New Group'
@@ -1032,6 +1196,28 @@ object frmMain: TfrmMain
       ControlOptions.ShowBorder = False
       Index = 1
     end
+    object dxlc_SplitterItem2: TdxLayoutSplitterItem
+      Parent = dxlc_Group2
+      AlignHorz = ahLeft
+      AlignVert = avClient
+      CaptionOptions.Text = 'Splitter'
+      SizeOptions.AssignedValues = [sovSizableHorz, sovSizableVert]
+      SizeOptions.SizableHorz = True
+      SizeOptions.SizableVert = True
+      SizeOptions.Width = 10
+      Index = 1
+    end
+    object dxlc_SplitterItem1: TdxLayoutSplitterItem
+      Parent = dxlc_Group2
+      AlignHorz = ahLeft
+      AlignVert = avClient
+      CaptionOptions.Text = 'Splitter'
+      SizeOptions.AssignedValues = [sovSizableHorz, sovSizableVert]
+      SizeOptions.SizableHorz = True
+      SizeOptions.SizableVert = True
+      SizeOptions.Width = 10
+      Index = 3
+    end
   end
   object cxPropertiesStore: TcxPropertiesStore
     Active = False
@@ -1059,6 +1245,11 @@ object frmMain: TfrmMain
           'Lines')
       end
       item
+        Component = cxPageControl1
+        Properties.Strings = (
+          'Properties.ActivePage')
+      end
+      item
         Component = cxrg_PubQoS
         Properties.Strings = (
           'ItemIndex')
@@ -1082,6 +1273,11 @@ object frmMain: TfrmMain
         Component = dxlc_Log
         Properties.Strings = (
           'SizeOptions.Width')
+      end
+      item
+        Component = dxlc_PageControl
+        Properties.Strings = (
+          'SizeOptions.Height')
       end
       item
         Component = dxlc_PS_Publish
@@ -1135,6 +1331,16 @@ object frmMain: TfrmMain
       Caption = 'Unsubscribe'
       ImageIndex = 4
       OnExecute = act_UnsubscribeExecute
+    end
+    object act_StartPeriodicSending: TAction
+      Caption = #1057#1090#1072#1088#1090#1086#1074#1072#1090#1100
+      ImageIndex = 6
+      OnExecute = act_StartPeriodicSendingExecute
+    end
+    object act_StopPeriodicSending: TAction
+      Caption = #1054#1089#1090#1072#1085#1086#1074#1080#1090#1100' '
+      ImageIndex = 7
+      OnExecute = act_StopPeriodicSendingExecute
     end
   end
   object cxImgl_big: TcxImageList
@@ -1940,10 +2146,276 @@ object frmMain: TfrmMain
           000000000004666564B4928F8DFF908D8BFF908D8BFF908D8BFF928F8DFF6665
           64B4000000040000000000000000000000000000000000000000000000000000
           0000000000000000000000000000000000000000000000000000}
+      end
+      item
+        Image.Data = {
+          36100000424D3610000000000000360000002800000020000000200000000100
+          2000000000000010000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000006000000100000
+          0010000000050000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000011000000310000
+          00350000001A0000000500000000000000000000000000000000000000000000
+          00040000000D000000120000000C000000030000000000000000000000010000
+          00050000000C0000001200000016000000160000001600000016000000160000
+          00120000000C0000000500000001000000000000000000000016008D4AFF0081
+          46F1000000390000001700000003000000000000000000000000000000000000
+          000D0000002B0000003B0000002F0000001C000000110000000D000000120000
+          001E0000002E0000003B00000042000000430000004300000043000000420000
+          003B0000002E0000001F00000017000000160000001600000027008A41FF00C7
+          85FF007A41EC0000003300000014000000030000000000000000000000000000
+          00123171A8C5449DEDFF285C8AB50206094B0000003700000031000000381507
+          0B5C642336B5973452EBAB3B5DFFAB3A5DFFAB3A5DFFAF395EFFB6375EFFA72F
+          53EB701F37B517050B5C0000004300000043000000430000004800873EFF00E5
+          A4FF00C080FF00592FC100000032000000140000000300000000000000000000
+          000C46A3EEFF80F5FFFF62CEFAFF47AEF5FF318DCBDC322B3F958D2D45DCAE3F
+          5DFFB44E5FFFB65460FFB95C60FFB95B60FFBB5B61FFC55962FF397F53FF0093
+          46FF009146FF008E46FF008A47FF008846FF008743FF00863FFF00823EFF00DC
+          A0FF00DBA0FF00BC81FF005A2FC1000000320000001400000004000000000000
+          00032B638BA064D2FBFF6DECFFFF5FEEFFFF8978A1FFB53853FFB64F5CFFBB5D
+          62FFCA6D70FFD47A7CFFDE8485FFDD8385FFE08385FFF08188FF008D42FF31EA
+          BDFF00DBA1FF00DAA2FF00DAA2FF00DAA2FF00DAA1FF00D9A0FF00D79FFF00D3
+          9CFF00D39CFF00D6A0FF00BA80FF005A2FC10000002E0000000D000000000000
+          00000306091A4CBBFAFF64E2FFFFA6506EFFB73D53FFBA565DFFCD7072FFDC81
+          82FFDD7F80FFDC797BFFDB7678FFDB7577FFDE7578FFF1767EFF00863CFF4FE5
+          C2FF00CF9AFF00CF9BFF00CF9BFF00CF9BFF00CF9BFF00CF9BFF00CF9BFF00CD
+          9AFF00CD9AFF00CE9BFF00D29FFF00B881FF005D32C000000012000000000000
+          000100000013349EC8D4A55170FFB74255FFBC5B5FFFD87D7FFFDD8082FFDB79
+          7BFFDF9B9EFFE3DEDFFFE7FFFFFFE9FFFFFFEEFFFFFFFFFFFFFF007F35FF69E5
+          CBFF00C897FF00C898FF00C899FF00C899FF00C899FF00C899FF00C999FF00C9
+          99FF00C99AFF00C999FF07CDA1FF2CDCB7FF008A48FF0000000D000000000000
+          000700000022692C3DB8B8485AFFC06065FFDE8485FFDE7F80FFDE898BFFE3E8
+          E9FFE6FFFFFFE5FFFFFFE4FFFFFFE7FFFFFF9EA6A6FFFDFFFFFF007D32FF83E7
+          D6FF00C397FF00C398FF00C399FF00C399FF00C399FF00C399FF00C398FF00C4
+          98FF00C599FF00C69AFF62E0C7FF00B381FF005E32B300000004000000010000
+          0011220D125DB3455BFFC0646CFFDB8082FFDF8080FFDD9293FFE1FFFFFFE3FF
+          FFFF959F9FFFE2FFFFFFE1FDFFFFE5FFFFFF9CA4A5FFF8FFFFFF007C30FF95EB
+          DFFF4AE7D1FF4EE7D2FF4FE7D2FF4FE7D2FF4FE8D3FF4FE8D3FF4DE7D1FF93E6
+          D7FF00C097FF60DCC6FF00AF7FFF005A2EAE0000000300000000000000050000
+          001E8E374BDCBC5F6DFFD27A7EFFE18283FFDF8B8BFFDEFFFFFFDDFFFFFFDEFD
+          FFFFDFFDFFFFDEFCFEFFDEFBFDFFE1FFFFFF969F9FFFEEFFFFFF42AF82FF007B
+          2FFF007C31FF007C31FF007C32FF007E33FF008136FF00843BFF008239FF81E3
+          D6FF58DAC4FF00AC7EFF005B2EAF0000000300000000000000000000000C1508
+          0B47B1485FFFC9777EFFE08585FFE17C7DFFDCE4E7FFDDFFFFFFDDFBFEFFDBF9
+          FCFFDCF9FCFFDCF9FCFFDCF9FDFFDDFAFDFFDEFCFFFFE1FCFFFFE8FEFFFFEEFF
+          FFFFF1FFFFFFF1FFFFFFF3FFFFFFF4FFFFFFF5E5F0FFFF7883FF00873EFF76E3
+          D7FF00AD7EFF00582AB10000000E000000000000000000000000000000126629
+          36ADC06472FFD68286FFE28383FFDE9D9FFFDAFFFFFF8D9798FFDAFAFDFFD9F8
+          FBFFDAFAFDFFDDFEFFFFDEFFFFFFDBFBFEFFD9F9FCFFD9F8FBFFDAF8FCFFDBF9
+          FCFFDBF9FDFFDCF9FDFFDEFCFFFF90999AFFE1FFFFFFF69BA4FF00893EFF00AD
+          83FF12844AFF702133A700000012000000000000000000000000000000169B3D
+          4FE9CA7883FFDE8788FFE38080FFD8D9DBFFD6FCFFFFD7F8FDFFD6F7FBFFD6F6
+          FAFFDAFBFFFF878E8EFF828A8BFFE0FFFFFFD9FAFEFFD6F6FAFFD5F5F9FFD5F5
+          F9FFD5F5F9FFD5F5F9FFD6F7FBFFD7F8FDFFD8FCFFFFE8D8DFFF00883AFF108D
+          51FFCD717FFFA23B51E80000001600000000000000000000000000000016B045
+          59FFD38B94FFE58787FFE47D7DFFD2F9FDFFD2F8FCFFD3F6FAFFD3F5F9FFD3F6
+          FAFFD7FBFFFF889190FF4E4745FF7D8888FFDEFFFFFFD6F9FDFFD3F5F9FFD2F4
+          F8FFD2F4F8FFD2F4F8FFD3F5F9FFD3F6FAFFD4F8FDFFD8F8FFFFF37C81FFF486
+          8AFFDA8B96FFB1455AFF0000001600000000000000000000000000000016B147
+          58FFD6929CFFE48787FFE47D7EFFCEFFFFFFD2FAFEFFD4F9FDFFD3F8FCFFD1F5
+          F9FFD2F7FBFFD9FFFFFF848E8EFF433D3BFF758080FFDBFFFFFFD2F7FBFFCFF4
+          F7FFCFF3F7FFD1F5F9FFD3F8FCFFD4F9FDFFD2FAFEFFCFFFFFFFE77D7EFFE787
+          87FFD7929DFFB14758FF0000001600000000000000000000000000000016B047
+          58FFDB98A3FFE58787FFE67E7FFFD4FFFFFF829293FF859394FF839091FFCFF4
+          FAFFCDF2F8FFD0F6FCFFDAFFFFFF808B8DFF383131FF6E787AFFD3FAFFFFCDF2
+          F7FFCCF1F6FFCFF4FAFF839091FF859394FF829293FFD4FFFFFFE67E7FFFE587
+          87FFDB98A3FFB04758FF0000001600000000000000000000000000000016B148
+          57FFDE9FAAFFE68787FFE77E7FFFD0FFFFFFCCF7FCFFCEF6FBFFCDF5FAFFCBF2
+          F7FFCAF1F6FFCDF5FBFFD7FFFFFF7A8888FF3D3735FF727B7DFFCFF9FEFFCAF1
+          F6FFC9F0F5FFCBF2F7FFCDF5FAFFCEF6FBFFCCF7FCFFD0FFFFFFE77E7FFFE687
+          87FFDE9FAAFFB14857FF0000001600000000000000000000000000000012B149
+          57FFE2A7B2FFE78888FFE78081FFCFF4F9FFC5F2F8FFC7F0F6FFC7EFF5FFC7EF
+          F5FFC9F2F9FFD0FCFFFF798586FF433B3AFF798486FFD1FDFFFFC9F2F8FFC6EE
+          F4FFC6EEF4FFC6EEF4FFC7EFF5FFC7F0F6FFC5F2F8FFCFF4F9FFE78081FFE788
+          88FFE2A7B2FFB14957FF000000120000000000000000000000000000000C9D42
+          4EE6DC9BA6FFE79194FFE88384FFD5D2D7FFC3F2FAFFC5F1F7FFC5F0F6FFC6F2
+          F8FFCCFAFFFF7C898AFF4B4340FF7C8889FFCEFCFFFFC6F2F8FFC4EEF4FFC3ED
+          F3FFC3EDF3FFC3EDF3FFC4EFF5FFC5F1F7FFC3F2FAFFD5D2D7FFE88384FFE791
+          94FFDC9BA6FF9D424EE60000000C00000000000000000000000000000005682D
+          34A1D18792FFE8A1A7FFE98786FFE19DA0FFC3F2FDFF758789FFC4F1F9FFC8F8
+          FFFF7F8C8DFF534947FF7F8C8DFFCAF9FFFFC4F0F7FFC1ECF3FFC0EBF2FFC0EB
+          F2FFC0EBF2FFC0EBF3FFC2EEF6FF748688FFC3F2FDFFE19DA0FFE98786FFE8A1
+          A7FFD18792FF682D34A100000005000000000000000000000000000000011509
+          0A30BA5861FFEEB9C4FFEA8B8CFFEC8484FFC7D1DAFFBDEFF9FFC2F4FBFF818D
+          8EFF5B514DFF839092FFC6F8FFFFC1F0F7FFC0EFF6FFBFECF3FFBDEAF1FFBDEA
+          F1FFBDEBF2FFBDEBF2FFBEEEF4FFBDEEF8FFC7D1DAFFEC8484FFEA8B8CFFEEB9
+          C4FFBA5861FF15090A3000000001000000000000000000000000000000040000
+          001991393DD4DC939EFFEEA6ABFFEA8888FFE59091FFB6DDECFFBBEEF8FF8390
+          91FF869394FFC3F6FEFFBEEDF6FFBEEEF6FF728285FFBEEDF6FFBBE9F2FFBCEA
+          F2FFBCECF4FFBBECF4FFB7E8F2FFB6DCEBFFE59091FFEA8888FFEEA6ABFFDC93
+          9EFF91393DD400000019000000040000000000000000000000000000000D0000
+          002E475E83C7C35558FFF2BFCDFFEC9496FFEC8886FFE29597FFAFD8E9FFB6E9
+          F6FF708689FFBCF0F7FFB9EBF2FFBCEFF7FF718587FFBCEFF7FFB9EAF2FFBAED
+          F4FF6D8082FFB2E3F0FFADD6E6FFE29596FFEC8886FFEC9496FFF2BFCDFFC355
+          58FF475E83C70000002E0000000D000000000000000000000000000000142E71
+          A3BF46B5FCFF8A7897FFD3767CFFF9C9D8FFED8E8EFFED8987FFE79191FFB5C4
+          D3FFA4D8ECFFABDCEBFFB0E3EFFFB5E9F3FF6D8285FFB5E9F3FFB0E2EFFFABDC
+          EBFFA4D7EBFFB4C3D2FFE79191FFED8987FFED8E8EFFF9C9D8FFD3767CFF8A78
+          97FF46B5FCFF2E71A3BF00000014000000000000000000000000000000164AAB
+          F1FF5BC4F8FF51C7FFFFAB5B65FFD3797FFFFCD0DFFFEF9899FFED8989FFF188
+          87FFDC999EFFB4BAC8FF9DCADFFF98CFE6FF9AD0E8FF98CFE6FF9DCADFFFB4BA
+          C8FFDC999EFFF18887FFED8989FFEF9899FFFDD0DFFFD3797FFFAB5B65FF51C7
+          FFFF5BC4F8FF4AABF1FF00000016000000000000000000000000000000124BAF
+          F2FF67CFF7FF62CFFBFF60CBF9FFAC5E66FFD47B81FFFDD2E1FFF7B3BAFFEF8F
+          8FFFEF8A88FFF18987FFF28987FFF38987FFF48987FFF38987FFF28987FFF189
+          87FFEF8A88FFEF8F8FFFF7B3BAFFFDD2E1FFCF7277FFAC5E66FF60CBF9FF62CF
+          FBFF67CFF7FF4BAFF2FF00000012000000000000000000000000000000094BAD
+          EDFA6CD7F9FF6EDBFBFF6ADCFEFF63E2FFFF968A98FFC55556FFE8A6B0FFFFDE
+          EEFFFABCC6FFF3A1A4FFEE8B89FFEE8B89FFEE8B89FFEE8B89FFEE8B89FFF3A1
+          A4FFFABCC6FFFFDEEEFFE8A6B0FFC55556FF968A98FF63E2FFFF6ADCFEFF6EDB
+          FBFF6CD7F9FF4BADEDFA00000009000000000000000000000000000000021C41
+          57665FC8F7FF7AE9FDFF77E7FEFF74E8FFFF71EEFFFF84C9D9FFA36C76FFC25E
+          5FFFE3A6B1FFF7CDDDFFFFECFEFFFFEBFEFFFFEBFDFFFFEBFEFFFFECFEFFF7CD
+          DDFFE3A6B1FFC25E5FFFA36C76FF84C9D9FF71EEFFFF74E8FFFF77E7FEFF7AE9
+          FDFF5FC8F7FF1C41576600000002000000000000000000000000000000000000
+          0004347BA3B06AD7F9FF82F4FEFF85F9FFFF84FBFFFF6CE5FFFF287DA1A90F06
+          061B69313197A04A49E3B55352FFB45351FFB45251FFB45351FFB55352FFA04A
+          49E3693131970F06061B287DA1A96CE5FFFF84FBFFFF85F9FFFF82F4FEFF6AD7
+          F9FF347BA3B00000000400000000000000000000000000000000000000000000
+          0000000000021D4357614FB6EEF851BBF5FF51BCF6FF3580A7AF000000040000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000043580A7AF51BCF6FF51BBF5FF4FB6EEF81D43
+          5761000000020000000000000000000000000000000000000000}
+      end
+      item
+        Image.Data = {
+          36100000424D3610000000000000360000002800000020000000200000000100
+          2000000000000010000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000500000010000000160000001600000016000000160000
+          0016000000160000001600000016000000160000001000000005000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000010000001200000032000000420000004300000043000000430000
+          0043000000430000004300000043000000420000003100000010000000000000
+          00040000000D000000120000000C000000030000000000000000000000010000
+          00050000000C0000001200000016000000160000001600000016000000160000
+          00120000000F000000212A3AB5F12B3BC0FF2B3ABEFF2B3BBEFF2B3BBEFF2B3B
+          BEFF2B3BBEFF2B3BBEFF2B3ABEFF2B3BC0FF2B3AB6F300000016000000000000
+          000D0000002B0000003B0000002F0000001C000000110000000D000000120000
+          001E0000002E0000003B00000042000000430000004300000043000000410000
+          003B00000031060C265C283BC2FF7F90FFFF6779FFFF687AFFFF687AFFFF687A
+          FFFF687AFFFF687AFFFF6779FFFF7F90FFFF2B3BC0FF00000016000000000000
+          00123171A8C5449DEDFF285C8AB50206094B0000003700000031000000381507
+          0B5C642336B5973452EBAB3B5DFFAB3A5DFFAB3A5DFFAB3A5DFFAB3B5DFF9833
+          51EA64212FB12316368D2339C4FF8192FFFF5A6FFCFF5B70FBFF5C70FBFF5C70
+          FBFF5C70FBFF5B70FBFF5A6FFCFF8292FFFF2939BEFF00000016000000000000
+          000C46A3EEFF80F5FFFF62CEFAFF47AEF5FF318DCBDC322B3F958D2D45DCAE3F
+          5DFFB44E5FFFB65460FFB95C60FFB95B60FFB95B60FFB95B60FFB95C60FFB754
+          5FFFBA4E5BFF963F6FFF1F38C6FF8899FFFF5166F8FF5368F7FF5469F7FF5469
+          F7FF5469F7FF5368F7FF5166F8FF8999FFFF2838BEFF00000016000000000000
+          00032B638BA064D2FBFF6DECFFFF5FEEFFFF8978A1FFB53853FFB64F5CFFBB5D
+          62FFCA6D70FFD47A7CFFDE8485FFDD8385FFDD8385FFDD8385FFDE8485FFD57A
+          7BFFCF6E6DFF9F5575FF1C35C6FF91A0FEFF4A5FF4FF4D62F4FF4E63F4FF4E63
+          F4FF4E63F4FF4D62F4FF4A5FF4FF92A1FDFF2838BFFF00000016000000000000
+          00000306091A4CBBFAFF64E2FFFFA6506EFFB73D53FFBA565DFFCD7072FFDC81
+          82FFDD7F80FFDC797BFFDB7678FFDB7577FFDB7577FFDB7577FFDB7678FFDD7A
+          7BFFE3817DFFB9738EFF1A32C4FF9AA9FCFF4159F1FF465DF1FF475EF1FF475E
+          F1FF475EF1FF465DF1FF4159F1FF9CAAFCFF2838BFFF00000016000000000000
+          000100000013349EC8D4A55170FFB74255FFBC5B5FFFD87D7FFFDD8082FFDB79
+          7BFFDF9B9EFFE3DEDFFFE7FFFFFFE9FFFFFFEAFFFFFFE9FFFFFFE7FFFFFFE4DE
+          DEFFE59E9BFFB76C87FF182FC2FFA5B2FBFF3952EEFF3E57EEFF4058EEFF4058
+          EEFF4058EEFF3E57EEFF3952EEFFA7B3FBFF2737BFFF00000016000000000000
+          000700000022692C3DB8B8485AFFC06065FFDE8485FFDE7F80FFDE898BFFE3E8
+          E9FFE6FFFFFFE5FFFFFFE4FFFFFFE7FFFFFF9AA5A3FFE7FFFFFFE4FFFFFFE6FF
+          FFFFEDFFFFFFBECAE6FF182ABEFFB2BDFBFF304BEBFF3651EBFF3752EBFF3752
+          EBFF3752EBFF3651EBFF304BEBFFB4BFFBFF2636BFFF00000016000000010000
+          0011220D125DB3455BFFC0646CFFDB8082FFDF8080FFDD9293FFE1FFFFFFE3FF
+          FFFF959F9FFFE2FFFFFFE1FDFFFFE5FFFFFF99A3A2FFE5FFFFFFE1FDFFFFE3FF
+          FFFF9BA5A0FFBDD8F4FF1828BCFFC0C8FBFF2341E6FF2945E6FF2A47E6FF2A47
+          E6FF2A47E6FF2945E6FF2441E6FFC2CBFCFF2737BFFF00000015000000050000
+          001E8E374BDCBC5F6DFFD27A7EFFE18283FFDF8B8BFFDEFFFFFFDDFFFFFFDEFD
+          FFFFDFFDFFFFDEFCFEFFDEFBFDFFE1FFFFFF949E9EFFE1FFFFFFDEFBFDFFDFFC
+          FEFFE5FFFFFFB7D1F1FF1625BBFF899AF5FF8B9CF4FF8D9EF5FF8E9FF5FF8EA0
+          F5FF8EA0F5FF8EA0F5FF8E9FF5FF8FA0F7FF2A3AC1FF0000000D0000000C1508
+          0B47B1485FFFC9777EFFE08585FFE17C7DFFDCE4E7FFDDFFFFFFDDFBFEFFDBF9
+          FCFFDCF9FCFFDCF9FCFFDCF9FDFFDDFAFDFFDEFBFEFFDDFAFDFFDBF8FBFFDBF8
+          FBFFDEFBFDFFE8FFFFFF6579D5FF1625BDFF1829BEFF172DC1FF1730C5FF1832
+          C7FF1A35C8FF1E37C7FF2438C3FF293AC1FF1F2B86B400000004000000126629
+          36ADC06472FFD68286FFE28383FFDE9D9FFFDAFFFFFF8D9798FFDAFAFDFFD9F8
+          FBFFDAFAFDFFDDFEFFFFDEFFFFFFDBFBFEFFD9F9FCFFD8F7FAFFD8F7FAFFD8F7
+          FAFFD9F8FAFFDCFCFCFFE5FFFFFF9BA69BFFEBFFFFFFEFA59AFFF3887CFFE485
+          7DFFCE6667FF6324269F00000012000000000000000000000000000000169B3D
+          4FE9CA7883FFDE8788FFE38080FFD8D9DBFFD6FCFFFFD7F8FDFFD6F7FBFFD6F6
+          FAFFDAFBFFFF878E8EFF828A8BFFE0FFFFFFD9FAFEFFD6F6FAFFD5F5F9FFD5F5
+          F9FFD5F5F9FFD6F6F9FFD8F8FBFFDAFBFEFFD8FEFFFFDBDBDAFFE6817FFFE187
+          88FFCA757EFFA03E4AE70000001600000000000000000000000000000016B045
+          59FFD38B94FFE58787FFE47D7DFFD2F9FDFFD2F8FCFFD3F6FAFFD3F5F9FFD3F6
+          FAFFD7FBFFFF889190FF4E4745FF7D8888FFDEFFFFFFD6F9FDFFD3F5F9FFD2F4
+          F8FFD2F4F8FFD2F4F8FFD3F5F9FFD3F6FAFFD2F8FCFFD2F9FDFFE47D7DFFE587
+          87FFD38C94FFB14558FF0000001600000000000000000000000000000016B147
+          58FFD6929CFFE48787FFE47D7EFFCEFFFFFFD2FAFEFFD4F9FDFFD3F8FCFFD1F5
+          F9FFD2F7FBFFD9FFFFFF848E8EFF433D3BFF758080FFDBFFFFFFD2F7FBFFCFF4
+          F7FFCFF3F7FFD1F5F9FFD3F8FCFFD4F9FDFFD2FAFEFFCEFFFFFFE47D7EFFE487
+          87FFD6929CFFB14758FF0000001600000000000000000000000000000016B047
+          58FFDB98A3FFE58787FFE67E7FFFD4FFFFFF829293FF859394FF839091FFCFF4
+          FAFFCDF2F8FFD0F6FCFFDAFFFFFF808B8DFF383131FF6E787AFFD3FAFFFFCDF2
+          F7FFCCF1F6FFCFF4FAFF839091FF859394FF829293FFD4FFFFFFE67E7FFFE587
+          87FFDB98A3FFB04758FF0000001600000000000000000000000000000016B148
+          57FFDE9FAAFFE68787FFE77E7FFFD0FFFFFFCCF7FCFFCEF6FBFFCDF5FAFFCBF2
+          F7FFCAF1F6FFCDF5FBFFD7FFFFFF7A8888FF3D3735FF727B7DFFCFF9FEFFCAF1
+          F6FFC9F0F5FFCBF2F7FFCDF5FAFFCEF6FBFFCCF7FCFFD0FFFFFFE77E7FFFE687
+          87FFDE9FAAFFB14857FF0000001600000000000000000000000000000012B149
+          57FFE2A7B2FFE78888FFE78081FFCFF4F9FFC5F2F8FFC7F0F6FFC7EFF5FFC7EF
+          F5FFC9F2F9FFD0FCFFFF798586FF433B3AFF798486FFD1FDFFFFC9F2F8FFC6EE
+          F4FFC6EEF4FFC6EEF4FFC7EFF5FFC7F0F6FFC5F2F8FFCFF4F9FFE78081FFE788
+          88FFE2A7B2FFB14957FF000000120000000000000000000000000000000C9D42
+          4EE6DC9BA6FFE79194FFE88384FFD5D2D7FFC3F2FAFFC5F1F7FFC5F0F6FFC6F2
+          F8FFCCFAFFFF7C898AFF4B4340FF7C8889FFCEFCFFFFC6F2F8FFC4EEF4FFC3ED
+          F3FFC3EDF3FFC3EDF3FFC4EFF5FFC5F1F7FFC3F2FAFFD5D2D7FFE88384FFE791
+          94FFDC9BA6FF9D424EE60000000C00000000000000000000000000000005682D
+          34A1D18792FFE8A1A7FFE98786FFE19DA0FFC3F2FDFF758789FFC4F1F9FFC8F8
+          FFFF7F8C8DFF534947FF7F8C8DFFCAF9FFFFC4F0F7FFC1ECF3FFC0EBF2FFC0EB
+          F2FFC0EBF2FFC0EBF3FFC2EEF6FF748688FFC3F2FDFFE19DA0FFE98786FFE8A1
+          A7FFD18792FF682D34A100000005000000000000000000000000000000011509
+          0A30BA5861FFEEB9C4FFEA8B8CFFEC8484FFC7D1DAFFBDEFF9FFC2F4FBFF818D
+          8EFF5B514DFF839092FFC6F8FFFFC1F0F7FFC0EFF6FFBFECF3FFBDEAF1FFBDEA
+          F1FFBDEBF2FFBDEBF2FFBEEEF4FFBDEEF8FFC7D1DAFFEC8484FFEA8B8CFFEEB9
+          C4FFBA5861FF15090A3000000001000000000000000000000000000000040000
+          001991393DD4DC939EFFEEA6ABFFEA8888FFE59091FFB6DDECFFBBEEF8FF8390
+          91FF869394FFC3F6FEFFBEEDF6FFBEEEF6FF728285FFBEEDF6FFBBE9F2FFBCEA
+          F2FFBCECF4FFBBECF4FFB7E8F2FFB6DCEBFFE59091FFEA8888FFEEA6ABFFDC93
+          9EFF91393DD400000019000000040000000000000000000000000000000D0000
+          002E475E83C7C35558FFF2BFCDFFEC9496FFEC8886FFE29597FFAFD8E9FFB6E9
+          F6FF708689FFBCF0F7FFB9EBF2FFBCEFF7FF718587FFBCEFF7FFB9EAF2FFBAED
+          F4FF6D8082FFB2E3F0FFADD6E6FFE29596FFEC8886FFEC9496FFF2BFCDFFC355
+          58FF475E83C70000002E0000000D000000000000000000000000000000142E71
+          A3BF46B5FCFF8A7897FFD3767CFFF9C9D8FFED8E8EFFED8987FFE79191FFB5C4
+          D3FFA4D8ECFFABDCEBFFB0E3EFFFB5E9F3FF6D8285FFB5E9F3FFB0E2EFFFABDC
+          EBFFA4D7EBFFB4C3D2FFE79191FFED8987FFED8E8EFFF9C9D8FFD3767CFF8A78
+          97FF46B5FCFF2E71A3BF00000014000000000000000000000000000000164AAB
+          F1FF5BC4F8FF51C7FFFFAB5B65FFD3797FFFFCD0DFFFEF9899FFED8989FFF188
+          87FFDC999EFFB4BAC8FF9DCADFFF98CFE6FF9AD0E8FF98CFE6FF9DCADFFFB4BA
+          C8FFDC999EFFF18887FFED8989FFEF9899FFFDD0DFFFD3797FFFAB5B65FF51C7
+          FFFF5BC4F8FF4AABF1FF00000016000000000000000000000000000000124BAF
+          F2FF67CFF7FF62CFFBFF60CBF9FFAC5E66FFD47B81FFFDD2E1FFF7B3BAFFEF8F
+          8FFFEF8A88FFF18987FFF28987FFF38987FFF48987FFF38987FFF28987FFF189
+          87FFEF8A88FFEF8F8FFFF7B3BAFFFDD2E1FFCF7277FFAC5E66FF60CBF9FF62CF
+          FBFF67CFF7FF4BAFF2FF00000012000000000000000000000000000000094BAD
+          EDFA6CD7F9FF6EDBFBFF6ADCFEFF63E2FFFF968A98FFC55556FFE8A6B0FFFFDE
+          EEFFFABCC6FFF3A1A4FFEE8B89FFEE8B89FFEE8B89FFEE8B89FFEE8B89FFF3A1
+          A4FFFABCC6FFFFDEEEFFE8A6B0FFC55556FF968A98FF63E2FFFF6ADCFEFF6EDB
+          FBFF6CD7F9FF4BADEDFA00000009000000000000000000000000000000021C41
+          57665FC8F7FF7AE9FDFF77E7FEFF74E8FFFF71EEFFFF84C9D9FFA36C76FFC25E
+          5FFFE3A6B1FFF7CDDDFFFFECFEFFFFEBFEFFFFEBFDFFFFEBFEFFFFECFEFFF7CD
+          DDFFE3A6B1FFC25E5FFFA36C76FF84C9D9FF71EEFFFF74E8FFFF77E7FEFF7AE9
+          FDFF5FC8F7FF1C41576600000002000000000000000000000000000000000000
+          0004347BA3B06AD7F9FF82F4FEFF85F9FFFF84FBFFFF6CE5FFFF287DA1A90F06
+          061B69313197A04A49E3B55352FFB45351FFB45251FFB45351FFB55352FFA04A
+          49E3693131970F06061B287DA1A96CE5FFFF84FBFFFF85F9FFFF82F4FEFF6AD7
+          F9FF347BA3B00000000400000000000000000000000000000000000000000000
+          0000000000021D4357614FB6EEF851BBF5FF51BCF6FF3580A7AF000000040000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000000000000043580A7AF51BCF6FF51BBF5FF4FB6EEF81D43
+          5761000000020000000000000000000000000000000000000000}
       end>
   end
   object dxLayoutLookAndFeelList1: TdxLayoutLookAndFeelList
-    Left = 520
+    Left = 536
     Top = 65528
     object dxLayoutStandardLookAndFeel1: TdxLayoutStandardLookAndFeel
       ItemOptions.CaptionOptions.Font.Charset = DEFAULT_CHARSET
@@ -1955,8 +2427,8 @@ object frmMain: TfrmMain
       Offsets.ControlOffsetHorz = 1
       Offsets.ControlOffsetVert = 1
       Offsets.ItemOffset = 1
-      Offsets.RootItemsAreaOffsetHorz = 5
-      Offsets.RootItemsAreaOffsetVert = 5
+      Offsets.RootItemsAreaOffsetHorz = 2
+      Offsets.RootItemsAreaOffsetVert = 2
     end
   end
   object cxStyleRepository1: TcxStyleRepository
@@ -2287,5 +2759,9 @@ object frmMain: TfrmMain
       ImageIndex = 1
       OnExecute = act_ClearReceivedExecute
     end
+  end
+  object RxTimerList1: TRxTimerList
+    Left = 1872
+    Top = 65368
   end
 end

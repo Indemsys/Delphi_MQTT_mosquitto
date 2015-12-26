@@ -5,43 +5,44 @@ object dm: Tdm
   Height = 578
   Width = 788
   object ds_tbl_Settings: TDataSource
-    DataSet = tbl_Settings
+    DataSet = tblSettings
     Left = 160
     Top = 152
   end
-  object tbl_Settings: TFDMemTable
+  object tblSettings: TFDMemTable
     FieldDefs = <>
     IndexDefs = <>
     FetchOptions.AssignedValues = [evMode]
     FetchOptions.Mode = fmAll
-    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.AssignedValues = [rvSilentMode, rvStorePrettyPrint]
+    ResourceOptions.StorePrettyPrint = True
     ResourceOptions.SilentMode = True
     UpdateOptions.AssignedValues = [uvCheckRequired]
     UpdateOptions.CheckRequired = False
     StoreDefs = True
     Left = 160
     Top = 96
-    object tbl_Settings_main_form_props: TBlobField
+    object tblSettings_main_form_props: TBlobField
       FieldName = 'main_form_props'
     end
-    object tbl_Settings_du_props: TBlobField
+    object tblSettings_du_props: TBlobField
       FieldName = 'du_props'
     end
-    object tbl_SettingsAutoConnect: TBooleanField
+    object tblSettingsAutoConnect: TBooleanField
       DefaultExpression = 'False'
       FieldName = 'AutoConnect'
     end
-    object tbl_SettingsPubPayload: TWideMemoField
+    object tblSettingsPubPayload: TWideMemoField
       FieldName = 'PubPayload'
       BlobType = ftWideMemo
       Size = 4096
     end
-    object tbl_SettingsPubTopicMRU: TWideMemoField
+    object tblSettingsPubTopicMRU: TWideMemoField
       FieldName = 'PubTopicMRU'
       BlobType = ftWideMemo
       Size = 1024
     end
-    object tbl_SettingsSubTopicMRU: TWideMemoField
+    object tblSettingsSubTopicMRU: TWideMemoField
       FieldName = 'SubTopicMRU'
       BlobType = ftWideMemo
       Size = 1024
@@ -86,145 +87,155 @@ object dm: Tdm
     Left = 160
     Top = 224
   end
-  object fdmtbl_SendedMessages: TFDMemTable
+  object tblSendedMessages: TFDMemTable
     FieldDefs = <>
     IndexDefs = <>
     FetchOptions.AssignedValues = [evMode]
     FetchOptions.Mode = fmAll
-    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.AssignedValues = [rvSilentMode, rvStorePrettyPrint]
+    ResourceOptions.StorePrettyPrint = True
     ResourceOptions.SilentMode = True
     UpdateOptions.AssignedValues = [uvCheckRequired]
     UpdateOptions.CheckRequired = False
     StoreDefs = True
     Left = 448
     Top = 152
-    object fdmtbl_SendedMessagesTime: TDateTimeField
+    object tblSendedMessagesTime: TDateTimeField
       FieldName = 'Time'
       DisplayFormat = 'hh.mm.ss:zzz'
     end
-    object fdmtbl_SendedMessagesTopic: TWideStringField
+    object tblSendedMessagesTopic: TWideStringField
       FieldName = 'Topic'
       Size = 256
     end
-    object fdmtbl_SendedMessagesPayload: TWideMemoField
+    object tblSendedMessagesPayload: TWideMemoField
       FieldName = 'Payload'
       BlobType = ftWideMemo
       Size = 4096
     end
+    object tblSendedMessagesQoS: TIntegerField
+      FieldName = 'QoS'
+    end
+    object tblSendedMessagesRetain: TBooleanField
+      FieldName = 'Retain'
+    end
   end
   object ds_ReceivedMessages: TDataSource
-    DataSet = fdmtbl_ReceivedMessages
+    DataSet = tblReceivedMessages
     Left = 632
     Top = 216
   end
   object ds_SendedMessages: TDataSource
-    DataSet = fdmtbl_SendedMessages
+    DataSet = tblSendedMessages
     Left = 440
     Top = 216
   end
-  object fdmtbl_ReceivedMessages: TFDMemTable
+  object tblReceivedMessages: TFDMemTable
     FieldDefs = <>
     IndexDefs = <>
     FetchOptions.AssignedValues = [evMode]
     FetchOptions.Mode = fmAll
-    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.AssignedValues = [rvSilentMode, rvStorePrettyPrint]
+    ResourceOptions.StorePrettyPrint = True
     ResourceOptions.SilentMode = True
     UpdateOptions.AssignedValues = [uvCheckRequired]
     UpdateOptions.CheckRequired = False
     StoreDefs = True
     Left = 632
     Top = 160
-    object fdmtbl_ReceivedMessagesTime: TDateTimeField
+    object tblReceivedMessagesTime: TDateTimeField
       FieldName = 'Time'
       DisplayFormat = 'hh.mm.ss:zzz'
     end
-    object fdmtbl_ReceivedMessagesmid: TIntegerField
+    object tblReceivedMessagesmid: TIntegerField
       FieldName = 'mid'
     end
-    object fdmtbl_ReceivedMessagesTopic: TWideStringField
+    object tblReceivedMessagesTopic: TWideStringField
       FieldName = 'Topic'
       Size = 256
     end
-    object fdmtbl_ReceivedMessagesPayload: TWideMemoField
+    object tblReceivedMessagesPayload: TWideMemoField
       FieldName = 'Payload'
       BlobType = ftWideMemo
       Size = 4096
     end
-    object fdmtbl_ReceivedMessagesQoS: TIntegerField
+    object tblReceivedMessagesQoS: TIntegerField
       FieldName = 'QoS'
     end
-    object fdmtbl_ReceivedMessagesRetain: TBooleanField
+    object tblReceivedMessagesRetain: TBooleanField
       FieldName = 'Retain'
     end
   end
-  object fdmtbl_ConnectionProfiles: TFDMemTable
+  object tblConnectionProfiles: TFDMemTable
     FieldDefs = <>
     IndexDefs = <>
     FetchOptions.AssignedValues = [evMode]
     FetchOptions.Mode = fmAll
-    ResourceOptions.AssignedValues = [rvPersistent, rvSilentMode]
+    ResourceOptions.AssignedValues = [rvPersistent, rvSilentMode, rvStorePrettyPrint]
     ResourceOptions.Persistent = True
+    ResourceOptions.StorePrettyPrint = True
     ResourceOptions.SilentMode = True
     UpdateOptions.AssignedValues = [uvCheckRequired]
     UpdateOptions.CheckRequired = False
     StoreDefs = True
     Left = 448
     Top = 24
-    object fdmtbl_ConnectionProfilesHostName: TStringField
+    object tblConnectionProfilesHostName: TStringField
       FieldName = 'HostName'
       Size = 255
     end
-    object fdmtbl_ConnectionProfilesHostPort: TIntegerField
+    object tblConnectionProfilesHostPort: TIntegerField
       DefaultExpression = '1883'
       FieldName = 'HostPort'
     end
-    object fdmtbl_ConnectionProfilesKeepAlive: TIntegerField
+    object tblConnectionProfilesKeepAlive: TIntegerField
       DefaultExpression = '60'
       FieldName = 'KeepAlive'
     end
-    object fdmtbl_ConnectionProfilesUserID: TStringField
+    object tblConnectionProfilesUserID: TStringField
       FieldName = 'UserID'
       Size = 255
     end
-    object fdmtbl_ConnectionProfilesCleanSession: TBooleanField
+    object tblConnectionProfilesCleanSession: TBooleanField
       DefaultExpression = 'False'
       FieldName = 'CleanSession'
     end
-    object fdmtbl_ConnectionProfilesWillTopic: TWideStringField
+    object tblConnectionProfilesWillTopic: TWideStringField
       FieldName = 'WillTopic'
       Size = 256
     end
-    object fdmtbl_ConnectionProfilesWillPayload: TWideStringField
+    object tblConnectionProfilesWillPayload: TWideStringField
       FieldName = 'WillPayload'
       Size = 256
     end
-    object fdmtbl_ConnectionProfilesWillRetain: TBooleanField
+    object tblConnectionProfilesWillRetain: TBooleanField
       DefaultExpression = 'False'
       FieldName = 'WillRetain'
     end
-    object fdmtbl_ConnectionProfilesWillQoS: TStringField
+    object tblConnectionProfilesWillQoS: TStringField
       DefaultExpression = 'QoS 0'
       FieldName = 'WillQoS'
       Size = 10
     end
-    object fdmtbl_ConnectionProfilesUserName: TStringField
+    object tblConnectionProfilesUserName: TStringField
       FieldName = 'UserName'
       Size = 255
     end
-    object fdmtbl_ConnectionProfilesPassword: TStringField
+    object tblConnectionProfilesPassword: TStringField
       FieldName = 'Password'
       Size = 255
     end
   end
   object ds_ConnectionProfiles: TDataSource
-    DataSet = fdmtbl_ConnectionProfiles
+    DataSet = tblConnectionProfiles
     Left = 448
     Top = 72
   end
   object tblAppProps: TFDMemTable
     FetchOptions.AssignedValues = [evMode]
     FetchOptions.Mode = fmAll
-    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.AssignedValues = [rvSilentMode, rvStorePrettyPrint]
+    ResourceOptions.StorePrettyPrint = True
     ResourceOptions.SilentMode = True
     UpdateOptions.AssignedValues = [uvCheckRequired]
     UpdateOptions.CheckRequired = False
@@ -237,5 +248,70 @@ object dm: Tdm
     object tblAppPropsProps: TBlobField
       FieldName = 'Props'
     end
+  end
+  object tblPeriodicalSending: TFDMemTable
+    FetchOptions.AssignedValues = [evMode, evCursorKind]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode, rvStorePrettyPrint]
+    ResourceOptions.StorePrettyPrint = True
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired]
+    Left = 440
+    Top = 336
+    object tblPeriodicalSendingEnabled: TBooleanField
+      FieldName = 'Enabled'
+    end
+    object tblPeriodicalSendingTopic: TWideStringField
+      FieldName = 'Topic'
+      Required = True
+      Size = 256
+    end
+    object tblPeriodicalSendingPayload: TWideMemoField
+      FieldName = 'Payload'
+      Required = True
+      BlobType = ftWideMemo
+      Size = 1024
+    end
+    object tblPeriodicalSendingQoS: TIntegerField
+      DefaultExpression = '0'
+      FieldName = 'QoS'
+      Required = True
+    end
+    object tblPeriodicalSendingRetain: TBooleanField
+      FieldName = 'Retain'
+    end
+    object tblPeriodicalSendingPeriodicity: TIntegerField
+      DefaultExpression = '1000'
+      FieldName = 'Periodicity'
+      Required = True
+    end
+    object tblPeriodicalSendingFuncType: TStringField
+      FieldName = 'FuncType'
+      Required = True
+      Size = 64
+    end
+    object tblPeriodicalSendingMin: TStringField
+      FieldName = 'Min'
+      Size = 32
+    end
+    object tblPeriodicalSendingMax: TStringField
+      FieldName = 'Max'
+      Size = 32
+    end
+    object tblPeriodicalSendingFuncPeriod: TIntegerField
+      FieldName = 'FuncPeriod'
+    end
+    object tblPeriodicalSendingFuncOffs: TIntegerField
+      FieldName = 'FuncOffs'
+    end
+  end
+  object ds_PeriodicalSending: TDataSource
+    DataSet = tblPeriodicalSending
+    Left = 440
+    Top = 392
+  end
+  object Timer1: TTimer
+    Left = 712
+    Top = 408
   end
 end
