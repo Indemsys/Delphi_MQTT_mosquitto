@@ -256,6 +256,7 @@ object dm: Tdm
     ResourceOptions.StorePrettyPrint = True
     ResourceOptions.SilentMode = True
     UpdateOptions.AssignedValues = [uvCheckRequired]
+    UpdateOptions.CheckRequired = False
     Left = 440
     Top = 336
     object tblPeriodicalSendingEnabled: TBooleanField
@@ -310,8 +311,29 @@ object dm: Tdm
     Left = 440
     Top = 392
   end
-  object Timer1: TTimer
-    Left = 712
-    Top = 408
+  object tblSubscriptions: TFDMemTable
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired]
+    UpdateOptions.CheckRequired = False
+    Left = 608
+    Top = 336
+    object tblSubscriptionsSubscribe: TBooleanField
+      FieldName = 'Subscribe'
+    end
+    object tblSubscriptionsTopic: TWideStringField
+      FieldName = 'Topic'
+      Size = 256
+    end
+    object tblSubscriptionsQoS: TIntegerField
+      FieldName = 'QoS'
+    end
+  end
+  object ds_Subscriptions: TDataSource
+    DataSet = tblSubscriptions
+    Left = 608
+    Top = 400
   end
 end

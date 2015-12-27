@@ -21,6 +21,7 @@ const
   SENDED = 'Sended.json';
   PROPS = 'Props.json';
   AUTOPUB = 'Autopub.json';
+  SUBLIST = 'SubList.json';
 
 type
   Tdm = class(TDataModule)
@@ -73,12 +74,16 @@ type
     tblPeriodicalSendingMin: TStringField;
     tblPeriodicalSendingMax: TStringField;
     ds_PeriodicalSending: TDataSource;
-    Timer1: TTimer;
     tblSendedMessagesQoS: TIntegerField;
     tblSendedMessagesRetain: TBooleanField;
     tblPeriodicalSendingRetain: TBooleanField;
     tblPeriodicalSendingFuncPeriod: TIntegerField;
     tblPeriodicalSendingFuncOffs: TIntegerField;
+    tblSubscriptions: TFDMemTable;
+    ds_Subscriptions: TDataSource;
+    tblSubscriptionsTopic: TWideStringField;
+    tblSubscriptionsQoS: TIntegerField;
+    tblSubscriptionsSubscribe: TBooleanField;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
@@ -162,6 +167,16 @@ begin
     end
   else
     tblPeriodicalSending.Open;
+
+
+   if FileExists(app_path + SUBLIST, False) = True then
+    try
+      tblSubscriptions.LoadFromFile(app_path + SUBLIST);
+    finally
+      tblSubscriptions.Open
+    end
+  else
+    tblSubscriptions.Open;
 
 
 
@@ -341,6 +356,7 @@ begin
   tblReceivedMessages.SaveToFile(app_path + RECEIVED);
   tblSendedMessages.SaveToFile(app_path + SENDED);
   tblPeriodicalSending.SaveToFile(app_path + AUTOPUB);
+  tblSubscriptions.SaveToFile(app_path + SUBLIST);
   tblAppProps.SaveToFile(app_path + PROPS);
 
 

@@ -95,8 +95,8 @@
               "AutoConnect":false,
               "du_props":"060A436F6D706F6E656E7430061B54637850726F7065727469657353746F7265436F6D706F6E656E7402000200",
               "PubTopicMRU":"iot-2/evt/event3/fmt/json\r\niot-2/evt/событие1/fmt/json\r\niot-2/evt/event3/fmt/txt\r\n\r\n",
-              "SubTopicMRU":""}}]}],
+              "SubTopicMRU":"iot-2/cmd/event3/fmt/json\r\n"}}]}],
     "RelationList":[],
     "UpdatesJournal":{
-      "SavePoint":106,
+      "SavePoint":122,
       "Changes":[]}}}}
