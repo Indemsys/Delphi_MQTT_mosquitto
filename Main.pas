@@ -25,7 +25,7 @@ uses
   System.Actions, Vcl.ActnList, Vcl.StdCtrls, cxButtons, cxTextEdit,
   dxSkinsdxStatusBarPainter, dxStatusBar, cxGroupBox, cxRadioGroup, cxMaskEdit, cxSpinEdit,
   CodeSiteLogging, dxBarBuiltInMenu, cxMemo, cxPC, cxDropDownEdit, cxMRUEdit, cxSplitter, cxStyles, dxLayoutLookAndFeels, dxBevel, cxCustomData, cxFilter, cxData, cxDataStorage, cxNavigator, Data.DB,
-  cxDBData, cxGridLevel, cxGridCustomView, cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid, cxDBNavigator, cxDBEdit, RxTimerLst;
+  cxDBData, cxGridLevel, cxGridCustomView, cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid, cxDBNavigator, cxDBEdit, RxTimerLst, dxSkinsForm;
 
 type
   T_user_obj = record
@@ -41,7 +41,7 @@ type
   T_mqtt_msg_id = (ON_CONNECT_ID, ON_DISCONNECT_ID, ON_PUBLISH_ID, ON_MESSAGE_ID, ON_SUBSCRIBE_ID, ON_UNSUBSCRIBE_ID, ON_LOG_ID);
 
 type
-  T_MQTTMessage = record
+  T_win_message = record
     description: string;
     id: T_mqtt_msg_id;
     rc: Integer; // Код с причиной вызова
@@ -49,7 +49,16 @@ type
   end;
 
 type
-  P_MQTTMessage = ^T_MQTTMessage;
+  P_win_message = ^T_win_message;
+
+type
+  T_received_MQTT_msg = record
+    mid: Integer;
+    topic: string;
+    payload: string;
+    QoS: Integer;
+    retain: boolean;
+  end;
 
 type
   TfrmMain = class(TForm)
@@ -100,7 +109,6 @@ type
     dxlc_PSItem9: TdxLayoutItem;
     dxLayoutLookAndFeelList1: TdxLayoutLookAndFeelList;
     dxLayoutStandardLookAndFeel1: TdxLayoutStandardLookAndFeel;
-    cxStyleRepository1: TcxStyleRepository;
     dxlc_PSSplitterItem1: TdxLayoutSplitterItem;
     dxBevel1: TdxBevel;
     cxb_Subscribe: TcxButton;
@@ -220,6 +228,14 @@ type
     cxchb_ReceivedTblEnable: TcxCheckBox;
     dxlc_Item12: TdxLayoutItem;
     dxlc_Group8: TdxLayoutAutoCreatedGroup;
+    cxb_7: TcxButton;
+    dxlc_2Item3: TdxLayoutItem;
+    dxlc_2Group1: TdxLayoutGroup;
+    act_ShowWidgets: TAction;
+    cxb_8: TcxButton;
+    dxlc_2Item4: TdxLayoutItem;
+    act_OpenWidgetsTable: TAction;
+    dxSkinController1: TdxSkinController;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure act_ConnectExecute(Sender: TObject);
@@ -227,17 +243,19 @@ type
     procedure act_PublishExecute(Sender: TObject);
     procedure act_SubscribeExecute(Sender: TObject);
     procedure act_UnsubscribeExecute(Sender: TObject);
-    procedure cxnav_ConnProfilesButtonsButtonClick(Sender: TObject; AButtonIndex: Integer; var ADone: Boolean);
+    procedure cxnav_ConnProfilesButtonsButtonClick(Sender: TObject; AButtonIndex: Integer; var ADone: boolean);
     procedure act_ClearLogExecute(Sender: TObject);
     procedure act_ClearSendedExecute(Sender: TObject);
     procedure act_ClearReceivedExecute(Sender: TObject);
     procedure act_StartPeriodicSendingExecute(Sender: TObject);
     procedure act_StopPeriodicSendingExecute(Sender: TObject);
     procedure act_SubscribeByListExecute(Sender: TObject);
+    procedure act_ShowWidgetsExecute(Sender: TObject);
+    procedure act_OpenWidgetsTableExecute(Sender: TObject);
   private
     f_mosq: Pmosquitto;
 
-    f_session_started: Boolean;
+    f_session_started: boolean;
     f_clean_session: Byte;
     f_retain: Byte;
 
@@ -253,7 +271,7 @@ type
     f_port: Integer;
     f_keepalive: Integer;
 
-    f_connected: Boolean;
+    f_connected: boolean;
     f_connect_result: Integer;
     f_disconnect_result: Integer;
 
@@ -268,7 +286,7 @@ type
     f_sub_topic: AnsiString;
     f_sub_qos: Integer;
 
-    f_autosending: Boolean;
+    f_autosending: boolean;
 
     AutoPubObjs: TObjectList;
 
@@ -284,11 +302,18 @@ type
     procedure Convert_Payload_To_String(const utf8str: PAnsiChar; sz: Integer; var str: string);
 
     procedure MessagesgHandler(var Message: TMessage); message WM_MQTT_MESSAGES;
-    procedure Log_sended_packet(topic: string; payload: string; QoS: Integer; Retain: Boolean);
-    procedure Publish(topic: string; payload: string; QoS: Integer; Retain: Boolean);
+    procedure Log_sended_packet(topic: string; payload: string; QoS: Integer; retain: boolean);
+    procedure Publish(topic: string; payload: string; QoS: Integer; retain: boolean);
+    procedure Log_received_packet(msg: T_received_MQTT_msg);
+    procedure Control_of_accessibility;
+    procedure WriteLog(logstring: string);
+    procedure ConvertMQTT_msg(mosquitto_message: P_mosquitto_message; var msg: T_received_MQTT_msg);
 
   public
     { Public declarations }
+
+  protected
+    procedure Notification(AComponent: TComponent; Operation: TOperation); override;
   end;
 
 function Callback_tls_set(buf: PChar; size: Integer; rwflag: Integer; userdata: Pointer): Integer; cdecl;
@@ -300,6 +325,7 @@ procedure Callback_on_subscribe(mosq: Pmosquitto; obj: Pointer; mid: Integer; qo
 procedure Callback_on_unsubscribe(mosq: Pmosquitto; obj: Pointer; mid: Integer); cdecl;
 procedure Callback_on_log(mosq: Pmosquitto; obj: Pointer; level: Integer; str: PAnsiChar); cdecl;
 procedure SendMessagetoForm(description: string; id: T_mqtt_msg_id; rc: Integer; mosquitto_message: P_mosquitto_message); cdecl;
+procedure SaveFormBitmapToBMPFile( AForm : TCustomForm; AFileName : string = '' );
 
 var
   frmMain: TfrmMain;
@@ -308,7 +334,7 @@ implementation
 
 {$R *.dfm}
 
-uses MainDataModule, ConnProfilesTbl, PeriodicPublishObj;
+uses MainDataModule, ConnProfilesTbl, PeriodicPublishObj, DataWidgets, VisualWidgetsTbl;
 
 // ------------------------------------------------------------------------------
 //
@@ -706,19 +732,28 @@ begin
 
         res := mosquitto_disconnect(f_mosq);
         if res <> MOSQ_ERR_SUCCESS then
-          if cxchb_LogEnable.Checked then
-            cxm_Log.Lines.Add('mosquitto_disconnect = ' + IntToStr(res));
+          WriteLog('mosquitto_disconnect = ' + IntToStr(res));
 
         // Обязательно делаем вызов  mosquitto_loop_write, иначе  disconnect задержится до следующего прихода пакета Ping от сервера
         // Посылка mosquitto_loop_read или mosquitto_loop_misc здесь не помогают
         res := mosquitto_loop_write(f_mosq, 1);
         if res <> MOSQ_ERR_SUCCESS then
-          if cxchb_LogEnable.Checked then
-            cxm_Log.Lines.Add('mosquitto_loop_write = ' + IntToStr(res));
+          WriteLog('mosquitto_loop_write = ' + IntToStr(res));
       end;
     end;
   finally
     UpdateStatusBar;
+  end;
+end;
+
+// ------------------------------------------------------------------------------
+//
+// ------------------------------------------------------------------------------
+procedure TfrmMain.act_OpenWidgetsTableExecute(Sender: TObject);
+begin
+  with TfrmVisWidgetsTbl.Create(Self) do
+  begin
+    ShowModal;
   end;
 end;
 
@@ -791,8 +826,7 @@ begin
     res := mosquitto_loop_write(f_mosq, 1);
     if res <> MOSQ_ERR_SUCCESS then
     begin
-      if cxchb_LogEnable.Checked then
-        cxm_Log.Lines.Add('mosquitto_loop_write = ' + IntToStr(res));
+      WriteLog('mosquitto_loop_write = ' + IntToStr(res));
     end;
     Log_sended_packet(cxmru_PubTopic.Text, cxm_PubPayload.Text, f_pub_qos, cxchb_PubRetain.Checked);
   finally
@@ -803,7 +837,7 @@ end;
 // ------------------------------------------------------------------------------
 //
 // ------------------------------------------------------------------------------
-procedure TfrmMain.Publish(topic, payload: string; QoS: Integer; Retain: Boolean);
+procedure TfrmMain.Publish(topic, payload: string; QoS: Integer; retain: boolean);
 var
   res: Integer;
   errdesc: string;
@@ -816,7 +850,7 @@ begin
   // ------------------------------------
   f_pub_qos := QoS;
   // ------------------------------------
-  if Retain then
+  if retain then
     f_pub_retain := 1
   else
     f_pub_retain := 0;
@@ -853,8 +887,7 @@ begin
     else
       errdesc := 'Unknown error';
     end;
-    if cxchb_LogEnable.Checked then
-      cxm_Log.Lines.Add('Ошибка выполнения Publish: ' + errdesc);
+    WriteLog('Ошибка выполнения Publish: ' + errdesc);
     Abort;
   end;
 
@@ -862,17 +895,101 @@ begin
   res := mosquitto_loop_write(f_mosq, 1);
   if res <> MOSQ_ERR_SUCCESS then
   begin
-    if cxchb_LogEnable.Checked then
-      cxm_Log.Lines.Add('mosquitto_loop_write = ' + IntToStr(res));
+    WriteLog('mosquitto_loop_write = ' + IntToStr(res));
   end;
 
-  Log_sended_packet(topic, payload, QoS, Retain);
+  Log_sended_packet(topic, payload, QoS, retain);
 end;
 
 // ------------------------------------------------------------------------------
 //
 // ------------------------------------------------------------------------------
-procedure TfrmMain.Log_sended_packet(topic: string; payload: string; QoS: Integer; Retain: Boolean);
+procedure TfrmMain.ConvertMQTT_msg(mosquitto_message: P_mosquitto_message; var msg: T_received_MQTT_msg);
+var
+  tmpstr: string;
+begin
+  Convert_Topic_To_String(mosquitto_message^.topic, tmpstr);
+  msg.topic := tmpstr;
+  Convert_Payload_To_String(mosquitto_message^.payload, mosquitto_message^.payloadlen, tmpstr);
+  msg.payload := tmpstr;
+  msg.mid := mosquitto_message^.mid;
+  msg.QoS := mosquitto_message^.QoS;
+  msg.retain := boolean(mosquitto_message^.retain);
+end;
+
+// ------------------------------------------------------------------------------
+//
+// ------------------------------------------------------------------------------
+procedure TfrmMain.Log_received_packet(msg: T_received_MQTT_msg);
+begin
+  if cxchb_ReceivedTblEnable.Checked then
+  begin
+    // Записываем в таблицу
+    dm.tblReceivedMessages.Insert;
+    dm.tblReceivedMessagesTime.Value := Now;
+    dm.tblReceivedMessagesTopic.Value := msg.topic;
+    dm.tblReceivedMessagesPayload.Value := msg.payload;
+    dm.tblReceivedMessagesmid.Value := msg.mid;
+    dm.tblReceivedMessagesQoS.Value := msg.QoS;
+    dm.tblReceivedMessagesRetain.Value := msg.retain;
+    dm.tblReceivedMessages.Post;
+  end;
+end;
+
+// ------------------------------------------------------------------------------
+// Управление видимостью функций кнопок при изменении состояния соединения
+// ------------------------------------------------------------------------------
+procedure TfrmMain.Control_of_accessibility;
+begin
+  if f_connected = True then
+  begin
+    act_Connect.Enabled := False;
+    act_Disconnect.Enabled := True;
+    act_Publish.Enabled := True;
+    act_Subscribe.Enabled := True;
+    act_Unsubscribe.Enabled := True;
+    act_SubscribeByList.Enabled := True;
+    if f_autosending = False then
+      act_StartPeriodicSending.Enabled := True;
+    dm.tblConnectionProfiles.UpdateOptions.ReadOnly := True;
+    cxnav_ConnProfiles.Enabled := False;
+  end
+  else
+  begin
+    try
+      if f_autosending = True then
+      begin
+        act_StopPeriodicSending.OnExecute(Self);
+        f_autosending := False;
+      end;
+    except
+    end;
+    act_Connect.Enabled := True;
+    act_Disconnect.Enabled := False;
+    act_Publish.Enabled := False;
+    act_Subscribe.Enabled := False;
+    act_Unsubscribe.Enabled := False;
+    act_StartPeriodicSending.Enabled := False;
+    act_StopPeriodicSending.Enabled := False;
+    act_SubscribeByList.Enabled := False;
+    dm.tblConnectionProfiles.UpdateOptions.ReadOnly := False;
+    cxnav_ConnProfiles.Enabled := True;
+  end;
+end;
+
+// ------------------------------------------------------------------------------
+//
+// ------------------------------------------------------------------------------
+procedure TfrmMain.WriteLog(logstring: string);
+begin
+  if cxchb_LogEnable.Checked then
+    cxm_Log.Lines.Add(logstring);
+end;
+
+// ------------------------------------------------------------------------------
+//
+// ------------------------------------------------------------------------------
+procedure TfrmMain.Log_sended_packet(topic: string; payload: string; QoS: Integer; retain: boolean);
 begin
   // Записываем в таблицу
   if cxchb_SendedTblEnable.Checked = False then
@@ -883,8 +1000,21 @@ begin
   dm.tblSendedMessagesTopic.Value := topic;
   dm.tblSendedMessagesPayload.Value := payload;
   dm.tblSendedMessagesQoS.Value := QoS;
-  dm.tblSendedMessagesRetain.Value := Retain;
+  dm.tblSendedMessagesRetain.Value := retain;
   dm.tblSendedMessages.Post;
+end;
+
+// ------------------------------------------------------------------------------
+//
+// ------------------------------------------------------------------------------
+procedure TfrmMain.act_ShowWidgetsExecute(Sender: TObject);
+begin
+  if not Assigned(frmWidgets) then
+  begin
+    frmWidgets := TfrmWidgets.Create(Self);
+  end;
+  frmWidgets.Show;
+
 end;
 
 // ------------------------------------------------------------------------------
@@ -897,7 +1027,7 @@ var
   topic: string;
   paylod: string;
   QoS: Integer;
-  Retain: Boolean;
+  retain: boolean;
   func_type_str: string;
   func_type: Integer;
   minv: single;
@@ -923,7 +1053,7 @@ begin
           topic := FieldByName('Topic').AsString;
           paylod := FieldByName('Payload').AsString;
           QoS := FieldByName('QoS').AsInteger;
-          Retain := FieldByName('Retain').AsBoolean;
+          retain := FieldByName('Retain').AsBoolean;
 
           func_type_str := FieldByName('FuncType').AsString;
 
@@ -940,7 +1070,7 @@ begin
           ofsv := FieldByName('FuncOffs').AsInteger;
 
           ppo := TPeriodicPublishObj.Create(Nil, timeout, Publish);
-          ppo.SetPackData(topic, paylod, QoS, Retain);
+          ppo.SetPackData(topic, paylod, QoS, retain);
           ppo.SetFunction(func_type, minv, maxv, periodicityv, ofsv);
           try
             AutoPubObjs.Add(ppo);
@@ -949,8 +1079,7 @@ begin
             ppo.Free;
           end;
         except
-          if cxchb_LogEnable.Checked then
-            cxm_Log.Lines.Add('Ошибка в топике "' + FieldByName('Topic').AsString + '" таблицы периодической публикации');
+          WriteLog('Ошибка в топике "' + FieldByName('Topic').AsString + '" таблицы периодической публикации');
         end;
       end;
 
@@ -1006,8 +1135,7 @@ begin
 
       if topic = '' then
       begin
-        if cxchb_LogEnable.Checked then
-          cxm_Log.Lines.Add('Subscription was skeeped. Empty Topic.');
+        WriteLog('Subscription was skeeped. Empty Topic.');
         continue;
       end;
 
@@ -1036,15 +1164,12 @@ begin
         else
           errdesc := 'Unknown error';
         end;
-        if cxchb_LogEnable.Checked then
-          cxm_Log.Lines.Add('Ошибка подписки из списка: ' + errdesc);
+        WriteLog('Ошибка подписки из списка: ' + errdesc);
       end;
       // Обязательно делаем вызов  mosquitto_loop_write, иначе  пересылка задержится до следующего прихода пакета Ping от сервера
       res := mosquitto_loop_write(f_mosq, 1);
       if res <> MOSQ_ERR_SUCCESS then
-        if cxchb_LogEnable.Checked then
-          cxm_Log.Lines.Add('Ошибка подписки из списка: mosquitto_loop_write = ' + IntToStr(res));
-
+        WriteLog('Ошибка подписки из списка: mosquitto_loop_write = ' + IntToStr(res));
       Next;
     end;
   end;
@@ -1060,54 +1185,47 @@ var
 begin
   if f_connected = False then
     Abort;
-  try
 
-    inc(f_sub_id);
+  inc(f_sub_id);
 
-    if cxmru_SubTopic.Text = '' then
-    begin
-      MessageBox(0, 'Недопустимо пустое значение Subscribe Topic', 'Error', MB_ICONSTOP or MB_OK);
-      cxmru_SubTopic.SetFocus;
-      Abort;
-    end;
-
-    f_sub_qos := cxrg_SubQoS.ItemIndex;
-
-    // ------------------------------------
-    if cxmru_SubTopic.Text = '' then
-      f_sub_topic := ''
-    else
-    begin
-      ConvertStringToUTF8(cxmru_SubTopic.Text, f_sub_topic);
-    end;
-
-    res := mosquitto_subscribe(f_mosq, @f_sub_id, PAnsiChar(f_sub_topic), f_sub_qos);
-    if res <> MOSQ_ERR_SUCCESS then
-    begin
-      case res of
-        MOSQ_ERR_INVAL:
-          errdesc := 'The input parameters is invalid';
-        MOSQ_ERR_NOMEM:
-          errdesc := 'An out of memory condition occurred';
-        MOSQ_ERR_NO_CONN:
-          errdesc := 'The client isn''t connected to a broker';
-      else
-        errdesc := 'Unknown error';
-      end;
-      MessageBox(0, PChar('Ошибка выполнения Subsribe: ' + errdesc), 'Error', MB_ICONWARNING or MB_OK);
-      Abort;
-    end;
-
-    // Обязательно делаем вызов  mosquitto_loop_write, иначе  пересылка задержится до следующего прихода пакета Ping от сервера
-    res := mosquitto_loop_write(f_mosq, 1);
-    if res <> MOSQ_ERR_SUCCESS then
-      if cxchb_LogEnable.Checked then
-        cxm_Log.Lines.Add('mosquitto_loop_write = ' + IntToStr(res));
-
-  finally
-
+  if cxmru_SubTopic.Text = '' then
+  begin
+    MessageBox(0, 'Недопустимо пустое значение Subscribe Topic', 'Error', MB_ICONSTOP or MB_OK);
+    cxmru_SubTopic.SetFocus;
+    Abort;
   end;
 
+  f_sub_qos := cxrg_SubQoS.ItemIndex;
+
+  // ------------------------------------
+  if cxmru_SubTopic.Text = '' then
+    f_sub_topic := ''
+  else
+  begin
+    ConvertStringToUTF8(cxmru_SubTopic.Text, f_sub_topic);
+  end;
+
+  res := mosquitto_subscribe(f_mosq, @f_sub_id, PAnsiChar(f_sub_topic), f_sub_qos);
+  if res <> MOSQ_ERR_SUCCESS then
+  begin
+    case res of
+      MOSQ_ERR_INVAL:
+        errdesc := 'The input parameters is invalid';
+      MOSQ_ERR_NOMEM:
+        errdesc := 'An out of memory condition occurred';
+      MOSQ_ERR_NO_CONN:
+        errdesc := 'The client isn''t connected to a broker';
+    else
+      errdesc := 'Unknown error';
+    end;
+    MessageBox(0, PChar('Ошибка выполнения Subsribe: ' + errdesc), 'Error', MB_ICONWARNING or MB_OK);
+    Abort;
+  end;
+
+  // Обязательно делаем вызов  mosquitto_loop_write, иначе  пересылка задержится до следующего прихода пакета Ping от сервера
+  res := mosquitto_loop_write(f_mosq, 1);
+  if res <> MOSQ_ERR_SUCCESS then
+    WriteLog('mosquitto_loop_write = ' + IntToStr(res));
 end;
 
 // ------------------------------------------------------------------------------
@@ -1120,55 +1238,52 @@ var
 begin
   if f_connected = False then
     Abort;
-  try
 
-    inc(f_sub_id);
+  inc(f_sub_id);
 
-    if cxmru_SubTopic.Text = '' then
-    begin
-      MessageBox(0, 'Недопустимо пустое значение Subscribe Topic', 'Error', MB_ICONSTOP or MB_OK);
-      cxmru_SubTopic.SetFocus;
-      Abort;
-    end;
-
-    // ------------------------------------
-    if cxmru_SubTopic.Text = '' then
-      f_sub_topic := ''
-    else
-    begin
-      ConvertStringToUTF8(cxmru_SubTopic.Text, f_sub_topic);
-    end;
-
-    res := mosquitto_unsubscribe(f_mosq, @f_sub_id, PAnsiChar(f_sub_topic));
-    if res <> MOSQ_ERR_SUCCESS then
-    begin
-      case res of
-        MOSQ_ERR_INVAL:
-          errdesc := 'The input parameters is invalid';
-        MOSQ_ERR_NOMEM:
-          errdesc := 'An out of memory condition occurred';
-        MOSQ_ERR_NO_CONN:
-          errdesc := 'The client isn''t connected to a broker';
-      else
-        errdesc := 'Unknown error';
-      end;
-      MessageBox(0, PChar('Ошибка выполнения Subsribe: ' + errdesc), 'Error', MB_ICONWARNING or MB_OK);
-      Abort;
-    end;
-
-    // Обязательно делаем вызов  mosquitto_loop_write, иначе  пересылка задержится до следующего прихода пакета Ping от сервера
-    res := mosquitto_loop_write(f_mosq, 1);
-    if res <> MOSQ_ERR_SUCCESS then
-      if cxchb_LogEnable.Checked then
-        cxm_Log.Lines.Add('mosquitto_loop_write = ' + IntToStr(res));
-
-  finally
-
+  if cxmru_SubTopic.Text = '' then
+  begin
+    MessageBox(0, 'Недопустимо пустое значение Subscribe Topic', 'Error', MB_ICONSTOP or MB_OK);
+    cxmru_SubTopic.SetFocus;
+    Abort;
   end;
+
+  // ------------------------------------
+  if cxmru_SubTopic.Text = '' then
+    f_sub_topic := ''
+  else
+  begin
+    ConvertStringToUTF8(cxmru_SubTopic.Text, f_sub_topic);
+  end;
+
+  res := mosquitto_unsubscribe(f_mosq, @f_sub_id, PAnsiChar(f_sub_topic));
+  if res <> MOSQ_ERR_SUCCESS then
+  begin
+    case res of
+      MOSQ_ERR_INVAL:
+        errdesc := 'The input parameters is invalid';
+      MOSQ_ERR_NOMEM:
+        errdesc := 'An out of memory condition occurred';
+      MOSQ_ERR_NO_CONN:
+        errdesc := 'The client isn''t connected to a broker';
+    else
+      errdesc := 'Unknown error';
+    end;
+    MessageBox(0, PChar('Ошибка выполнения Subsribe: ' + errdesc), 'Error', MB_ICONWARNING or MB_OK);
+    Abort;
+  end;
+
+  // Обязательно делаем вызов  mosquitto_loop_write, иначе  пересылка задержится до следующего прихода пакета Ping от сервера
+  res := mosquitto_loop_write(f_mosq, 1);
+  if res <> MOSQ_ERR_SUCCESS then
+    WriteLog('mosquitto_loop_write = ' + IntToStr(res));
 
 end;
 
-procedure TfrmMain.cxnav_ConnProfilesButtonsButtonClick(Sender: TObject; AButtonIndex: Integer; var ADone: Boolean);
+// ------------------------------------------------------------------------------
+//
+// ------------------------------------------------------------------------------
+procedure TfrmMain.cxnav_ConnProfilesButtonsButtonClick(Sender: TObject; AButtonIndex: Integer; var ADone: boolean);
 begin
   // CodeSite.Send(Sender.ClassName + ' AButtonIndex=' + IntToStr(AButtonIndex));
   if AButtonIndex = 16 then
@@ -1215,14 +1330,13 @@ end;
 // ------------------------------------------------------------------------------
 procedure TfrmMain.MessagesgHandler(var Message: TMessage);
 var
-  mqttmsg: P_MQTTMessage;
+  mqttmsg: P_win_message;
   logstring: String;
   mosquitto_message: P_mosquitto_message;
-
-  tmpstr: string;
+  msg: T_received_MQTT_msg;
 
 begin
-  mqttmsg := P_MQTTMessage(Message.LParam);
+  mqttmsg := P_win_message(Message.LParam);
 
   logstring := mqttmsg^.description;
 
@@ -1232,6 +1346,7 @@ begin
       Screen.Cursor := crDefault;
     end;
 
+    // ***************************************************** Обработка потери соединения
     // Если не вызовем mosquitto_loop_stop при разрыве соединения, то не произойдет следующее корректное подключение
     if mqttmsg^.id = ON_DISCONNECT_ID then
     begin
@@ -1247,86 +1362,48 @@ begin
       end;
     end;
 
+    // ***************************************************** Обработка события публикации
     if mqttmsg^.id = ON_PUBLISH_ID then
     begin
       logstring := logstring + ' mid=' + IntToStr(mqttmsg^.rc);
     end;
 
+    // ***************************************************** Обработка события подписки
     if mqttmsg^.id = ON_SUBSCRIBE_ID then
     begin
       logstring := logstring + ' mid=' + IntToStr(mqttmsg^.rc);
     end;
 
+    // ***************************************************** Обработка события поступления публикации от брокера
     if mqttmsg^.id = ON_MESSAGE_ID then
     begin
       mosquitto_message := mqttmsg^.mosquitto_message;
 
-      if cxchb_ReceivedTblEnable.Checked then
-      begin
-        // Записываем в таблицу
-        dm.tblReceivedMessages.Insert;
-        dm.tblReceivedMessagesTime.Value := Now();
-        Convert_Topic_To_String(mosquitto_message^.topic, tmpstr);
-        dm.tblReceivedMessagesTopic.Value := tmpstr;
-        Convert_Payload_To_String(mosquitto_message^.payload, mosquitto_message^.payloadlen, tmpstr);
-        dm.tblReceivedMessagesPayload.Value := tmpstr;
-        dm.tblReceivedMessagesmid.Value := mosquitto_message^.mid;
-        dm.tblReceivedMessagesQoS.Value := mosquitto_message^.QoS;
-        dm.tblReceivedMessagesRetain.Value := Boolean(mosquitto_message^.Retain);
-        dm.tblReceivedMessages.Post;
-      end;
-
+      ConvertMQTT_msg(mosquitto_message, msg);
+      Log_received_packet(msg);
+      if  Assigned(frmWidgets) then frmWidgets.AcceptMessage(msg);
       mosquitto_message_clear(mosquitto_message);
       FreeMem(mosquitto_message);
     end;
 
-    if f_connected = True then
-    begin
-      act_Connect.Enabled := False;
-      act_Disconnect.Enabled := True;
-      act_Publish.Enabled := True;
-      act_Subscribe.Enabled := True;
-      act_Unsubscribe.Enabled := True;
-      act_SubscribeByList.Enabled := True;
-
-      if f_autosending = False then
-        act_StartPeriodicSending.Enabled := True;
-
-      dm.tblConnectionProfiles.UpdateOptions.ReadOnly := True;
-      cxnav_ConnProfiles.Enabled := False;
-    end
-    else
-    begin
-      try
-        if f_autosending = True then
-        begin
-          act_StopPeriodicSending.OnExecute(Self);
-          f_autosending := False;
-        end;
-      except
-      end;
-
-      act_Connect.Enabled := True;
-      act_Disconnect.Enabled := False;
-      act_Publish.Enabled := False;
-      act_Subscribe.Enabled := False;
-      act_Unsubscribe.Enabled := False;
-      act_StartPeriodicSending.Enabled := False;
-      act_StopPeriodicSending.Enabled := False;
-      act_SubscribeByList.Enabled := False;
-
-      dm.tblConnectionProfiles.UpdateOptions.ReadOnly := False;
-      cxnav_ConnProfiles.Enabled := True;
-
-    end;
-
-    if cxchb_LogEnable.Checked then
-      cxm_Log.Lines.Add(logstring);
+    Control_of_accessibility;
+    WriteLog(logstring);
     UpdateStatusBar;
 
   finally
     Dispose(mqttmsg);
   end;
+end;
+
+// ------------------------------------------------------------------------------
+//
+// ------------------------------------------------------------------------------
+procedure TfrmMain.Notification(AComponent: TComponent; Operation: TOperation);
+begin
+  inherited;
+  if (Operation = opRemove) and (AComponent = frmWidgets) then
+    frmWidgets := Nil;
+
 end;
 
 // ------------------------------------------------------------------------------
@@ -1367,7 +1444,7 @@ end;
 // ------------------------------------------------------------------------------
 procedure SendMessagetoForm(description: string; id: T_mqtt_msg_id; rc: Integer; mosquitto_message: P_mosquitto_message);
 var
-  mqttmsg: P_MQTTMessage;
+  mqttmsg: P_win_message;
 begin
   New(mqttmsg);
   mqttmsg^.description := description;
@@ -1475,6 +1552,20 @@ var
 begin
   msgstr := String(str);
   SendMessagetoForm(msgstr, ON_LOG_ID, Integer(level), Nil);
+end;
+
+
+procedure SaveFormBitmapToBMPFile( AForm : TCustomForm; AFileName : string = '' );
+// Copies this form's bitmap to the specified file
+var
+  Bitmap: TBitMap;
+begin
+  Bitmap := AForm.GetFormImage;
+  try
+    Bitmap.SaveToFile( AFileName );
+  finally
+    Bitmap.Free;
+  end;
 end;
 
 end.

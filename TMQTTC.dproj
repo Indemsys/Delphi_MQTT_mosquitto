@@ -101,6 +101,19 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="PeriodicPublishObj.pas"/>
+        <DCCReference Include="DataWidgets.pas">
+            <Form>frmWidgets</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="VisualWidgetsTbl.pas">
+            <Form>frmVisWidgetsTbl</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="superobject.pas"/>
+        <DCCReference Include="supertypes.pas"/>
+        <DCCReference Include="superdate.pas"/>
+        <DCCReference Include="supertimezone.pas"/>
+        <DCCReference Include="JSONparser.pas"/>
         <None Include="mosquitto.h"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>

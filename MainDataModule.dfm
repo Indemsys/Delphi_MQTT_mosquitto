@@ -314,7 +314,8 @@ object dm: Tdm
   object tblSubscriptions: TFDMemTable
     FetchOptions.AssignedValues = [evMode]
     FetchOptions.Mode = fmAll
-    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.AssignedValues = [rvSilentMode, rvStorePrettyPrint]
+    ResourceOptions.StorePrettyPrint = True
     ResourceOptions.SilentMode = True
     UpdateOptions.AssignedValues = [uvCheckRequired]
     UpdateOptions.CheckRequired = False
@@ -334,6 +335,47 @@ object dm: Tdm
   object ds_Subscriptions: TDataSource
     DataSet = tblSubscriptions
     Left = 608
+    Top = 400
+  end
+  object tblVariables: TFDMemTable
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode, rvStorePrettyPrint]
+    ResourceOptions.StorePrettyPrint = True
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired]
+    UpdateOptions.CheckRequired = False
+    Left = 208
+    Top = 336
+    object tblVariablesVarName: TWideStringField
+      FieldName = 'VarName'
+      Size = 32
+    end
+    object tblVariablesVarCaption: TWideStringField
+      FieldName = 'VarCaption'
+      Size = 128
+    end
+    object tblVariablesWidgetClass: TStringField
+      FieldName = 'WidgetClass'
+      Size = 64
+    end
+    object tblVariablesDockPanelName: TStringField
+      FieldName = 'DockPanelName'
+      Size = 128
+    end
+    object tblVariablesMaxVal: TFloatField
+      FieldName = 'MaxVal'
+    end
+    object tblVariablesMinVal: TFloatField
+      FieldName = 'MinVal'
+    end
+    object tblVariablesPanelProps: TBlobField
+      FieldName = 'PanelProps'
+    end
+  end
+  object ds_Variables: TDataSource
+    DataSet = tblVariables
+    Left = 208
     Top = 400
   end
 end

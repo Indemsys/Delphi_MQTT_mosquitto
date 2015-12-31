@@ -12,6 +12,7 @@ uses
   cxClasses, cxPropertiesStore, cxStorage,
   cxGridLevel, cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGridCustomView, cxGrid, dxBar,
   FireDAC.Stan.StorageJSON, FireDAC.Stan.StorageBin, dxmdaset, Vcl.ExtCtrls,
+  dxDockControl, dxDockPanel, dxSkinsdxDockControlPainter,
   CodeSiteLogging;
 
 const
@@ -22,6 +23,7 @@ const
   PROPS = 'Props.json';
   AUTOPUB = 'Autopub.json';
   SUBLIST = 'SubList.json';
+  VARSTBL = 'Variables.json';
 
 type
   Tdm = class(TDataModule)
@@ -84,10 +86,20 @@ type
     tblSubscriptionsTopic: TWideStringField;
     tblSubscriptionsQoS: TIntegerField;
     tblSubscriptionsSubscribe: TBooleanField;
+    tblVariables: TFDMemTable;
+    tblVariablesVarName: TWideStringField;
+    tblVariablesWidgetClass: TStringField;
+    ds_Variables: TDataSource;
+    tblVariablesDockPanelName: TStringField;
+    tblVariablesPanelProps: TBlobField;
+    tblVariablesVarCaption: TWideStringField;
+    tblVariablesMaxVal: TFloatField;
+    tblVariablesMinVal: TFloatField;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
     app_path: string;
+    procedure OpenTable(tbl: TFDMemTable; filename: string);
   public
     procedure SaveFormProperties(frm: TForm);
     procedure RestoreFormProperties(frm: TForm);
@@ -113,72 +125,14 @@ begin
 
   app_path := ExtractFilePath(Application.ExeName);
 
-  if FileExists(app_path + INI, False) = True then
-    try
-      tblSettings.LoadFromFile(app_path + INI)
-    except
-      tblSettings.Open
-    end
-  else
-    tblSettings.Open;
-
-  if FileExists(app_path + CLIENTS, False) = True then
-    try
-      tblConnectionProfiles.LoadFromFile(app_path + CLIENTS);
-    finally
-      tblConnectionProfiles.Open
-    end
-  else
-    tblConnectionProfiles.Open;
-
-  if FileExists(app_path + SENDED, False) = True then
-    try
-      tblSendedMessages.LoadFromFile(app_path + SENDED);
-    finally
-      tblSendedMessages.Open
-    end
-  else
-    tblSendedMessages.Open;
-
-   if FileExists(app_path + RECEIVED, False) = True then
-    try
-      tblReceivedMessages.LoadFromFile(app_path + RECEIVED);
-    finally
-      tblReceivedMessages.Open
-    end
-  else
-    tblReceivedMessages.Open;
-
-   if FileExists(app_path + PROPS, False) = True then
-    try
-      tblAppProps.LoadFromFile(app_path + PROPS);
-    finally
-      tblAppProps.Open
-    end
-  else
-    tblAppProps.Open;
-
-
-   if FileExists(app_path + AUTOPUB, False) = True then
-    try
-      tblPeriodicalSending.LoadFromFile(app_path + AUTOPUB);
-    finally
-      tblPeriodicalSending.Open
-    end
-  else
-    tblPeriodicalSending.Open;
-
-
-   if FileExists(app_path + SUBLIST, False) = True then
-    try
-      tblSubscriptions.LoadFromFile(app_path + SUBLIST);
-    finally
-      tblSubscriptions.Open
-    end
-  else
-    tblSubscriptions.Open;
-
-
+  OpenTable(tblSettings, INI);
+  OpenTable(tblConnectionProfiles, CLIENTS);
+  OpenTable(tblSendedMessages, SENDED);
+  OpenTable(tblReceivedMessages, RECEIVED);
+  OpenTable(tblAppProps, PROPS);
+  OpenTable(tblPeriodicalSending, AUTOPUB);
+  OpenTable(tblSubscriptions, SUBLIST);
+  OpenTable(tblVariables, VARSTBL);
 
   strm := TMemoryStream.Create;
   try
@@ -193,7 +147,6 @@ begin
 
 end;
 
-
 // ------------------------------------------------------------------------------
 //
 // ------------------------------------------------------------------------------
@@ -203,14 +156,15 @@ var
   comp: TComponent;
   stor: TcxPropertiesStore;
   tview: TcxGridDBTableView;
+  dockman: TdxDockingManager;
   fldn: string;
   ss: TStringStream;
-  tag : Integer;
+  tag: Integer;
 
 begin
   ss := TStringStream.Create;
   try
-    tag := frm.Tag;
+    tag := frm.tag;
     // Ищем на форме компонент типа TcxPropertiesStore и выполяем ему операцию восстановления
     for i := 0 to frm.ComponentCount - 1 do
     begin
@@ -235,28 +189,46 @@ begin
 
     // Если не совпадает тэг формы и сохраненный тэг, то свойства таблиц  TcxGridDBTableView в форме не восстанавливаются
     // Это нужно для того чтобы корректно отображались новые версии таблиц с измененной структурой столбцов
-    if frm.Tag <> tag then
+    if frm.tag <> tag then
     begin
-      frm.Tag := tag;
-      Exit;
+      frm.tag := tag;
+    end
+    else
+    begin
+      // Ищем на форме компоненты типа TcxGridDBTableView и выполяем ему операцию восстановления
+      for i := 0 to frm.ComponentCount - 1 do
+      begin
+        comp := frm.Components[i];
+        fldn := frm.Name + comp.Name;
+
+        if comp is TcxGridDBTableView then
+        begin
+          tview := TcxGridDBTableView(comp);
+          if tblAppProps.Locate('Name', fldn, []) = True then
+          begin
+            ss.Clear;
+            tblAppPropsProps.SaveToStream(ss);
+            ss.Position := 0;
+            tview.RestoreFromStream(ss);
+          end;
+        end;
+      end;
     end;
 
-
-    // Ищем на форме компоненты типа TcxGridDBTableView и выполяем ему операцию восстановления
     for i := 0 to frm.ComponentCount - 1 do
     begin
       comp := frm.Components[i];
       fldn := frm.Name + comp.Name;
-
-      if comp is TcxGridDBTableView then
+      if comp is TdxDockingManager then
       begin
-        tview := TcxGridDBTableView(comp);
+        dockman := TdxDockingManager(comp);
+        // Таблица tblAppProps здесь содержит строки с именем компонента на форме и его  потоком параметров
         if tblAppProps.Locate('Name', fldn, []) = True then
         begin
           ss.Clear;
           tblAppPropsProps.SaveToStream(ss);
-          ss.Position := 0;
-          tview.RestoreFromStream(ss);
+          ss.Position :=0;
+          dockman.LoadLayoutFromStream (ss);
         end;
       end;
     end;
@@ -269,12 +241,28 @@ end;
 // ------------------------------------------------------------------------------
 //
 // ------------------------------------------------------------------------------
+procedure Tdm.OpenTable(tbl: TFDMemTable; filename: string);
+begin
+  if FileExists(app_path + filename, False) = True then
+    try
+      tbl.LoadFromFile(app_path + filename);
+    except
+      tbl.Open;
+    end
+  else
+    tbl.Open;
+end;
+
+// ------------------------------------------------------------------------------
+//
+// ------------------------------------------------------------------------------
 procedure Tdm.SaveFormProperties(frm: TForm);
 var
   i: Integer;
   comp: TComponent;
   stor: TcxPropertiesStore;
   tview: TcxGridDBTableView;
+  dockman: TdxDockingManager;
   fldn: string;
   ss: TStringStream;
 
@@ -288,7 +276,7 @@ begin
     begin
       comp := frm.Components[i];
 
-      if (comp is TcxPropertiesStore) or (comp is TcxGridDBTableView) then
+      if (comp is TcxPropertiesStore) or (comp is TcxGridDBTableView) or (comp is TdxDockingManager) then
       begin
         fldn := frm.Name + comp.Name;
 
@@ -301,37 +289,43 @@ begin
           tblAppProps.FieldByName('Name').Value := fldn;
           tblAppProps.Post;
         end;
+
+        if comp is TcxPropertiesStore then
+        begin
+          stor := TcxPropertiesStore(comp);
+          // Ищем поле в таблице dxMemData
+          ss.Clear;
+          stor.StorageStream := ss;
+          stor.StoreTo;
+          tblAppProps.Edit;
+          tblAppPropsProps.LoadFromStream(ss);
+          tblAppProps.Post;
+
+        end
+        else if comp is TcxGridDBTableView then
+        begin
+          tview := TcxGridDBTableView(comp);
+          ss.Clear;
+          tview.StoreToStream(ss);
+          tblAppProps.Edit;
+          tblAppPropsProps.LoadFromStream(ss);
+          tblAppProps.Post;
+        end
+        else if comp is TdxDockingManager then
+        begin
+          dockman := TdxDockingManager(comp);
+          ss.Clear;
+          dockman.SaveLayoutToStream(ss);
+          tblAppProps.Edit;
+          tblAppPropsProps.LoadFromStream(ss);
+          tblAppProps.Post;
+        end;
       end;
-
-      if comp is TcxPropertiesStore then
-      begin
-        stor := TcxPropertiesStore(comp);
-        // Ищем поле в таблице dxMemData
-        ss.Clear;
-        stor.StorageStream := ss;
-        stor.StoreTo;
-        tblAppProps.Edit;
-        tblAppPropsProps.LoadFromStream(ss);
-        tblAppProps.Post;
-
-      end;
-
-      if comp is TcxGridDBTableView then
-      begin
-        tview := TcxGridDBTableView(comp);
-        ss.Clear;
-        tview.StoreToStream(ss);
-        tblAppProps.Edit;
-        tblAppPropsProps.LoadFromStream(ss);
-        tblAppProps.Post;
-      end;
-
     end;
   finally
     ss.Free;
   end;
 end;
-
 
 // ------------------------------------------------------------------------------
 //
@@ -358,10 +352,8 @@ begin
   tblPeriodicalSending.SaveToFile(app_path + AUTOPUB);
   tblSubscriptions.SaveToFile(app_path + SUBLIST);
   tblAppProps.SaveToFile(app_path + PROPS);
-
-
+  tblVariables.SaveToFile(app_path + VARSTBL);
 
 end;
-
 
 end.

@@ -1,23 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
-    <Transaction>1899.12.30 00:00:00.000.625,=C:\Embedded\Projects\MQTT\Test_MQTT_Client\MOSQUITTO.PAS</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.661,C:\Embedded\Projects\MQTT\Test_MQTT_Client\Du.pas=C:\Embedded\Projects\MQTT\Test_MQTT_Client\Unit1.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.695,C:\Embedded\Projects\MQTT\Test_MQTT_Client\MainDataModule.pas=C:\Embedded\Projects\MQTT\Test_MQTT_Client\DataUnit.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.597,C:\Embedded\Projects\MQTT\Test_MQTT_Client\DataUnit.dfm=C:\Embedded\Projects\MQTT\Test_MQTT_Client\Du.dfm</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.957,C:\Embedded\Projects\MQTT\Test_MQTT_Client\ConnProfilesTbl.dfm=C:\Embedded\Projects\MQTT\Test_MQTT_Client\Unit1.dfm</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.309,=C:\Users\AlexandrY\Documents\Embarcadero\Studio\Projects\Unit6.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.162,=C:\Embedded\Projects\MQTT\Test_MQTT_Client\mosquitto.h</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.707,=C:\Embedded\Projects\MQTT\Test_MQTT_Client\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.761,=C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\supertimezone.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.380,C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\JSONparser.pas=C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\Unit1.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.902,=C:\Embedded\Projects\MQTT\Test_MQTT_Client\Unit1.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.597,C:\Embedded\Projects\MQTT\Test_MQTT_Client\DataUnit.pas=C:\Embedded\Projects\MQTT\Test_MQTT_Client\Du.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.276,C:\Embedded\Projects\MQTT\Test_MQTT_Client\Main.dfm=C:\Users\AlexandrY\Documents\Embarcadero\Studio\Projects\Unit6.dfm</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.661,C:\Embedded\Projects\MQTT\Test_MQTT_Client\Du.dfm=C:\Embedded\Projects\MQTT\Test_MQTT_Client\Unit1.dfm</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.214,C:\Embedded\Projects\MQTT\Test_MQTT_Client\TMQTTC.dproj=C:\Users\AlexandrY\Documents\Embarcadero\Studio\Projects\Project7.dproj</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.957,C:\Embedded\Projects\MQTT\Test_MQTT_Client\ConnProfilesTbl.pas=C:\Embedded\Projects\MQTT\Test_MQTT_Client\Unit1.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.695,C:\Embedded\Projects\MQTT\Test_MQTT_Client\MainDataModule.dfm=C:\Embedded\Projects\MQTT\Test_MQTT_Client\DataUnit.dfm</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.276,C:\Embedded\Projects\MQTT\Test_MQTT_Client\Main.pas=C:\Users\AlexandrY\Documents\Embarcadero\Studio\Projects\Unit6.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.707,=C:\Embedded\Projects\MQTT\Test_MQTT_Client\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.695,C:\Embedded\Projects\MQTT\Test_MQTT_Client\DataUnit.dfm=C:\Embedded\Projects\MQTT\Test_MQTT_Client\MainDataModule.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.625,=C:\Embedded\Projects\MQTT\Test_MQTT_Client\MOSQUITTO.PAS</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.115,C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\PeriodicPublishObj.pas=C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.358,=C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\supertypes.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.657,=C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\superdate.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.597,C:\Embedded\Projects\MQTT\Test_MQTT_Client\Du.pas=C:\Embedded\Projects\MQTT\Test_MQTT_Client\DataUnit.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.162,=C:\Embedded\Projects\MQTT\Test_MQTT_Client\mosquitto.h</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.214,C:\Users\AlexandrY\Documents\Embarcadero\Studio\Projects\Project7.dproj=C:\Embedded\Projects\MQTT\Test_MQTT_Client\TMQTTC.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.661,C:\Embedded\Projects\MQTT\Test_MQTT_Client\Unit1.pas=C:\Embedded\Projects\MQTT\Test_MQTT_Client\Du.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.957,C:\Embedded\Projects\MQTT\Test_MQTT_Client\Unit1.pas=C:\Embedded\Projects\MQTT\Test_MQTT_Client\ConnProfilesTbl.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.276,C:\Users\AlexandrY\Documents\Embarcadero\Studio\Projects\Unit6.pas=C:\Embedded\Projects\MQTT\Test_MQTT_Client\Main.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.309,=C:\Users\AlexandrY\Documents\Embarcadero\Studio\Projects\Unit6.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.255,=C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.657,=C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\Unit1.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.142,=C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\Unit1.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.115,C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\Unit1.pas=C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\PeriodicPublishObj.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.243,=C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.597,C:\Embedded\Projects\MQTT\Test_MQTT_Client\Du.dfm=C:\Embedded\Projects\MQTT\Test_MQTT_Client\DataUnit.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.942,C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\VariablesTbl.dfm=C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\VisualWidgetsTbl.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.943,C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\Unit1.dfm=C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\VariablesTbl.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.312,C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\Unit1.dfm=C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\DataWidgets.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.617,=C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\superobject.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.661,C:\Embedded\Projects\MQTT\Test_MQTT_Client\Unit1.dfm=C:\Embedded\Projects\MQTT\Test_MQTT_Client\Du.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.276,C:\Users\AlexandrY\Documents\Embarcadero\Studio\Projects\Unit6.dfm=C:\Embedded\Projects\MQTT\Test_MQTT_Client\Main.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.942,C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\VariablesTbl.pas=C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\VisualWidgetsTbl.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.943,C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\Unit1.pas=C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\VariablesTbl.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.312,C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\Unit1.pas=C:\Embedded\Projects\MQTT\Delphi_MQTT_Mosquitto\DataWidgets.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.957,C:\Embedded\Projects\MQTT\Test_MQTT_Client\Unit1.dfm=C:\Embedded\Projects\MQTT\Test_MQTT_Client\ConnProfilesTbl.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.695,C:\Embedded\Projects\MQTT\Test_MQTT_Client\DataUnit.pas=C:\Embedded\Projects\MQTT\Test_MQTT_Client\MainDataModule.pas</Transaction>
   </Transactions>
 </BorlandProject>

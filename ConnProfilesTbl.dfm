@@ -12,6 +12,7 @@ object frmConnProfilesTbl: TfrmConnProfilesTbl
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   PixelsPerInch = 96
@@ -82,5 +83,22 @@ object frmConnProfilesTbl: TfrmConnProfilesTbl
     object cxg_ConnProfilesLevel1: TcxGridLevel
       GridView = cxg_ConnProfilesDBTableView1
     end
+  end
+  object cxPropertiesStore1: TcxPropertiesStore
+    Active = False
+    Components = <
+      item
+        Component = Owner
+        Properties.Strings = (
+          'Height'
+          'Left'
+          'Position'
+          'Top'
+          'Width')
+      end>
+    StorageName = 'cxPropertiesStore1'
+    StorageType = stStream
+    Left = 832
+    Top = 128
   end
 end
