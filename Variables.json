@@ -111,37 +111,125 @@
             "RowID":0,
             "RowPriorState":"Unchanged",
             "Original":{
-              "VarName":"T",
-              "VarCaption":"T",
+              "VarName":"T1",
+              "VarCaption":"T1 Температура блока 1 (C)",
               "WidgetClass":"Linear",
               "DockPanelName":"N337715F64BCF49F69BD500378224287F",
-              "MaxVal":40,
-              "MinVal":0}},
+              "MaxVal":200,
+              "MinVal":-40}},
           {
             "RowID":1,
             "RowPriorState":"Unchanged",
             "Original":{
-              "VarName":"L1",
-              "VarCaption":"L1",
+              "VarName":"U1",
+              "VarCaption":"U1, Напряжение в фазе 1 (В)",
               "WidgetClass":"Chart",
               "DockPanelName":"N54208F9B96BE412287C3755A4686BFBF"}},
           {
             "RowID":2,
             "RowPriorState":"Unchanged",
             "Original":{
-              "VarName":"L2",
-              "VarCaption":"L2",
+              "VarName":"U2",
+              "VarCaption":"U2, Напряжение в фазе 2 (В)",
               "WidgetClass":"Chart",
               "DockPanelName":"N8EF6E0D0A89F413E9B068649BFF379EA"}},
           {
             "RowID":3,
             "RowPriorState":"Unchanged",
             "Original":{
-              "VarName":"L3",
-              "VarCaption":"L3",
+              "VarName":"U3",
+              "VarCaption":"U3,  Напряжение в фазе 3 (В)",
               "WidgetClass":"Chart",
-              "DockPanelName":"N579C04CB1585400B950ACA712CE40CB6"}}]}],
+              "DockPanelName":"N579C04CB1585400B950ACA712CE40CB6"}},
+          {
+            "RowID":4,
+            "RowPriorState":"Unchanged",
+            "Original":{
+              "VarName":"I1",
+              "VarCaption":"I1 Ток в фазе 1 (А)",
+              "WidgetClass":"HalfScale",
+              "DockPanelName":"NFEE290BAB5104174A1D92B5183253E1F"}},
+          {
+            "RowID":5,
+            "RowPriorState":"Unchanged",
+            "Original":{
+              "VarName":"I2",
+              "VarCaption":"I1 Ток в фазе 2 (А)",
+              "WidgetClass":"HalfScale",
+              "DockPanelName":"N5D55AE4D01E04354A76EAC24DF4264EB"}},
+          {
+            "RowID":6,
+            "RowPriorState":"Unchanged",
+            "Original":{
+              "VarName":"I3",
+              "VarCaption":"I1 Ток в фазе 3 (А)",
+              "WidgetClass":"HalfScale",
+              "DockPanelName":"N9CA20E7624A847448147176703EA0382"}},
+          {
+            "RowID":7,
+            "RowPriorState":"Unchanged",
+            "Original":{
+              "VarName":"W",
+              "VarCaption":"W, Активная потребляемая мощность (Вт) ",
+              "WidgetClass":"QLeftfScale",
+              "DockPanelName":"N1161F4475C9140979BEF390F40E7A8EF",
+              "MaxVal":3000,
+              "MinVal":0}},
+          {
+            "RowID":8,
+            "RowPriorState":"Unchanged",
+            "Original":{
+              "VarName":"T2",
+              "VarCaption":"T2 Температура блока 2 (C)",
+              "WidgetClass":"Linear",
+              "DockPanelName":"N6E7BD32E50144552877259E1D895ECF5",
+              "MaxVal":200,
+              "MinVal":-40}},
+          {
+            "RowID":9,
+            "RowPriorState":"Unchanged",
+            "Original":{
+              "VarName":"W",
+              "VarCaption":"W, Активная потребляемая мощность (Вт) ",
+              "WidgetClass":"Digital",
+              "DockPanelName":"N4F0D2F18E2774E7E9C98538E222D4477"}},
+          {
+            "RowID":10,
+            "RowPriorState":"Unchanged",
+            "Original":{
+              "VarName":"T3",
+              "VarCaption":"T3 Температура блока 3 (C)",
+              "WidgetClass":"Linear",
+              "DockPanelName":"NB7DF07EB8D29425BA16DC0E0C2BA848D",
+              "MaxVal":200,
+              "MinVal":-40}},
+          {
+            "RowID":11,
+            "RowPriorState":"Unchanged",
+            "Original":{
+              "VarName":"T4",
+              "VarCaption":"T4 Температура блока 4 (C)",
+              "WidgetClass":"Linear",
+              "DockPanelName":"N043423E1468A484C91038750C4462204",
+              "MaxVal":200,
+              "MinVal":-40}},
+          {
+            "RowID":12,
+            "RowPriorState":"Unchanged",
+            "Original":{
+              "VarName":"S",
+              "VarCaption":"S, Полная мощность (ВА)",
+              "WidgetClass":"Digital",
+              "DockPanelName":"N019BB9E5646C474CAFEB1314F657B022"}},
+          {
+            "RowID":13,
+            "RowPriorState":"Unchanged",
+            "Original":{
+              "VarName":"Q",
+              "VarCaption":"Q, Реактивная мощность (ВA)",
+              "WidgetClass":"Digital",
+              "DockPanelName":"NDBBF735873834DF982C9362171001901"}}]}],
     "RelationList":[],
     "UpdatesJournal":{
-      "SavePoint":49,
+      "SavePoint":114,
       "Changes":[]}}}}
