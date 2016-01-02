@@ -58,9 +58,9 @@
             "RowPriorState":"Unchanged",
             "Original":{
               "Subscribe":true,
-              "Topic":"iot-2/evt/event3/fmt/json",
+              "Topic":"iot-2/evt/event1/fmt/json",
               "QoS":1}}]}],
     "RelationList":[],
     "UpdatesJournal":{
-      "SavePoint":9,
+      "SavePoint":15,
       "Changes":[]}}}}

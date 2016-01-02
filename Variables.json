@@ -122,7 +122,7 @@
             "RowPriorState":"Unchanged",
             "Original":{
               "VarName":"U1",
-              "VarCaption":"U1, Напряжение в фазе 1 (В)",
+              "VarCaption":"U1, Напряжение в линии L1 (В)",
               "WidgetClass":"Chart",
               "DockPanelName":"N54208F9B96BE412287C3755A4686BFBF"}},
           {
@@ -130,7 +130,7 @@
             "RowPriorState":"Unchanged",
             "Original":{
               "VarName":"U2",
-              "VarCaption":"U2, Напряжение в фазе 2 (В)",
+              "VarCaption":"U2, Напряжение в линии L2 (В)",
               "WidgetClass":"Chart",
               "DockPanelName":"N8EF6E0D0A89F413E9B068649BFF379EA"}},
           {
@@ -138,7 +138,7 @@
             "RowPriorState":"Unchanged",
             "Original":{
               "VarName":"U3",
-              "VarCaption":"U3,  Напряжение в фазе 3 (В)",
+              "VarCaption":"U3,  Напряжениев линии L3 (В)",
               "WidgetClass":"Chart",
               "DockPanelName":"N579C04CB1585400B950ACA712CE40CB6"}},
           {
@@ -146,25 +146,31 @@
             "RowPriorState":"Unchanged",
             "Original":{
               "VarName":"I1",
-              "VarCaption":"I1 Ток в фазе 1 (А)",
+              "VarCaption":"I1 Ток в линии L1 (А)",
               "WidgetClass":"HalfScale",
-              "DockPanelName":"NFEE290BAB5104174A1D92B5183253E1F"}},
+              "DockPanelName":"NFEE290BAB5104174A1D92B5183253E1F",
+              "MaxVal":50,
+              "MinVal":0}},
           {
             "RowID":5,
             "RowPriorState":"Unchanged",
             "Original":{
               "VarName":"I2",
-              "VarCaption":"I1 Ток в фазе 2 (А)",
+              "VarCaption":"I1 Ток в линии L2 (А)",
               "WidgetClass":"HalfScale",
-              "DockPanelName":"N5D55AE4D01E04354A76EAC24DF4264EB"}},
+              "DockPanelName":"N5D55AE4D01E04354A76EAC24DF4264EB",
+              "MaxVal":50,
+              "MinVal":0}},
           {
             "RowID":6,
             "RowPriorState":"Unchanged",
             "Original":{
               "VarName":"I3",
-              "VarCaption":"I1 Ток в фазе 3 (А)",
+              "VarCaption":"I1 Ток в линии L3 (А)",
               "WidgetClass":"HalfScale",
-              "DockPanelName":"N9CA20E7624A847448147176703EA0382"}},
+              "DockPanelName":"N9CA20E7624A847448147176703EA0382",
+              "MaxVal":50,
+              "MinVal":0}},
           {
             "RowID":7,
             "RowPriorState":"Unchanged",
@@ -220,16 +226,20 @@
               "VarName":"S",
               "VarCaption":"S, Полная мощность (ВА)",
               "WidgetClass":"Digital",
-              "DockPanelName":"N019BB9E5646C474CAFEB1314F657B022"}},
+              "DockPanelName":"N019BB9E5646C474CAFEB1314F657B022",
+              "MaxVal":3000,
+              "MinVal":0}},
           {
             "RowID":13,
             "RowPriorState":"Unchanged",
             "Original":{
               "VarName":"Q",
-              "VarCaption":"Q, Реактивная мощность (ВA)",
+              "VarCaption":"Q, Реактивная мощность (вар)",
               "WidgetClass":"Digital",
-              "DockPanelName":"NDBBF735873834DF982C9362171001901"}}]}],
+              "DockPanelName":"NDBBF735873834DF982C9362171001901",
+              "MaxVal":3000,
+              "MinVal":0}}]}],
     "RelationList":[],
     "UpdatesJournal":{
-      "SavePoint":114,
+      "SavePoint":127,
       "Changes":[]}}}}
